@@ -63,13 +63,13 @@ For technical questions regarding the Control System or the FTC SDK, please visi
 * The default PIDF values for REV motors have been reverted to the default PID values that were used in the 2018-2019 season
     * This change was made because the 2018-2019 values turned out to work better for many mechanisms
     * This brings the behavior of the REV motors in line with the behavior of all other motors
-    * If you prefer the 2019-2020 season's behavior for REV motors, here are the PIDF values that were in place, so that you can manually set them in your OpModes:  
+    * If you prefer the 2019-2020 season's behavior for REV motors, here are the PIDF values that were in place, so that you can manually set them in your OpModes:
       <br>
-      **HD Hex motors (all gearboxes):**  
-      Velocity PIDF values: `P = 1.17`, `I = 0.117`, `F = 11.7`  
-      Position PIDF values: `P = 5.0`  
-      **Core Hex motor:**  
-      Velocity PIDF values: `P = 4.96`, `I = 0.496`, `F = 49.6`  
+      **HD Hex motors (all gearboxes):**
+      Velocity PIDF values: `P = 1.17`, `I = 0.117`, `F = 11.7`
+      Position PIDF values: `P = 5.0`
+      **Core Hex motor:**
+      Velocity PIDF values: `P = 4.96`, `I = 0.496`, `F = 49.6`
       Position PIDF values: `P = 5.0`
 
 ### New features
@@ -991,7 +991,7 @@ Changes include:
  * Throws error if Ultrasonic sensor (NXT) is not configured for legacy module port 4 or 5.
 
 
-## Release 15.08.03.001
+//## Release 15.08.03.001
 
  * New user interfaces for FTC Driver Station and FTC Robot Controller apps.
  * An init() method is added to the OpMode class.
