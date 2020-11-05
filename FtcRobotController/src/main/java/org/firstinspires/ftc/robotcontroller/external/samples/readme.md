@@ -1,12 +1,12 @@
 
-## Caution
+//## Caution
 No Team-specific code should be placed or modified in this ``.../samples`` folder.
 
 Full or partial Samples should be Copied from here, and then Pasted into
 the team's folder, using the Android Studio cut and paste commands.
 This automatically changes all file and class names to be consistent.
 
-### Naming of Samples
+//### Naming of Samples
 
 To gain a better understanding of how the samples are organized, and how to interpret the
 naming system, it will help to understand the conventions that were used during their creation.
@@ -38,7 +38,7 @@ Concept:	This is a sample OpMode that illustrates performing a specific function
             These may be complex, but their operation should be explained clearly in the comments,
             or the comments should reference an external doc, guide or tutorial.
             Each OpMode should try to only demonstrate a single concept so they are easy to
-            locate based on their name.  These OpModes may not produce a drivable robot. 
+            locate based on their name.  These OpModes may not produce a drivable robot.
 
 Library:    This is a class, or set of classes used to implement some strategy.
             These will typically NOT implement a full OpMode.  Instead they will be included
@@ -46,9 +46,8 @@ Library:    This is a class, or set of classes used to implement some strategy.
 
 After the prefix, other conventions will apply:
 
-* Sensor class names are constructed as:    Sensor - Company - Type
-* Hardware class names are constructed as:  Hardware - Robot type
-* Pushbot class names are constructed as:   Pushbot - Mode - Action - OpModetype
-* Concept class names are constructed as:   Concept - Topic - OpModetype
-* Library class names are constructed as:   Library - Topic - OpModetype
-
+//* Sensor class names are constructed as:    Sensor - Company - Type
+//* Hardware class names are constructed as:  Hardware - Robot type
+//* Pushbot class names are constructed as:   Pushbot - Mode - Action - OpModetype
+//* Concept class names are constructed as:   Concept - Topic - OpModetype
+//* Library class names are constructed as:   Library - Topic - OpModetype

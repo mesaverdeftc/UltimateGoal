@@ -54,7 +54,7 @@ import java.util.List;
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 //@Disabled
 public class StackIdentificationTensorflow extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
+    private static final String TFOD_MODEL_ASSET = "UlitmateGoal.tflite";
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which

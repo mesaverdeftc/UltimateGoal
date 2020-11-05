@@ -139,6 +139,13 @@ public class IdentifyStack extends LinearOpMode
             Core.extractChannel(YCrCb, Cb, 1);
         }
 
+        void inputToOther(Mat input)
+        {
+            // Some other color transformation
+            Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
+            Core.extractChannel(YCrCb, Cb, 1);
+        }
+
         @Override
         public void init(Mat firstFrame)
         {
