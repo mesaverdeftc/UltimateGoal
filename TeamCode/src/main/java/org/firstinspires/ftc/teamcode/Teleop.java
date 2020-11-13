@@ -58,14 +58,14 @@ public class Teleop extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
 
-    private Attachment block = new Attachment();
-    private Attachment grabber = new Attachment();
-    private Foundation foundation = new Foundation();
-    private Attachment capstone = new Attachment();
-    private DcMotor tapeMeasure = null;
-    private DcMotor tapeCapstone = null;
-    private DcMotor pincherLeft = null;
-    private DcMotor pincherRight = null;
+//    private Attachment block = new Attachment();
+//    private Attachment grabber = new Attachment();
+//    private Foundation foundation = new Foundation();
+//    private Attachment capstone = new Attachment();
+//    private DcMotor tapeMeasure = null;
+//    private DcMotor tapeCapstone = null;
+//    private DcMotor pincherLeft = null;
+//    private DcMotor pincherRight = null;
 
     private ButtonToggle buttonY = new ButtonToggle();
     private ButtonToggle buttonA = new ButtonToggle();
@@ -74,8 +74,8 @@ public class Teleop extends OpMode
     private ButtonToggle button_lb = new ButtonToggle();
     private ButtonToggle button_dpad_down = new ButtonToggle();
 
-    private ButtonToggle button_lb_pinchers = new ButtonToggle();
-    private ButtonToggle button_rb_pinchers = new ButtonToggle();
+//    private ButtonToggle button_lb_pinchers = new ButtonToggle();
+//    private ButtonToggle button_rb_pinchers = new ButtonToggle();
 
     private DistanceSensor distanceSensor = null;
 
@@ -91,26 +91,26 @@ public class Teleop extends OpMode
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
 
-        block.init(hardwareMap, "block_servo0", 0, 1.0);
-        foundation.init(hardwareMap, "foundation_servo1", "foundation_servo2",1.0, 0);
-        capstone.init(hardwareMap, "capstone_servo3", 0, 1.0);
-        grabber.init(hardwareMap, "grabber_servo4", 0, 1.0);
-        distanceSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, "distance_1");
+//        block.init(hardwareMap, "block_servo0", 0, 1.0);
+//        foundation.init(hardwareMap, "foundation_servo1", "foundation_servo2",1.0, 0);
+//        capstone.init(hardwareMap, "capstone_servo3", 0, 1.0);
+//        grabber.init(hardwareMap, "grabber_servo4", 0, 1.0);
+//        distanceSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, "distance_1");
 
-        tapeMeasure = hardwareMap.get(DcMotor.class, "tape_measure_drive");
-        tapeMeasure.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        tapeMeasure.setDirection(DcMotor.Direction.FORWARD);
+//        tapeMeasure = hardwareMap.get(DcMotor.class, "tape_measure_drive");
+//        tapeMeasure.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        tapeMeasure.setDirection(DcMotor.Direction.FORWARD);
 
-        tapeCapstone = hardwareMap.get(DcMotor.class, "tape_capstone_drive");
-        tapeCapstone.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        tapeCapstone.setDirection(DcMotor.Direction.REVERSE);
+//        tapeCapstone = hardwareMap.get(DcMotor.class, "tape_capstone_drive");
+//        tapeCapstone.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        tapeCapstone.setDirection(DcMotor.Direction.REVERSE);
 
-        pincherLeft = hardwareMap.get(DcMotor.class, "pincher_left_0");
-        pincherRight = hardwareMap.get(DcMotor.class, "pincher_right_1");
-        pincherLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pincherRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pincherLeft.setDirection(DcMotor.Direction.FORWARD);
-        pincherRight.setDirection(DcMotor.Direction.REVERSE);
+//        pincherLeft = hardwareMap.get(DcMotor.class, "pincher_left_0");
+//        pincherRight = hardwareMap.get(DcMotor.class, "pincher_right_1");
+//        pincherLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        pincherRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        pincherLeft.setDirection(DcMotor.Direction.FORWARD);
+//        pincherRight.setDirection(DcMotor.Direction.REVERSE);
 
         driveTrain.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
@@ -135,71 +135,71 @@ public class Teleop extends OpMode
         double left_y = -gamepad1.left_stick_y;
         double right_x = gamepad1.right_stick_x;
 
-        double tape_measure_power = -gamepad2.right_stick_y;
-        tapeMeasure.setPower(tape_measure_power);
+//        double tape_measure_power = -gamepad2.right_stick_y;
+//        tapeMeasure.setPower(tape_measure_power);
 
-        if(buttonY.toggled(gamepad1.y)) {
-            useCapstoneTape = !useCapstoneTape;
-        }
-        if (useCapstoneTape){
-            double tape_capstone_power = gamepad1.right_trigger/2 - gamepad1.left_trigger/3;
-            tapeCapstone.setPower(tape_capstone_power);
-        }
-        else{
-            capstone.setPosition(1.0 - gamepad1.right_trigger);
-            tapeCapstone.setPower(0.0);
-        }
-        if(button_rb_pinchers.toggled(gamepad2.right_bumper)){
-
-            if(button_rb_pinchers.toggleState){
-                pincherLeft.setPower(0.5);
-                pincherRight.setPower(0.5);
-            } else{
-                pincherLeft.setPower(-0.375);
-                pincherRight.setPower(-0.5);
-            }
-        }
-        if(button_lb_pinchers.toggled(gamepad2.left_bumper)){
-            pincherLeft.setPower(0);
-            pincherRight.setPower(0);
-        }
-
-        if(buttonA.toggled(gamepad1.a)) {
-            driveTrain.gyroStrafeAwayBlock(runtime, distanceSensor, .4, 1.5, 5);
-            block.setPosition(-1.0);
-            grabber.setPosition(1.0);
-            block.setPosition(1.0);
-        }
-
-
-        block.setPosition(gamepad2.left_stick_y);
-
-        if(buttonA.toggled(gamepad2.a)) {
-            grabber.toggle(buttonA.toggleState);
-        }
-
-        if(buttonB.toggled(gamepad2.b)) {
-            foundation.toggle(buttonB.toggleState);
-        }
-
-        /*if(button_dpad_down.toggled(gamepad2.dpad_down)) {
-            capstone.toggle(button_dpad_down.toggleState);
-        }
-
-         */
-
-        if(gamepad1.dpad_up) {
-            driveTrain.resetAngle();
-        }
-
-        if(button_lb.toggled(gamepad1.left_bumper)) {
-            fieldCentric = !fieldCentric;
-        }
-
+//        if(buttonY.toggled(gamepad1.y)) {
+//            useCapstoneTape = !useCapstoneTape;
+//        }
+//        if (useCapstoneTape){
+//            double tape_capstone_power = gamepad1.right_trigger/2 - gamepad1.left_trigger/3;
+//            tapeCapstone.setPower(tape_capstone_power);
+//        }
+//        else{
+//            capstone.setPosition(1.0 - gamepad1.right_trigger);
+//            tapeCapstone.setPower(0.0);
+//        }
+//        if(button_rb_pinchers.toggled(gamepad2.right_bumper)){
+//
+//            if(button_rb_pinchers.toggleState){
+//                pincherLeft.setPower(0.5);
+//                pincherRight.setPower(0.5);
+//            } else{
+//                pincherLeft.setPower(-0.375);
+//                pincherRight.setPower(-0.5);
+//            }
+//        }
+//        if(button_lb_pinchers.toggled(gamepad2.left_bumper)){
+//            pincherLeft.setPower(0);
+//            pincherRight.setPower(0);
+//        }
+//
+//        if(buttonA.toggled(gamepad1.a)) {
+//            driveTrain.gyroStrafeAwayBlock(runtime, distanceSensor, .4, 1.5, 5);
+//            block.setPosition(-1.0);
+//            grabber.setPosition(1.0);
+//            block.setPosition(1.0);
+//        }
+//
+//
+//        block.setPosition(gamepad2.left_stick_y);
+//
+//        if(buttonA.toggled(gamepad2.a)) {
+//            grabber.toggle(buttonA.toggleState);
+//        }
+//
+//        if(buttonB.toggled(gamepad2.b)) {
+//            foundation.toggle(buttonB.toggleState);
+//        }
+//
+//        /*if(button_dpad_down.toggled(gamepad2.dpad_down)) {
+//            capstone.toggle(button_dpad_down.toggleState);
+//        }
+//
+//         */
+//
+//        if(gamepad1.dpad_up) {
+//            driveTrain.resetAngle();
+//        }
+//
+//        if(button_lb.toggled(gamepad1.left_bumper)) {
+//            fieldCentric = !fieldCentric;
+//        }
+//
         if(button_rb.toggled(gamepad1.right_bumper)) {
             slowmode = !slowmode;
         }
-
+//
         driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode);
 
         // Show the elapsed game time and wheel power.

@@ -137,6 +137,19 @@ public class DriveTrain {
         leftRearPower    = Range.clip(left_y + right_x - left_x, -1.0, 1.0) ;
         rightRearPower   = Range.clip(left_y - right_x + left_x, -1.0, 1.0) ;
 
+//        leftFrontPower   = Range.clip(left_y + right_x + left_x, -0.01, 0.01) ;
+//        rightFrontPower  = Range.clip(left_y - right_x - left_x, -0.01, 0.01) ;
+//        leftRearPower    = Range.clip(left_y + right_x - left_x, -0.01, 0.01) ;
+//        rightRearPower   = Range.clip(left_y - right_x + left_x, -0.01, 0.01) ;
+
+        // negative, positive, positive, negative (LEFT-STRAFE)
+
+        // positive, positive, negative, negative
+        // (lf)      (rf)      (lr)       (rr)
+        // front positive, back negative
+
+        // switch left front and left rear
+
         // Send calculated power to wheels
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);

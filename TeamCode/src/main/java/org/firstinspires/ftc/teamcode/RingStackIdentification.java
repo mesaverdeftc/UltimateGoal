@@ -53,7 +53,7 @@ import java.util.List;
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 //@Disabled
-public class StackIdentificationTensorflow extends LinearOpMode {
+public class RingStackIdentification extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "UlitmateGoal.tflite";
 
     /*
