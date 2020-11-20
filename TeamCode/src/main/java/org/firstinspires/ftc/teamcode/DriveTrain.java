@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -12,7 +10,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class DriveTrain {
@@ -137,20 +134,6 @@ public class DriveTrain {
         leftRearPower    = Range.clip(left_y + right_x - left_x, -1.0, 1.0) ;
         rightRearPower   = Range.clip(left_y - right_x + left_x, -1.0, 1.0) ;
 
-//        leftFrontPower   = Range.clip(left_y + right_x + left_x, -0.01, 0.01) ;
-//        rightFrontPower  = Range.clip(left_y - right_x - left_x, -0.01, 0.01) ;
-//        leftRearPower    = Range.clip(left_y + right_x - left_x, -0.01, 0.01) ;
-//        rightRearPower   = Range.clip(left_y - right_x + left_x, -0.01, 0.01) ;
-
-        // negative, positive, positive, negative (LEFT-STRAFE)
-
-        // positive, positive, negative, negative
-        // (lf)      (rf)      (lr)       (rr)
-        // front positive, back negative
-
-        // switch left front and left rear
-
-        // Send calculated power to wheels
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);
         leftRearDrive.setPower(leftRearPower);
@@ -176,6 +159,89 @@ public class DriveTrain {
         currentAngles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = -((AngleUnit.DEGREES.normalize(currentAngles.firstAngle))+ angleOffset + 360) %360;
         return heading;
+    }
+
+    public void gyroDrive_constant(LinearOpMode linearOpMode,
+                                   ElapsedTime runtime,
+                                   double speed,
+                                   double inches,
+                                   double angle,
+                                   double timeoutS) {
+
+
+        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
+        int newTargetPosition;
+        int distanceRemaining;
+        int stopDistance = (int)(0.1 * COUNTS_PER_INCH);
+        boolean direction;
+        double newSpeed;
+        int acceleration = 0;
+        int deacceleration = 0;
+        double distanceThreshold;
+
+        if (inches > 0) {
+            direction = DRIVE_FORWARD;
+            newSpeed = Math.abs(speed);
+        } else {
+            direction = DRIVE_REVERSE;
+            newSpeed = -Math.abs(speed);  // Set the speed negative if driving in reverse
+        }
+
+        if (Math.abs(newSpeed) > 0.95) distanceThreshold = 32;
+        else if (Math.abs(newSpeed) > 0.85) distanceThreshold = 29;
+        else if (Math.abs(newSpeed) > 0.75) distanceThreshold = 27;
+        else if (Math.abs(newSpeed) > 0.65) distanceThreshold = 22;
+        else if (Math.abs(newSpeed) > 0.55) distanceThreshold = 20;
+        else if (Math.abs(newSpeed) > 0.45) distanceThreshold = 14;
+        else distanceThreshold = 10;
+
+
+        // Ensure that the opmode is still active
+        if (linearOpMode.opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
+                if (speed > 0) {
+                    distanceRemaining = Range.clip(newTargetPosition - leftFrontDrive.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                } else {
+                    distanceRemaining = Range.clip(leftFrontDrive.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
+                }
+
+                if (distanceRemaining < stopDistance) {
+                    break;
+                }
+                //ramp the speed
+                if(acceleration < 10) {
+                    if(inches > 0) {
+                        newSpeed = acceleration * .1;
+                        newSpeed = Range.clip(newSpeed, 0, speed);
+                    } else {
+                        newSpeed = acceleration * -.1;
+                        newSpeed = Range.clip(newSpeed, speed, 0);
+                    }
+                    acceleration++;
+                }
+
+                MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);
+
+                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
+                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
+                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
+                rightRearDrive.setPower(motorSpeed.getRightSpeed());
+            }
+
+            stop();
+        }
     }
 
     public void rotate(LinearOpMode linearOpMode, double desiredAngle, double speed) {
@@ -261,176 +327,6 @@ public class DriveTrain {
             }
 
             // Stop all motion;
-            stop();
-        }
-    }
-
-
-    public void gyroStrafeToBlock(LinearOpMode linearOpMode,
-                                  ElapsedTime runtime,
-                                  DistanceSensor distanceSensor,
-                                  double speed,
-                                  double inches,
-                                  double angle,
-                                  double timeoutS) {
-
-        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-
-        while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-
-            double distanceRemaining = distanceSensor.getDistance(DistanceUnit.INCH);
-
-            if (distanceRemaining < inches) break;
-
-            MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(speed, angle);
-            double leftSpeed = motorSpeed.getLeftSpeed();
-            double rightSpeed = motorSpeed.getRightSpeed();
-
-            leftFrontDrive.setPower(-speed);
-            rightFrontDrive.setPower(rightSpeed);
-            leftRearDrive.setPower(speed);
-            rightRearDrive.setPower(-leftSpeed);
-        }
-
-        // Stop all motion;
-        stop();
-    }
-
-    public void gyroStrafeAwayBlock(
-            ElapsedTime runtime,
-            DistanceSensor distanceSensor,
-            double speed,
-            double inchesAway,
-            double timeoutS) {
-
-//        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu);
-//        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-
-        while ((runtime.seconds() < timeoutS)) {
-
-            double distanceRemaining = distanceSensor.getDistance(DistanceUnit.INCH);
-
-            if (distanceRemaining > inchesAway) break;
-
-//            MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(speed, angle);
-//            double leftSpeed = motorSpeed.getLeftSpeed();
-//            double rightSpeed = motorSpeed.getRightSpeed();
-
-            leftFrontDrive.setPower(speed);
-            rightFrontDrive.setPower(-speed);
-            leftRearDrive.setPower(-speed);
-            rightRearDrive.setPower(speed);
-        }
-
-        // Stop all motion;
-        stop();
-    }
-
-    public void gyroDrive_constant(LinearOpMode linearOpMode,
-                                   ElapsedTime runtime,
-                                   double speed,
-                                   double inches,
-                                   double angle,
-                                   double timeoutS) {
-
-
-        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
-        int newTargetPosition;
-        int distanceRemaining;
-        int stopDistance = (int)(0.1 * COUNTS_PER_INCH);
-        boolean direction;
-        double newSpeed;
-        int acceleration = 0;
-        int deacceleration = 0;
-        double distanceThreshold;
-
-        if (inches > 0) {
-            direction = DRIVE_FORWARD;
-            newSpeed = Math.abs(speed);
-        } else {
-            direction = DRIVE_REVERSE;
-            newSpeed = -Math.abs(speed);  // Set the speed negative if driving in reverse
-        }
-
-        if (Math.abs(newSpeed) > 0.95) distanceThreshold = 32;
-        else if (Math.abs(newSpeed) > 0.85) distanceThreshold = 29;
-        else if (Math.abs(newSpeed) > 0.75) distanceThreshold = 27;
-        else if (Math.abs(newSpeed) > 0.65) distanceThreshold = 22;
-        else if (Math.abs(newSpeed) > 0.55) distanceThreshold = 20;
-        else if (Math.abs(newSpeed) > 0.45) distanceThreshold = 14;
-        else distanceThreshold = 10;
-
-
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
-
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-                if (speed > 0) {
-                    distanceRemaining = Range.clip(newTargetPosition - leftFrontDrive.getCurrentPosition(), 0, Integer.MAX_VALUE);
-                } else {
-                    distanceRemaining = Range.clip(leftFrontDrive.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
-                }
-
-                if (distanceRemaining < stopDistance) {
-                    break;
-                }
-                //ramp the speed
-                if(acceleration < 10) {
-                    if(inches > 0) {
-                        newSpeed = acceleration * .1;
-                        newSpeed = Range.clip(newSpeed, 0, speed);
-                    } else {
-                        newSpeed = acceleration * -.1;
-                        newSpeed = Range.clip(newSpeed, speed, 0);
-                    }
-                    acceleration++;
-                }
-/*
-                if (distanceRemaining < (distanceThreshold * COUNTS_PER_INCH)) {
-                    if (direction == DRIVE_FORWARD) {
-                        newSpeed = speed - (deacceleration * 0.05);
-                        newSpeed = Range.clip(newSpeed, 0.15, speed);
-                    } else {
-                        newSpeed = speed + (deacceleration * 0.05);
-                        newSpeed = Range.clip(newSpeed, speed, -0.15);
-                    }
-                    deacceleration++;
-                }
-
- */
-
-                MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);
-
-                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
-                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
-                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
-                rightRearDrive.setPower(motorSpeed.getRightSpeed());
-            }
-
             stop();
         }
     }
@@ -531,294 +427,4 @@ public class DriveTrain {
         }
     }
 
-    public void gyroDrive_above(LinearOpMode linearOpMode,
-                                ElapsedTime runtime,
-                                double speed,
-                                double inches,
-                                double angle,
-                                double timeoutS) {
-
-
-        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
-        int newTargetPosition;
-        int distanceRemaining;
-        int stopDistance = (int)(0.1 * COUNTS_PER_INCH);
-        boolean direction;
-        double newSpeed;
-        int acceleration = 0;
-        int deacceleration = 0;
-        double distanceThreshold;
-
-        if (inches > 0) {
-            direction = DRIVE_FORWARD;
-            newSpeed = Math.abs(speed);
-        } else {
-            direction = DRIVE_REVERSE;
-            newSpeed = -Math.abs(speed);  // Set the speed negative if driving in reverse
-        }
-
-        if (Math.abs(newSpeed) > 0.95) distanceThreshold = 32;
-        else if (Math.abs(newSpeed) > 0.85) distanceThreshold = 29;
-        else if (Math.abs(newSpeed) > 0.75) distanceThreshold = 27;
-        else if (Math.abs(newSpeed) > 0.65) distanceThreshold = 22;
-        else if (Math.abs(newSpeed) > 0.55) distanceThreshold = 20;
-        else if (Math.abs(newSpeed) > 0.45) distanceThreshold = 14;
-        else distanceThreshold = 10;
-
-
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
-
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-                if (speed > 0) {
-                    distanceRemaining = Range.clip(newTargetPosition - leftFrontDrive.getCurrentPosition(), 0, Integer.MAX_VALUE);
-                } else {
-                    distanceRemaining = Range.clip(leftFrontDrive.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
-                }
-
-                if (distanceRemaining < stopDistance) {
-                    break;
-                }
-                //ramp the speed
-                if(acceleration < 10) {
-                    if(inches > 0) {
-                        newSpeed = acceleration * .1;
-                        newSpeed = Range.clip(newSpeed, 0, speed);
-                    } else {
-                        newSpeed = acceleration * -.1;
-                        newSpeed = Range.clip(newSpeed, speed, 0);
-                    }
-                    acceleration++;
-                }
-
-                if (distanceRemaining < (distanceThreshold * COUNTS_PER_INCH)) {
-                    if (direction == DRIVE_FORWARD) {
-                        newSpeed = speed - (deacceleration * 0.05);
-                        if (newSpeed < 0.1){
-                            newSpeed = 0.1;
-                        }
-                        newSpeed = Range.clip(newSpeed, 0.15, speed);
-                    } else {
-                        newSpeed = speed + (deacceleration * 0.05);
-                        if (newSpeed > 0.1){
-                            newSpeed = -0.1;
-                        }
-                        newSpeed = Range.clip(newSpeed, speed, -0.15);
-                    }
-                    deacceleration++;
-                }
-
-                MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);
-
-                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
-                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
-                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
-                rightRearDrive.setPower(motorSpeed.getRightSpeed());
-            }
-
-            stop();
-        }
-    }
-
-
-    public void gyroDriveBlockEdge(LinearOpMode linearOpMode,
-                                   ElapsedTime runtime,
-                                   DistanceSensor distanceSensor,
-                                   double speed,
-                                   double distanceThreshold,
-                                   double angle,
-                                   double timeoutS) {
-
-        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-
-                if (distanceSensor.getDistance(DistanceUnit.INCH) > distanceThreshold) {
-                    break;
-                }
-
-                MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(speed, angle);
-
-                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
-                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
-                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
-                rightRearDrive.setPower(motorSpeed.getRightSpeed());
-            }
-
-            stop();
-        }
-    }
-
-    public void encoderStrafeOffsetUp(LinearOpMode linearOpMode,
-                                      ElapsedTime runtime,
-                                      double speed,
-                                      double inches,
-                                      boolean direction,
-                                      double timeoutS) {
-        int newTargetPosition;
-        int scale;
-        double offset = speed/.5;
-
-        if (direction == STRAFE_LEFT)
-            scale = -1;
-        else
-            scale = 1;
-
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-            // Determine new target position
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int) (scale * inches * COUNTS_PER_INCH);
-
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            leftFrontDrive.setPower((scale * speed)+ .32);
-            rightFrontDrive.setPower(scale * (-speed));
-            leftRearDrive.setPower(scale * (-speed));
-            rightRearDrive.setPower(scale * speed);
-
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-
-                if (direction == STRAFE_RIGHT) {
-                    if ((rightRearDrive.getCurrentPosition()) > newTargetPosition) {
-                        break;
-                    }
-                } else {
-                    if ((rightRearDrive.getCurrentPosition()) < newTargetPosition) {
-                        break;
-                    }
-                }
-            }
-
-            // Stop all motion;
-            stop();
-        }
-    }
-    public void encoderStrafeOffsetDown(LinearOpMode linearOpMode,
-                                        ElapsedTime runtime,
-                                        double speed,
-                                        double inches,
-                                        boolean direction,
-                                        double timeoutS) {
-        int newTargetPosition;
-        int scale;
-        double offset = speed/.5;
-
-        if (direction == STRAFE_LEFT)
-            scale = -1;
-        else
-            scale = 1;
-
-        // Ensure that the opmode is still active
-        if (linearOpMode.opModeIsActive()) {
-            // Determine new target position
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int) (scale * inches * COUNTS_PER_INCH);
-
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-
-            leftFrontDrive.setPower(scale * speed);
-            rightFrontDrive.setPower((scale * (-speed)) - .32);
-            leftRearDrive.setPower(scale * (-speed));
-            rightRearDrive.setPower(scale * speed);
-
-            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
-
-                if (direction == STRAFE_RIGHT) {
-                    if ((rightRearDrive.getCurrentPosition()) > newTargetPosition) {
-                        break;
-                    }
-                } else {
-                    if ((rightRearDrive.getCurrentPosition()) < newTargetPosition) {
-                        break;
-                    }
-                }
-            }
-
-            // Stop all motion;
-            stop();
-        }
-    }
-
-/*    private double getAngle()
-    {
-
-        //  We experimentally determined the Z axis is the axis we want to use for heading angle.
-        //  We have to process the angle because the imu works in euler angles so the Z axis is
-        //  returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        //  180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-//        double deltaAngle = angles.firstAngle - lastAngles;
-        double deltaAngle = angles.firstAngle - 0;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        //globalAngle += deltaAngle;
-        globalAngle = deltaAngle;
-
-        //lastAngles = angles.firstAngle;
-
-        return globalAngle;
-    }
-
-    private double getAngleOriginal()
-    {
-
-        //  We experimentally determined the Z axis is the axis we want to use for heading angle.
-        //  We have to process the angle because the imu works in euler angles so the Z axis is
-        //  returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        //  180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles.firstAngle;
-
-        return globalAngle;
-    }
-*/
 }

@@ -6,11 +6,9 @@ public class ButtonToggle {
 
     boolean toggled(boolean buttonPressed) {
 
-        // buttonPressed = true
-
         if(buttonPressed && (buttonIsActive == false)) {
             buttonIsActive = true;
-            toggleState = !toggleState; // toggleState = true
+            toggleState = !toggleState;
             return true;
         }
         else if(!buttonPressed) {

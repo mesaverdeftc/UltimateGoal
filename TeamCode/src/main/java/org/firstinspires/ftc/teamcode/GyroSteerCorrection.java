@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -37,8 +34,6 @@ public class GyroSteerCorrection {
             rightSpeed /= max;
         }
 
-        // return new MotorSpeed(speed, speed);
-
         return new MotorSpeed(leftSpeed, rightSpeed);
     }
 
@@ -48,9 +43,7 @@ public class GyroSteerCorrection {
 
         Orientation currentAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        // calculate error in -179 to +180 range  (
         robotError = targetAngle - AngleUnit.DEGREES.normalize(currentAngles.firstAngle);
-        // robotError = targetAngle - currentAngles.firstAngle;
         while (robotError > 180) robotError -= 360;
         while (robotError <= -180) robotError += 360;
         linearOpMode.telemetry.addData("Angle", "%.1f", currentAngles.firstAngle);

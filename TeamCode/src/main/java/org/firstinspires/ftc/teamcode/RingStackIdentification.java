@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -51,10 +50,10 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@TeleOp(name = "Ring_Stack_Identification", group = "Concept")
 //@Disabled
 public class RingStackIdentification extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "UlitmateGoal.tflite";
+    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -106,6 +105,9 @@ public class RingStackIdentification extends LinearOpMode {
 
             // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
 //            tfod.setZoom(2.7, 1.78);
+//            tfod.setZoom(1.78, 1.85);
+
+            tfod.setClippingMargins(750,300,0,0);
         }
 
         /** Wait for the game to begin */
@@ -133,7 +135,7 @@ public class RingStackIdentification extends LinearOpMode {
                         telemetry.addData(String.format("HEIGHT (%d)", i), recognition.getHeight());
                         telemetry.addData(String.format("WIDTH (%d)", i), recognition.getWidth());
 
-                        telemetry.addData(String.format("LABEL (%d)", i), isSingleStack(recognition));
+                        telemetry.addData(String.format("LABEL (%d)", i), isSingleStackBasedOnHeight(recognition));
 
                       }
                       telemetry.update();
@@ -147,11 +149,11 @@ public class RingStackIdentification extends LinearOpMode {
         }
     }
 
-    private String isSingleStack(Recognition recognition) {
-        if(recognition.getHeight() < 75) {
-            return "Single Stack";
+    private int isSingleStackBasedOnHeight(Recognition recognition) {
+        if(recognition.getHeight() < 100) {
+            return 1;
         } else {
-            return "Four Stack";
+            return 4;
         }
     }
 
@@ -180,7 +182,7 @@ public class RingStackIdentification extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.85f;
+        tfodParameters.minResultConfidence = 0.48f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, "Four Stack", "Single Stack");
     }
