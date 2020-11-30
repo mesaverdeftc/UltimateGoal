@@ -75,14 +75,14 @@ public class OdometryOpmode extends LinearOpMode{
             runtime.reset();
 
             // Set angle correctly
-            if (target_angle > (left_dead_wheel - right_dead_wheel)) {
+            if (target_angle > ((left_dead_wheel - right_dead_wheel) / 14 * Math.PI) * 360) {
                 /* robot.leftDrive.setPower(turn_speed);
                 robot.rightDrive.setPower(-turn_speed);
                 while (((( left_dead_wheel - right_dead_wheel ) / 14 * Math.PI) * 360 < target_angle ) &&
                         opModeIsActive() && (runtime.seconds() < timeout) && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
                     */
                     sleep(1);
-
+                // }
                 } else {
                 /* robot.leftDrive.setPower(-turn_speed);
                 robot.rightDrive.setPower(turn_speed);
@@ -90,7 +90,7 @@ public class OdometryOpmode extends LinearOpMode{
                         opModeIsActive() && (runtime.seconds() < timeout) && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())){
                     */
                     sleep(1);
-
+                // }
                 }
 
 
