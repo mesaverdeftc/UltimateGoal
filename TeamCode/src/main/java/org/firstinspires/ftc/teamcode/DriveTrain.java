@@ -429,8 +429,12 @@ public class DriveTrain {
         }
     }
 
-    public String getManufacturer() {
-        return leftFrontDrive.getManufacturer().toString();
+    public boolean isTileRunner() {
+        if(leftFrontDrive.getManufacturer().toString() == "Lynx")  {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
