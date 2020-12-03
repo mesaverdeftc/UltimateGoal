@@ -65,57 +65,77 @@ public class BlueRingAutoLeft extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+//        driveTrain.gyroDrive(this, runtime, 0.4, 2, 0, 5);
+
+        int predictionResult = getPrediction(); // <--- the hold up
+
+
+        telemetry.addData("Value", predictionResult);
+        telemetry.update();
         sleep(1000);
 
-        telemetry.addData("START", "BEGINNING");
-        telemetry.update();
-
-        driveTrain.gyroDrive(this, runtime, 0.4, 2, 0, 5);
-
-        sleep(1000);
-
-        if(getPrediction() == 1) {
-//            driveTrain.gyroDrive(this, runtime, 0.25, 5, 0, 5);
-            telemetry.addData("Value: ", "1");
-            telemetry.update();
-        } else if(getPrediction() == 4) {
-            driveTrain.gyroDrive(this, runtime, 0.25, 20, 0, 5);
-            telemetry.addData("Value: ", "4");
-            telemetry.update();
-        }
-        else if(getPrediction() == 10) {
-            driveTrain.rotate(this, 360, 0.4);
-            telemetry.addData("Value: ", "4");
-            telemetry.update();
-        } else {
-            driveTrain.rotate(this, 85, 0.4);
-            telemetry.addData("Value: ", "0");
-            telemetry.update();
-        }
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-
-
+//        if(predictionResult == 1) {
+////            driveTrain.gyroDrive(this, runtime, 0.25, 5, 0, 5);
+//            telemetry.addData("Value: ", "1");
+//            telemetry.update();
+//            tfod.shutdown();
+//            super.stop();
+//        } else if(predictionResult == 4) {
+////            driveTrain.gyroDrive(this, runtime, 0.25, 20, 0, 5);
+//            telemetry.addData("Value: ", "4");
+//            telemetry.update();
+//            tfod.shutdown();
+//            super.stop();
+//        }
+//        else if(predictionResult == 10) {
+////            driveTrain.rotate(this, 360, 0.4);
+//            telemetry.addData("Value: ", "10");
+//            telemetry.update();
+//            tfod.shutdown();
+//            super.stop();
+//        } else {
+////            driveTrain.rotate(this, 85, 0.4);
+//            telemetry.addData("Value: ", predictionResult);
+//            telemetry.update();
+//            tfod.shutdown();
+//            super.stop();
+//        }
     }
+
+//    public int getPrediction() {
+//        if (tfod != null) {
+////            for(int i = 0; i < 500; i++) {
+//            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+//            telemetry.addData("UpdatedRecognitions", updatedRecognitions);
+//            if (updatedRecognitions != null) {
+//                for(Recognition recognition : updatedRecognitions) {
+//                    if(isSingleStackBasedOnHeight(recognition) == 1) {
+//                        return 1;
+//                    } else if(isSingleStackBasedOnHeight(recognition) == 4) {
+//                        return 4;
+//                    } else {
+//                        return 4;
+//                    }
+//                }
+//                return 0;
+//            } else {return 10;} // updateRecognitions != null -> FALSE
+//        } else {return 0;} // tfod != null -> TRUE
+//    }
+
 
     public int getPrediction() {
         if (tfod != null) {
-//            for(int i = 0; i < 500; i++) {
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                for(Recognition recognition : updatedRecognitions) {
-                    if(isSingleStackBasedOnHeight(recognition) == 1) {
-                        return 1;
-                    } else if(isSingleStackBasedOnHeight(recognition) == 4) {
-                        return 4;
-                    } else {
-                        return 4;
-                    }
+            List<Recognition> updatedRecognitions = null;
+            for(int i = 0; i < 1000; i++) {
+                updatedRecognitions = tfod.getUpdatedRecognitions();
+                if(updatedRecognitions != null) {
+                    tfod.shutdown();
+                    super.stop();
+                    return isSingleStackBasedOnHeight(updatedRecognitions.get(0));
                 }
-                return 10;
-            } else {return 10;}
-        } else {return 10;}
+            }
+            return 0;
+        } else {return 0;} // tfod != null -> TRUE
     }
 
     private int isSingleStackBasedOnHeight(Recognition recognition) {
@@ -151,7 +171,9 @@ public class BlueRingAutoLeft extends LinearOpMode{
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.48f;
+        tfodParameters.minResultConfidence = 0.55f;
+        tfodParameters.isModelQuantized = false;
+
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, "Four Stack", "Single Stack");
     }

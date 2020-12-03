@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -35,7 +36,6 @@ public class DriveTrain {
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
     BNO055IMU imu;
-    //PIDController pidDrive;
 
     double globalAngle = 0;
     double lastAngles = 0;
@@ -51,6 +51,8 @@ public class DriveTrain {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         leftRearDrive  = hardwareMap.get(DcMotor.class, "left_rear_drive");
         rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
+
+        // TODO: Run without encoders for teleop?
 
         leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -425,6 +427,10 @@ public class DriveTrain {
 
             stop();
         }
+    }
+
+    public String getManufacturer() {
+        return leftFrontDrive.getManufacturer().toString();
     }
 
 }
