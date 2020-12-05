@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -63,6 +64,7 @@ public class Teleop extends OpMode
     private boolean slowmode = false;
     private boolean fieldCentric = false;
 
+    private DcMotor intakeMotor = null;
 
     @Override
     public void init() {
@@ -73,6 +75,9 @@ public class Teleop extends OpMode
 
     @Override
     public void init_loop() {
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /*
@@ -97,6 +102,12 @@ public class Teleop extends OpMode
         driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode);
 
         // Show the elapsed game time and wheel power.
+        if(buttonA.toggled(gamepad1.a)) {
+            intakeMotor.setPower(1;
+        }
+        else if(buttonB.toggled(gamepad1.b)) {
+            intakeMotor.setPower(0.0);
+        }
 
         if (fieldCentric)
             telemetry.addData("Field Centric", "true");

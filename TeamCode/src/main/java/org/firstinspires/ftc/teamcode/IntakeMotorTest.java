@@ -67,7 +67,7 @@ public class IntakeMotorTest extends OpMode{
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         driveTrain.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
@@ -88,9 +88,9 @@ public class IntakeMotorTest extends OpMode{
      */
     @Override
     public void loop() {
-        intakeMotor.setPower(0.8);
+        intakeMotor.setPower(10);
 
-        telemetry.addData("Manufacturer", driveTrain.getManufacturer());
+        //telemetry.addData("Manufacturer", driveTrain.getManufacturer());
 //        telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
 
