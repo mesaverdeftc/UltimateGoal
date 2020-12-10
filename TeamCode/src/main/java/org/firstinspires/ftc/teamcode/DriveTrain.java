@@ -24,15 +24,15 @@ public class DriveTrain {
     static final boolean STRAFE_LEFT = true;
     static final boolean STRAFE_RIGHT = false;
 
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftRearDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightRearDrive = null;
+    private DcMotor leftFrontMotor = null;
+    private DcMotor leftRearMotor = null;
+    private DcMotor rightFrontMotor = null;
+    private DcMotor rightRearMotor = null;
 
     private static final double COUNTS_PER_MOTOR_REV    = 537.6 ;    // eg: ANDYMARK Motor Encoder
-    private static final double DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    private static final double MOTOR_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    private static final double COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    private static final double COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * MOTOR_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
     BNO055IMU imu;
@@ -47,28 +47,41 @@ public class DriveTrain {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        leftRearDrive  = hardwareMap.get(DcMotor.class, "left_rear_drive");
-        rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_drive");
+        leftFrontMotor  = hardwareMap.get(DcMotor.class, "left_front_motor");
+        rightFrontMotor = hardwareMap.get(DcMotor.class, "right_front_motor");
+        leftRearMotor  = hardwareMap.get(DcMotor.class, "left_rear_motor");
+        rightRearMotor = hardwareMap.get(DcMotor.class, "right_rear_motor");
 
         // TODO: Run without encoders for teleop?
+/*
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+*/
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftRearDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightRearDrive.setDirection(DcMotor.Direction.REVERSE);
+        if (isTileRunner()) {
+            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        }
+        else {
+            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        }
 
         // Brake when power is set to zero (no coasting)
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftRearDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRearDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -91,7 +104,6 @@ public class DriveTrain {
 
         // Logrithmic controls as described at https://www.arthuradmiraal.nl/programming/ftc-taking-your-code-to-the-next-level/
         /*
-
             double x1, y1, x2;
             x1 = left_x * left_x * Math.signum(left_x);
             y1 = left_y * left_y * Math.signum(left_y);
@@ -105,7 +117,6 @@ public class DriveTrain {
             left_x = x1;
             left_y = y1;
             right_x = x2;
-
         */
 
         // If our simulated manual transmission is in slowmode we divide the joystick values
@@ -115,7 +126,6 @@ public class DriveTrain {
             left_x = left_x / 3.0;
             right_x = right_x / 3.0;
         }
-
 
         if (fieldCentric) {
             // Field centric driving using a rotation transform https://en.wikipedia.org/wiki/Rotation_matrix
@@ -128,7 +138,6 @@ public class DriveTrain {
 
             left_x = -left_x;
             left_y = -left_y;
-
         }
 
         leftFrontPower   = Range.clip(left_y + right_x + left_x, -1.0, 1.0) ;
@@ -136,17 +145,17 @@ public class DriveTrain {
         leftRearPower    = Range.clip(left_y + right_x - left_x, -1.0, 1.0) ;
         rightRearPower   = Range.clip(left_y - right_x + left_x, -1.0, 1.0) ;
 
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftRearDrive.setPower(leftRearPower);
-        rightRearDrive.setPower(rightRearPower);
+        leftFrontMotor.setPower(leftFrontPower);
+        rightFrontMotor.setPower(rightFrontPower);
+        leftRearMotor.setPower(leftRearPower);
+        rightRearMotor.setPower(rightRearPower);
     }
 
     public void stop() {
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftRearDrive.setPower(0);
-        rightRearDrive.setPower(0);
+        leftFrontMotor.setPower(0);
+        rightFrontMotor.setPower(0);
+        leftRearMotor.setPower(0);
+        rightRearMotor.setPower(0);
     }
 
     public void resetAngle() {
@@ -202,21 +211,21 @@ public class DriveTrain {
         if (linearOpMode.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+            newTargetPosition = leftFrontMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
 
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // reset the timeout time and start motion.
             runtime.reset();
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 if (speed > 0) {
-                    distanceRemaining = Range.clip(newTargetPosition - leftFrontDrive.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                    distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
                 } else {
-                    distanceRemaining = Range.clip(leftFrontDrive.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
+                    distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
                 }
 
                 if (distanceRemaining < stopDistance) {
@@ -236,10 +245,10 @@ public class DriveTrain {
 
                 MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);
 
-                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
-                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
-                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
-                rightRearDrive.setPower(motorSpeed.getRightSpeed());
+                leftFrontMotor.setPower(motorSpeed.getLeftSpeed());
+                rightFrontMotor.setPower(motorSpeed.getRightSpeed());
+                leftRearMotor.setPower(motorSpeed.getLeftSpeed());
+                rightRearMotor.setPower(motorSpeed.getRightSpeed());
             }
 
             stop();
@@ -247,23 +256,23 @@ public class DriveTrain {
     }
 
     public void rotate(LinearOpMode linearOpMode, double desiredAngle, double speed) {
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //slowed down speed to be more accurate in angle turns
         if(speed > 0 ) {
-            leftFrontDrive.setPower(-speed);
-            rightFrontDrive.setPower(speed);
-            leftRearDrive.setPower(-speed);
-            rightRearDrive.setPower(speed);
+            leftFrontMotor.setPower(-speed);
+            rightFrontMotor.setPower(speed);
+            leftRearMotor.setPower(-speed);
+            rightRearMotor.setPower(speed);
 
         } else if(speed < 0);{
-            leftFrontDrive.setPower(-speed);
-            rightFrontDrive.setPower(speed);
-            leftRearDrive.setPower(-speed);
-            rightRearDrive.setPower(speed);
+            leftFrontMotor.setPower(-speed);
+            rightFrontMotor.setPower(speed);
+            leftRearMotor.setPower(-speed);
+            rightRearMotor.setPower(speed);
         }
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -300,29 +309,29 @@ public class DriveTrain {
         // Ensure that the opmode is still active
         if (linearOpMode.opModeIsActive()) {
             // Determine new target position
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int) (scale * inches * COUNTS_PER_INCH);
+            newTargetPosition = leftFrontMotor.getCurrentPosition() + (int) (scale * inches * COUNTS_PER_INCH);
 
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // reset the timeout time and start motion.
             runtime.reset();
 
-            leftFrontDrive.setPower(scale * speed);
-            rightFrontDrive.setPower(scale * (-speed));
-            leftRearDrive.setPower(scale * (-speed));
-            rightRearDrive.setPower(scale * speed);
+            leftFrontMotor.setPower(scale * speed);
+            rightFrontMotor.setPower(scale * (-speed));
+            leftRearMotor.setPower(scale * (-speed));
+            rightRearMotor.setPower(scale * speed);
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
 
                 if (direction == STRAFE_RIGHT) {
-                    if ((leftFrontDrive.getCurrentPosition()) > newTargetPosition) {
+                    if ((leftFrontMotor.getCurrentPosition()) > newTargetPosition) {
                         break;
                     }
                 } else {
-                    if ((leftFrontDrive.getCurrentPosition()) < newTargetPosition) {
+                    if ((leftFrontMotor.getCurrentPosition()) < newTargetPosition) {
                         break;
                     }
                 }
@@ -374,21 +383,21 @@ public class DriveTrain {
         if (linearOpMode.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newTargetPosition = leftFrontDrive.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+            newTargetPosition = leftFrontMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
 
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             // reset the timeout time and start motion.
             runtime.reset();
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 if (speed > 0) {
-                    distanceRemaining = Range.clip(newTargetPosition - leftFrontDrive.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                    distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
                 } else {
-                    distanceRemaining = Range.clip(leftFrontDrive.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
+                    distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
                 }
 
                 if (distanceRemaining < stopDistance) {
@@ -419,10 +428,10 @@ public class DriveTrain {
 
                 MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);
 
-                leftFrontDrive.setPower(motorSpeed.getLeftSpeed());
-                rightFrontDrive.setPower(motorSpeed.getRightSpeed());
-                leftRearDrive.setPower(motorSpeed.getLeftSpeed());
-                rightRearDrive.setPower(motorSpeed.getRightSpeed());
+                leftFrontMotor.setPower(motorSpeed.getLeftSpeed());
+                rightFrontMotor.setPower(motorSpeed.getRightSpeed());
+                leftRearMotor.setPower(motorSpeed.getLeftSpeed());
+                rightRearMotor.setPower(motorSpeed.getRightSpeed());
             }
 
             stop();
@@ -430,11 +439,11 @@ public class DriveTrain {
     }
 
     public boolean isTileRunner() {
-        if(leftFrontDrive.getManufacturer().toString() == "Lynx")  {
+        if(leftFrontMotor.getManufacturer().toString() == "Lynx")  {
             return true;
         } else {
             return false;
         }
     }
 
-}
+    }

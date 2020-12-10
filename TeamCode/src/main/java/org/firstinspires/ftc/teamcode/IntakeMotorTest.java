@@ -90,11 +90,7 @@ public class IntakeMotorTest extends OpMode{
     public void loop() {
         intakeMotor.setPower(10);
 
-<<<<<<< HEAD
         //telemetry.addData("Manufacturer", driveTrain.getManufacturer());
-=======
-        telemetry.addData("Manufacturer", driveTrain.isTileRunner());
->>>>>>> a381285dd1e13118db51c7f5838344e59feb9141
 //        telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
 
