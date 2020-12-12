@@ -152,6 +152,7 @@ public class DriveTrain {
         rightRearMotor.setPower(rightRearPower);
 
         telemetry.addData("Motor Type: ", leftFrontMotor.getMotorType().toString());
+        telemetry.addData("Odometry Value: ", leftFrontMotor.getCurrentPosition());
     }
 
     public void stop() {

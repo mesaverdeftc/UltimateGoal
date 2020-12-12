@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="OdemetryTest", group="Iterative Opmode")
-public class OdemetryTest extends OpMode
+public class OdometryTest extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -114,11 +114,7 @@ public class OdemetryTest extends OpMode
         else
             telemetry.addData("Field Centric", "false");
 
-        telemetry.addData("Values", "leftX = %.2f, leftY = %.2f", left_x, left_y);
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
-                driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
-        telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+
     }
 
     @Override
