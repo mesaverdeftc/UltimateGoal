@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@TeleOp
+@TeleOp 
 public class UGContourRingPipelineJavaExample extends LinearOpMode {
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
@@ -51,6 +51,8 @@ public class UGContourRingPipelineJavaExample extends LinearOpMode {
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
+        double min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
+
         camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         waitForStart();
@@ -58,6 +60,7 @@ public class UGContourRingPipelineJavaExample extends LinearOpMode {
         while (opModeIsActive()) {
             String height = "[HEIGHT]" + " " + pipeline.getHeight();
             telemetry.addData("[Ring Stack] >>", height);
+            telemetry.addData("Min Width:", min_width);
             telemetry.update();
         }
     }

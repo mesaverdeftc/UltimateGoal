@@ -103,7 +103,7 @@ public class Teleop extends OpMode
 
         // Show the elapsed game time and wheel power.
         if(buttonA.toggled(gamepad1.a)) {
-            intakeMotor.setPower(1;
+            intakeMotor.setPower(1);
         }
         else if(buttonB.toggled(gamepad1.b)) {
             intakeMotor.setPower(0.0);
