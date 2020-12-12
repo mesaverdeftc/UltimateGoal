@@ -99,7 +99,7 @@ public class OdemetryTest extends OpMode
             slowmode = !slowmode;
         }
 
-        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode);
+        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode, telemetry);
 
         // Show the elapsed game time and wheel power.
         if(buttonA.toggled(gamepad1.a)) {

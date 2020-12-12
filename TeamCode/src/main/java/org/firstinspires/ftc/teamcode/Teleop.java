@@ -75,11 +75,11 @@ public class Teleop extends OpMode
 
     @Override
     public void init_loop() {
-        if (driveTrain.isTileRunner()) {
-            //intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
-            //intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-            //intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
+//        if (driveTrain.isTileRunner()) {
+//            //intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+//            //intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+//            //intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        }
     }
 
     /*
@@ -101,7 +101,7 @@ public class Teleop extends OpMode
             slowmode = !slowmode;
         }
 
-        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode);
+        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode, telemetry);
 
         // Show the elapsed game time and wheel power.
 /*
@@ -122,6 +122,7 @@ public class Teleop extends OpMode
         telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+
     }
 
     @Override

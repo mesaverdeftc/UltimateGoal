@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -100,7 +101,7 @@ public class DriveTrain {
         imu.initialize(parameters);
     }
 
-    public void drive(double left_x, double left_y, double right_x, boolean fieldCentric, boolean slowmode) {
+    public void drive(double left_x, double left_y, double right_x, boolean fieldCentric, boolean slowmode, Telemetry telemetry) {
 
         // Logrithmic controls as described at https://www.arthuradmiraal.nl/programming/ftc-taking-your-code-to-the-next-level/
         /*
@@ -149,6 +150,8 @@ public class DriveTrain {
         rightFrontMotor.setPower(rightFrontPower);
         leftRearMotor.setPower(leftRearPower);
         rightRearMotor.setPower(rightRearPower);
+
+        telemetry.addData("Device Name: ", leftFrontMotor.getMotorType().toString());
     }
 
     public void stop() {
