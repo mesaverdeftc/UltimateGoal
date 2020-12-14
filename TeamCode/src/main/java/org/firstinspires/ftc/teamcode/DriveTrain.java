@@ -151,7 +151,7 @@ public class DriveTrain {
         leftRearMotor.setPower(leftRearPower);
         rightRearMotor.setPower(rightRearPower);
 
-        telemetry.addData("Motor Type: ", leftFrontMotor.getMotorType().toString());
+        telemetry.addData("Connection Info: ", leftFrontMotor.getConnectionInfo());
         telemetry.addData("Odometry Value (LEFT_FRONT): ", leftFrontMotor.getCurrentPosition());
         telemetry.addData("Odometry Value (RIGHT_FRONT): ", rightFrontMotor.getCurrentPosition());
         telemetry.addData("Odometry Value (LEFT_REAR): ", leftRearMotor.getCurrentPosition());
@@ -445,7 +445,7 @@ public class DriveTrain {
     }
 
     public boolean isTileRunner() {
-        if(leftFrontMotor.getManufacturer().toString() == "Lynx")  {
+        if(leftFrontMotor.getConnectionInfo().toString() == "com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType@8c0db6e")  {
             return true;
         } else {
             return false;

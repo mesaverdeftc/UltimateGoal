@@ -23,8 +23,8 @@ public class BlueAutoLeft extends LinearOpMode{
     private DcMotor wobble_goal = null;
     private Attachment wobble_goal_servo = new Attachment();
 
-    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 1280; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 720; // height of wanted camera resolution
 
     private static final int HORIZON = 100; // horizon value to tune
 
@@ -36,28 +36,33 @@ public class BlueAutoLeft extends LinearOpMode{
     private UGContourRingPipeline pipeline;
     private OpenCvCamera camera;
 
+    private int cameraMonitorViewId;
+    private double min_width;
+
+    private int prediction;
+
     @Override
     public void runOpMode() {
 
-        driveTrain.init(hardwareMap);
+        initialize();
 
-        wobble_goal = hardwareMap.get(DcMotor.class, "wobble_goal_0");
-        wobble_goal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wobble_goal.setDirection(DcMotor.Direction.FORWARD);
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        sleep(1000);
 
-        wobble_goal_servo.init(hardwareMap, "wobble_servo_0", 0, 1.0);
-
-        // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !driveTrain.imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
+        
+        if(driveTrain.isTileRunner()) {
+            // wobble_goal and wobble_goal_servo
+            wobble_goal.setPower(1);
+            wobble_goal_servo.setPosition(-1);
         }
 
-        telemetry.addData("imu calib status", driveTrain.imu.getCalibrationStatus().toString());
-        telemetry.update();
+        prediction = getPrediction();
+        telemetry.addData("PREDICTION: ", prediction);
+    }
 
-        int cameraMonitorViewId = this
+    public void initalizeOpenCV() {
+        cameraMonitorViewId = this
                 .hardwareMap
                 .appContext
                 .getResources().getIdentifier(
@@ -81,33 +86,61 @@ public class BlueAutoLeft extends LinearOpMode{
 
         UGContourRingPipeline.Config.setHORIZON(HORIZON);
 
-        double min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
+        min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
 
         camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
+    }
 
-        //waiting for start
+    public void initializeAttachment() {
+        if(driveTrain.isTileRunner()) {
+            wobble_goal = hardwareMap.get(DcMotor.class, "wobble_goal_0");
+            wobble_goal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            wobble_goal.setDirection(DcMotor.Direction.FORWARD);
+
+            wobble_goal_servo.init(hardwareMap, "wobble_servo_0", 0, 1.0);
+        }
+    }
+
+    public void initializeIMU() {
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !driveTrain.imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        telemetry.addData("imu calib status", driveTrain.imu.getCalibrationStatus().toString());
+        telemetry.update();
+    }
+
+    public void initialize() {
+        // initialize drive-train
+        driveTrain.init(hardwareMap);
+        // initialize OpenCV
+        initalizeOpenCV();
+        // initialize attachments
+        initializeAttachment();
+        // initialize IMU
+        initializeIMU();
+
+        // waiting for start
         telemetry.addData("Mode", "waiting for start");
+    }
 
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-
-        sleep(1000);
-
-        // wobble_goal and wobble_goal_servo
-        wobble_goal.setPower(1);
-        wobble_goal_servo.setPosition(-1);
-
-        String height = "[HEIGHT]" + " " + pipeline.getHeight();
+    public int getPrediction() {
+        String height = pipeline.getHeight().toString();
         telemetry.addData("[Ring Stack] >>", height);
         telemetry.addData("Min Width:", min_width);
         telemetry.update();
 
-//        driveTrain.gyroDrive(this, runtime, 0.2, 12, 0, 10);
+        camera.closeCameraDevice();
 
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-
-        sleep(50);
-
+        if(height == "FOUR") {
+            return 4;
+        } else if(height == "ONE") {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
