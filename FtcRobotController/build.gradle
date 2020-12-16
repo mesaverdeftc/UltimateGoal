@@ -30,3 +30,9 @@ repositories {
 }
 
 apply from: 'build.release.gradle'
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}

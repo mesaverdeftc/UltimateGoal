@@ -27,6 +27,7 @@ public class OdometryOpmode extends LinearOpMode{
 
     double x_position = 0;
     double y_position = 0;
+    double current_angle = ((left_dead_wheel - right_dead_wheel) / 14 * Math.PI) * 360;
     // in inches
 
     public void runOpMode() {
@@ -75,7 +76,7 @@ public class OdometryOpmode extends LinearOpMode{
             runtime.reset();
 
             // Set angle correctly
-            if (target_angle > ((left_dead_wheel - right_dead_wheel) / 14 * Math.PI) * 360) {
+            if (target_angle > current_angle) {
                 /* robot.leftDrive.setPower(turn_speed);
                 robot.rightDrive.setPower(-turn_speed);
                 while (((( left_dead_wheel - right_dead_wheel ) / 14 * Math.PI) * 360 < target_angle ) &&
