@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -53,7 +54,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Teleop", group="Iterative Opmode")
-public class Teleop extends OpMode
+public class TrajectoryTeleop extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -68,6 +69,13 @@ public class Teleop extends OpMode
     private boolean slowmode = false;
     private boolean fieldCentric = false;
 
+    double ShootingAreaRadius;
+    double ShootingAreaX;
+    double ShootingAreaY;
+    double ShootingAreaDegrees;
+    boolean insideShootingArea;
+
+//    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
     @Override
     public void init() {
@@ -95,18 +103,31 @@ public class Teleop extends OpMode
         double left_y = -gamepad1.left_stick_y;
         double right_x = gamepad1.right_stick_x;
 
-        if(button_rb.toggled(gamepad1.right_bumper)) {
-            slowmode = !slowmode;
-        }
 
-        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode);
+
+//        Trajectory spline = drive.trajectoryBuilder(new Pose2d())
+//                .splineTo(new Vector2d(ShootingAreaX, ShootingAreaY), Math.toRadians(ShootingAreaDegrees))
+//                .build();
+//
+//        if(button_rb.toggled(gamepad1.right_bumper)) {
+//            slowmode = !slowmode;
+//        }
+//
+//        if (((Math.pow(poseEstimate.getX(), 2)) + (Math.pow(poseEstimate.getY(), 2)) < Math.pow(ShootingAreaRadius, 2))){
+//            insideShootingArea = true;
+//        } else {
+//            insideShootingArea = false;
+//        }
+//
+//        if(buttonA.toggled(true) && insideShootingArea == true){
+//            drive.followTrajectory(spline);
+//        } else {
+//
+//        }
+
 
         // Show the elapsed game time and wheel power.
 
-        if (fieldCentric)
-            telemetry.addData("Field Centric", "true");
-        else
-            telemetry.addData("Field Centric", "false");
 
         telemetry.addData("Values", "leftX = %.2f, leftY = %.2f", left_x, left_y);
         telemetry.addData("Status", "Run Time: " + runtime.toString());
