@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -54,7 +55,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Teleop", group="Iterative Opmode")
-public class TrajectoryTeleop extends OpMode
+public class Teleop extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -69,13 +70,7 @@ public class TrajectoryTeleop extends OpMode
     private boolean slowmode = false;
     private boolean fieldCentric = false;
 
-    double ShootingAreaRadius;
-    double ShootingAreaX;
-    double ShootingAreaY;
-    double ShootingAreaDegrees;
-    boolean insideShootingArea;
-
-//    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+    private DcMotor intakeMotor = null;
 
     @Override
     public void init() {
@@ -86,6 +81,11 @@ public class TrajectoryTeleop extends OpMode
 
     @Override
     public void init_loop() {
+//        if (driveTrain.isTileRunner()) {
+//            //intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+//            //intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+//            //intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        }
     }
 
     /*
@@ -103,42 +103,32 @@ public class TrajectoryTeleop extends OpMode
         double left_y = -gamepad1.left_stick_y;
         double right_x = gamepad1.right_stick_x;
 
-
-
-//        Trajectory spline = drive.trajectoryBuilder(new Pose2d())
-//                .splineTo(new Vector2d(ShootingAreaX, ShootingAreaY), Math.toRadians(ShootingAreaDegrees))
-//                .build();
-//
-//        if(button_rb.toggled(gamepad1.right_bumper)) {
-//            slowmode = !slowmode;
-//        }
-//
-//        if (((Math.pow(poseEstimate.getX(), 2)) + (Math.pow(poseEstimate.getY(), 2)) < Math.pow(ShootingAreaRadius, 2))){
-//            insideShootingArea = true;
-//        } else {
-//            insideShootingArea = false;
-//        }
-//
-//        if(buttonA.toggled(true) && insideShootingArea == true){
-//            drive.followTrajectory(spline);
-//        } else {
-//
-//        }
-
+        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode, telemetry);
 
         // Show the elapsed game time and wheel power.
-
+/*
+        if(buttonA.toggled(gamepad1.a)) {
+            intakeMotor.setPower(1.0);
+        }
+        else if(buttonB.toggled(gamepad1.b)) {
+            intakeMotor.setPower(0.0);
+        }
+*/
+        if (fieldCentric)
+            telemetry.addData("Field Centric", "true");
+        else
+            telemetry.addData("Field Centric", "false");
 
         telemetry.addData("Values", "leftX = %.2f, leftY = %.2f", left_x, left_y);
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+
     }
 
     @Override
     public void stop() {}
 }
-
 
 
