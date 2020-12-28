@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Teleop", group="Iterative Opmode")
-public class ModifiedTrajectoryTeleop extends OpMode
+public class TrajectoryTeleop extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
