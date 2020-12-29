@@ -10,19 +10,18 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
+import org.opencv.core.Rect;
+import org.opencv.core.Point;
+
 @TeleOp 
-public class UGContourRingPipelineJavaExample extends LinearOpMode {
+public class GoalDetection extends LinearOpMode {
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
-
-    private static final int HORIZON = 100; // horizon value to tune
-
-    private static final boolean DEBUG = true; // if debug is wanted, change to true
 
     private static final boolean USING_WEBCAM = false; // change to true if using webcam
     private static final String WEBCAM_NAME = ""; // insert webcam name from configuration if using webcam
 
-    private UGContourRingPipeline pipeline;
+    private UGBasicHighGoalPipeline pipeline;
     private OpenCvCamera camera;
 
     @Override
@@ -45,22 +44,28 @@ public class UGContourRingPipelineJavaExample extends LinearOpMode {
                     .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         }
 
-        camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
-
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
-
-        UGContourRingPipeline.Config.setHORIZON(HORIZON);
-
-        double min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
+        camera.setPipeline(pipeline = new UGBasicHighGoalPipeline());
 
         camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
 
         waitForStart();
 
         while (opModeIsActive()) {
-            String height = "[HEIGHT]" + " " + pipeline.getHeight();
-            telemetry.addData("[Ring Stack] >>", height);
-            telemetry.addData("Min Width:", min_width);
+            Rect blueRect = pipeline.getBlueRect();
+            Rect redRect = pipeline.getRedRect();
+
+//            Point centerOfRect = pipeline.getCenterofRect();
+
+            if(blueRect != null) {
+                telemetry.addData("blueRect: ", blueRect.toString());
+            }
+
+            if(redRect != null) {
+                telemetry.addData("redRect: ", redRect.toString());
+            }
+
+            telemetry.addData("isRedVisible: ", pipeline.isRedVisible());
+            telemetry.addData("isBlueVisible: ", pipeline.isBlueVisible());
             telemetry.update();
         }
     }
