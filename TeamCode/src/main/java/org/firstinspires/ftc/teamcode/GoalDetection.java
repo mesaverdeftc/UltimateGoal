@@ -54,7 +54,10 @@ public class GoalDetection extends LinearOpMode {
             Rect blueRect = pipeline.getBlueRect();
             Rect redRect = pipeline.getRedRect();
 
-//            Point centerOfRect = pipeline.getCenterofRect();
+            Rect redPowershot = pipeline.getRedPowershot();
+            Rect bluePowershot = pipeline.getBluePowershot();
+
+            // Rect (x, y, width, height)
 
             if(blueRect != null) {
                 telemetry.addData("blueRect: ", blueRect.toString());
@@ -64,8 +67,19 @@ public class GoalDetection extends LinearOpMode {
                 telemetry.addData("redRect: ", redRect.toString());
             }
 
+            if(bluePowershot != null) {
+                telemetry.addData("bluePowershot: ", bluePowershot.toString());
+            }
+
+            if(redPowershot != null) {
+                telemetry.addData("redPowershot: ", redPowershot.toString());
+            }
+
             telemetry.addData("isRedVisible: ", pipeline.isRedVisible());
+            telemetry.addData("isRedPowershotVisible: ", pipeline.isRedPowershotVisible());
+
             telemetry.addData("isBlueVisible: ", pipeline.isBlueVisible());
+            telemetry.addData("isBluePowershotVisible: ", pipeline.isBluePowershotVisible());
             telemetry.update();
         }
     }

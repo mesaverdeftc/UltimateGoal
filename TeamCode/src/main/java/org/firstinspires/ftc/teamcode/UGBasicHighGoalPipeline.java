@@ -36,6 +36,8 @@ public class UGBasicHighGoalPipeline extends OpenCvPipeline {
     private MatOfPoint biggestRedContour;
     private Rect blueRect, redRect;
 
+    private Rect bluePowershot, redPowershot;
+
     public UGBasicHighGoalPipeline() {
 
         matYCrCb = new Mat();
@@ -105,7 +107,18 @@ public class UGBasicHighGoalPipeline extends OpenCvPipeline {
             });
 
             blueRect = Imgproc.boundingRect(biggestBlueContour);
+
+            int x = blueRect.x + blueRect.width + (blueRect.width / 10);
+            int y = blueRect.y + blueRect.height;
+
+            int width = (blueRect.width/5) * 4;
+            int height = blueRect.height/3;
+
+            bluePowershot = new Rect(x, y, width, height);
+
             Imgproc.rectangle(input, blueRect, new Scalar(0, 0, 255), 3);
+            Imgproc.rectangle(input, bluePowershot, new Scalar(173, 216, 230), 3);
+
             System.out.println((double) blueRect.width / (double) blueRect.height);
 
         } else {
@@ -120,8 +133,19 @@ public class UGBasicHighGoalPipeline extends OpenCvPipeline {
             });
 
             redRect = Imgproc.boundingRect(biggestRedContour);
-            System.out.println((double) redRect.width / (double) redRect.height);
+
+            int x = redRect.x - (redRect.width / 5) * 4;
+            int y = redRect.y + redRect.height;
+
+            int width = (redRect.width/5) * 4;
+            int height = redRect.height/3;
+
+            redPowershot = new Rect(x, y, width, height);
+
             Imgproc.rectangle(input, redRect, new Scalar(255, 0, 0), 3);
+            Imgproc.rectangle(input, redPowershot, new Scalar(222, 23, 56), 3);
+
+            System.out.println((double) redRect.width / (double) redRect.height);
 
         } else {
             redRect = null;
@@ -138,12 +162,28 @@ public class UGBasicHighGoalPipeline extends OpenCvPipeline {
         return blueRect;
     }
 
+    public Rect getRedPowershot() {
+        return redPowershot;
+    }
+
+    public Rect getBluePowershot() {
+        return bluePowershot;
+    }
+
     public boolean isRedVisible() {
         return (redRect != null);
     }
 
     public boolean isBlueVisible() {
         return (blueRect != null);
+    }
+
+    public boolean isRedPowershotVisible() {
+        return (redPowershot != null);
+    }
+
+    public boolean isBluePowershotVisible() {
+        return (bluePowershot != null);
     }
 
     public Point getCenterofRect(Rect rect) {
