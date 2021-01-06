@@ -13,6 +13,11 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.opencv.core.Rect;
 import org.opencv.core.Point;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
 @TeleOp 
 public class GoalDetection extends LinearOpMode {
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
@@ -24,8 +29,21 @@ public class GoalDetection extends LinearOpMode {
     private UGBasicHighGoalPipeline pipeline;
     private OpenCvCamera camera;
 
+    public static final String VUFORIA_LICENSE_KEY = "AfyKdTL/////AAABmTmSsEgclk6kuOQfgCE8p5dzGFA7n2DfQGahPtf8ZXoso6frapO4YgRp1aO5rbQ/teMTZ7LofDIggTKwCFwPClwr3SJqslOL4Y0CKXeDFKZYD8Te9WKa+5rBQIxZfD+tiJkW+4HoBGTOSYooMiXYtF6uXEGKsM39HNmNLKq+xihLvuJ3h8kItp72xsRYXzdS2QowBDSz0ZgOuXK/KVBKls0KWqzadmKe3mqpnPBl13vcWArl9pbUEIXMhcSrUdSsbRCmLV+qoKgKpqdJGdGnzbQnK4PAkk2F2JFxVynJhBzY2VJpP/lxZkXGbxzcUw3fuI+fKMAYN7hye2xUGLd63mklCCms8bOcGBpyf9lFE1ae";
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        // gives Vuforia more time to exit before the watchdog notices
+        msStuckDetectStop = 2500;
+
+        VuforiaLocalizer.Parameters vuforiaParams = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        vuforiaParams.vuforiaLicenseKey = VUFORIA_LICENSE_KEY;
+        vuforiaParams.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(vuforiaParams);
+
+        FtcDashboard.getInstance().startCameraStream(vuforia, 0);
+
         int cameraMonitorViewId = this
                 .hardwareMap
                 .appContext
