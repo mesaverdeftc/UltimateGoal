@@ -46,7 +46,7 @@ public class GoalDetection extends LinearOpMode {
 
         camera.setPipeline(pipeline = new UGBasicHighGoalPipeline());
 
-        camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
+        camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT));
 
         waitForStart();
 
