@@ -51,7 +51,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 @Config
 @Autonomous(group = "org/firstinspires/ftc/teamcode/drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
-    public static double DISTANCE = 72; // in
+    public static double DISTANCE = 20; // in
 
     enum Mode {
         DRIVER_MODE,
@@ -74,7 +74,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                     "PID is not in use", getClass().getSimpleName());
         }
 
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
