@@ -54,16 +54,15 @@ public class DriveTrain {
         rightRearMotor = hardwareMap.get(DcMotor.class, "right_rear_motor");
 
         // TODO: Run without encoders for teleop?
-/*
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-*/
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+//        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if (isTileRunner()) {
             leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -71,11 +70,16 @@ public class DriveTrain {
             leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
             rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
         }
+
         else {
-            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+//            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+//            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+//            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+//            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         }
 
         // Brake when power is set to zero (no coasting)
@@ -183,7 +187,8 @@ public class DriveTrain {
                                    double speed,
                                    double inches,
                                    double angle,
-                                   double timeoutS) {
+                                   double timeoutS,
+                                   Telemetry telemetry) {
 
 
         GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
@@ -219,10 +224,15 @@ public class DriveTrain {
             // Determine new target position, and pass to motor controller
             newTargetPosition = leftFrontMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
 
-            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -255,6 +265,18 @@ public class DriveTrain {
                 rightFrontMotor.setPower(motorSpeed.getRightSpeed());
                 leftRearMotor.setPower(motorSpeed.getLeftSpeed());
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
+
+                telemetry.addData("left speed: ", motorSpeed.getLeftSpeed());
+                telemetry.addData("right speed: ", motorSpeed.getRightSpeed());
+
+                telemetry.addData("leftFrontMotor Position: ", leftFrontMotor.getCurrentPosition());
+                telemetry.addData("distance remaining: ", distanceRemaining);
+
+                telemetry.addData("newSpeed: ", newSpeed);
+                telemetry.addData("distanceThreshold: ", distanceThreshold);
+                telemetry.addData("newTargetPosition", newTargetPosition);
+
+                telemetry.update();
             }
 
             stop();
@@ -355,7 +377,8 @@ public class DriveTrain {
                           double speed,
                           double inches,
                           double angle,
-                          double timeoutS) {
+                          double timeoutS,
+                          Telemetry telemetry) {
 
 
         GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
@@ -401,6 +424,7 @@ public class DriveTrain {
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 if (speed > 0) {
+                    // the problem
                     distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
                 } else {
                     distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
@@ -438,6 +462,17 @@ public class DriveTrain {
                 rightFrontMotor.setPower(motorSpeed.getRightSpeed());
                 leftRearMotor.setPower(motorSpeed.getLeftSpeed());
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
+
+                telemetry.addData("left speed: ", motorSpeed.getLeftSpeed());
+                telemetry.addData("right speed: ", motorSpeed.getRightSpeed());
+
+                telemetry.addData("leftFrontMotor Position: ", leftFrontMotor.getCurrentPosition());
+                telemetry.addData("distance remaining: ", distanceRemaining);
+
+                telemetry.addData("newSpeed: ", newSpeed);
+                telemetry.addData("distanceThreshold: ", distanceThreshold);
+
+                telemetry.update();
             }
 
             stop();
