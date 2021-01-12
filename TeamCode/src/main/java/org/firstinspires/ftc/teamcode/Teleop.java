@@ -77,6 +77,7 @@ public class Teleop extends OpMode
     private DcMotor intakeMotor = null;
 
     double launcherSpeed = 0.55;
+    boolean isLaunching = false;
 
     @Override
     public void init() {
@@ -108,7 +109,7 @@ public class Teleop extends OpMode
      */
     @Override
     public void loop() {
-        
+
         double left_x;
         double left_y;
         double right_x;
@@ -145,11 +146,17 @@ public class Teleop extends OpMode
         }
 
         if (buttonX2.toggled(gamepad2.x)) {
-            if (buttonX2.toggleState)
+            if (buttonX2.toggleState) {
+                isLaunching = true;
                 launcher.run(launcherSpeed);
+            }
             else
                 launcher.stop();
         }
+
+        if(isLaunching)
+            launcher.run(launcherSpeed);
+
 
         if (buttonB2.toggled(gamepad2.b)) {
             launcher.launch(buttonB2.toggleState);
