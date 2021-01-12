@@ -60,12 +60,16 @@ public class Teleop extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
+    private Launcher launcher = new Launcher();
     private ButtonToggle buttonY = new ButtonToggle();
     private ButtonToggle buttonA = new ButtonToggle();
     private ButtonToggle buttonB = new ButtonToggle();
     private ButtonToggle button_rb = new ButtonToggle();
     private ButtonToggle button_lb = new ButtonToggle();
     private ButtonToggle button_dpad_down = new ButtonToggle();
+
+    private ButtonToggle buttonX2 = new ButtonToggle();
+    private ButtonToggle buttonB2 = new ButtonToggle();
 
     private boolean slowmode = false;
     private boolean fieldCentric = false;
@@ -76,6 +80,7 @@ public class Teleop extends OpMode
     public void init() {
         telemetry.addData("Status", "Initializing");
         driveTrain.init(hardwareMap);
+        launcher.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
 
@@ -114,6 +119,18 @@ public class Teleop extends OpMode
             intakeMotor.setPower(0.0);
         }
 */
+
+        if (buttonX2.toggled(gamepad2.x)) {
+            if (buttonX2.toggleState)
+                launcher.run(.55);
+            else
+                launcher.stop();
+        }
+
+        if (buttonB2.toggled(gamepad2.b)) {
+            launcher.launch(buttonB2.toggleState);
+        }
+
         if (fieldCentric)
             telemetry.addData("Field Centric", "true");
         else
