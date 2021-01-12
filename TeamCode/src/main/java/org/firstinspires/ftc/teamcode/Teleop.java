@@ -76,6 +76,8 @@ public class Teleop extends OpMode
 
     private DcMotor intakeMotor = null;
 
+    double launcherSpeed = 0.55;
+
     @Override
     public void init() {
         telemetry.addData("Status", "Initializing");
@@ -106,6 +108,7 @@ public class Teleop extends OpMode
      */
     @Override
     public void loop() {
+        
         double left_x;
         double left_y;
         double right_x;
@@ -134,9 +137,16 @@ public class Teleop extends OpMode
             }
         }
 
+        if(buttonY.toggled(gamepad2.y)) {
+            launcherSpeed+=0.01;
+        }
+        else if (buttonA.toggled(gamepad2.a)) {
+            launcherSpeed-=0.01;
+        }
+
         if (buttonX2.toggled(gamepad2.x)) {
             if (buttonX2.toggleState)
-                launcher.run(.61);
+                launcher.run(launcherSpeed);
             else
                 launcher.stop();
         }
@@ -160,6 +170,7 @@ public class Teleop extends OpMode
         telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+        telemetry.addData("Launcher Speed", "%.2f", launcherSpeed);
 
 
     }
