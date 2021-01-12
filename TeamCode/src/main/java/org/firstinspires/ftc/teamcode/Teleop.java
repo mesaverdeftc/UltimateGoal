@@ -122,7 +122,7 @@ public class Teleop extends OpMode
 
         if (buttonX2.toggled(gamepad2.x)) {
             if (buttonX2.toggleState)
-                launcher.run(.55);
+                launcher.run(.61);
             else
                 launcher.stop();
         }
