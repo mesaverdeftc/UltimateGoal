@@ -80,7 +80,9 @@ public class Teleop extends OpMode
     public void init() {
         telemetry.addData("Status", "Initializing");
         driveTrain.init(hardwareMap);
-        launcher.init(hardwareMap);
+        if(!Constants.isStrafer) {
+            launcher.init(hardwareMap);
+        }
         telemetry.addData("Status", "Initialized");
     }
 
@@ -104,21 +106,33 @@ public class Teleop extends OpMode
      */
     @Override
     public void loop() {
-        double left_x = gamepad1.left_stick_x;
-        double left_y = -gamepad1.left_stick_y;
-        double right_x = gamepad1.right_stick_x;
+        double left_x;
+        double left_y;
+        double right_x;
+
+
+        if(Constants.isStrafer) {
+            left_x = -gamepad1.left_stick_x;
+            left_y = gamepad1.left_stick_y;
+            right_x = gamepad1.right_stick_x;
+        } else {
+            left_x = gamepad1.left_stick_x;
+            left_y = -gamepad1.left_stick_y;
+            right_x = gamepad1.right_stick_x;
+        }
+
 
         driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode, telemetry);
 
         // Show the elapsed game time and wheel power.
-/*
-        if(buttonA.toggled(gamepad1.a)) {
-            intakeMotor.setPower(1.0);
+        if(!Constants.isStrafer) {
+            if(buttonA.toggled(gamepad1.a)) {
+                intakeMotor.setPower(1.0);
+            }
+            else if(buttonB.toggled(gamepad1.b)) {
+                intakeMotor.setPower(0.0);
+            }
         }
-        else if(buttonB.toggled(gamepad1.b)) {
-            intakeMotor.setPower(0.0);
-        }
-*/
 
         if (buttonX2.toggled(gamepad2.x)) {
             if (buttonX2.toggleState)
@@ -136,11 +150,17 @@ public class Teleop extends OpMode
         else
             telemetry.addData("Field Centric", "false");
 
+        telemetry.addData("Encoders", "lf = %d, lr = %d, rf = %d, rr = %d ",
+                driveTrain.leftFrontMotor.getCurrentPosition(),
+                driveTrain.leftRearMotor.getCurrentPosition(),
+                driveTrain.rightFrontMotor.getCurrentPosition(),
+                driveTrain.rightRearMotor.getCurrentPosition());
         telemetry.addData("Values", "leftX = %.2f, leftY = %.2f", left_x, left_y);
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+
 
     }
 

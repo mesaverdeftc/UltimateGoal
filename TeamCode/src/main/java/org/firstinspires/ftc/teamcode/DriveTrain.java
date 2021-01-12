@@ -25,10 +25,10 @@ public class DriveTrain {
     static final boolean STRAFE_LEFT = true;
     static final boolean STRAFE_RIGHT = false;
 
-    private DcMotor leftFrontMotor = null;
-    private DcMotor leftRearMotor = null;
-    private DcMotor rightFrontMotor = null;
-    private DcMotor rightRearMotor = null;
+    public DcMotor leftFrontMotor = null;
+    public DcMotor leftRearMotor = null;
+    public DcMotor rightFrontMotor = null;
+    public DcMotor rightRearMotor = null;
 
     private static final double COUNTS_PER_MOTOR_REV    = 537.6 ;    // eg: ANDYMARK Motor Encoder
     private static final double MOTOR_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
@@ -54,17 +54,25 @@ public class DriveTrain {
         rightRearMotor = hardwareMap.get(DcMotor.class, "right_rear_motor");
 
         // TODO: Run without encoders for teleop?
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-//        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if(Constants.isStrafer) {
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        } else {
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
-        if (isTileRunner()) {
+
+        if (Constants.isStrafer) {
             leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
             rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
             leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -72,14 +80,15 @@ public class DriveTrain {
         }
 
         else {
-            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
-            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
-//            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-//            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-//            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-//            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+//            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+//            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+//            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+//            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+
+            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         }
 
         // Brake when power is set to zero (no coasting)
@@ -222,26 +231,36 @@ public class DriveTrain {
         if (linearOpMode.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newTargetPosition = leftFrontMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+            newTargetPosition = -leftFrontMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
 
-//            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            if(Constants.isStrafer) {
+                leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            } else {
+                leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
 
             // reset the timeout time and start motion.
             runtime.reset();
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 if (speed > 0) {
-                    distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                    if(Constants.isStrafer) {
+                        distanceRemaining = Range.clip(newTargetPosition + leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                    } else {
+                        distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
+                    }
                 } else {
-                    distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition()- newTargetPosition, 0, Integer.MAX_VALUE);
+                    if(Constants.isStrafer) {
+                        distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition() - newTargetPosition, 0, Integer.MAX_VALUE);
+                    } else {
+                        distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition() - newTargetPosition, 0, Integer.MAX_VALUE);
+                    }
                 }
 
                 if (distanceRemaining < stopDistance) {

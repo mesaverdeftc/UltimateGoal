@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 public class Constants {
+    public static boolean isStrafer = true;
+
     public enum Stack
     {
         SINGLE,
@@ -11,6 +13,7 @@ public class Constants {
     public enum Height {
         ZERO, ONE, FOUR
     }
+
 
     public static void main(String[] args) {}
 }
