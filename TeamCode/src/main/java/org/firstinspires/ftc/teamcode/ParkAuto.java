@@ -38,10 +38,19 @@ public class ParkAuto extends LinearOpMode{
         waitForStart();
 
         sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, 0.2, 12, 0, 1000, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.2, 120, 0, 10, telemetry);
 
         telemetry.addData("Path", "Complete");
+
+        telemetry.addData("Encoders", "lf = %d, lr = %d, rf = %d, rr = %d ",
+                driveTrain.leftFrontMotor.getCurrentPosition(),
+                driveTrain.leftRearMotor.getCurrentPosition(),
+                driveTrain.rightFrontMotor.getCurrentPosition(),
+                driveTrain.rightRearMotor.getCurrentPosition());
+
         telemetry.update();
+
+        sleep(30000);
 
 
     }
