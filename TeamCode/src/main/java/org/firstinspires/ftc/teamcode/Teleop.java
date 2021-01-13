@@ -61,6 +61,8 @@ public class Teleop extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
     private Launcher launcher = new Launcher();
+    private WobbleGoal wobbleArm = new WobbleGoal();
+    private WobbleGoal wobbleServo = new WobbleGoal();
     private ButtonToggle buttonY = new ButtonToggle();
     private ButtonToggle buttonA = new ButtonToggle();
     private ButtonToggle buttonB = new ButtonToggle();
@@ -83,9 +85,11 @@ public class Teleop extends OpMode
     public void init() {
         telemetry.addData("Status", "Initializing");
         driveTrain.init(hardwareMap);
-        if(!Constants.isStrafer) {
+        if(!Constants.isStrafer) { // This means it is asking if it is the tileRunner. Look at the '!' in the statement
             launcher.init(hardwareMap);
         }
+        wobbleArm.init(hardwareMap);
+        wobbleServo.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
 
@@ -157,9 +161,16 @@ public class Teleop extends OpMode
         if(isLaunching)
             launcher.run(launcherSpeed);
 
-
         if (buttonB2.toggled(gamepad2.b)) {
             launcher.launch(buttonB2.toggleState);
+        }
+
+        if(buttonA.toggled(gamepad1.a)) {
+            wobbleArm.setWobbleArm(buttonA.toggleState);
+        }
+
+        if(buttonB.toggled(gamepad1.b)) {
+            wobbleServo.setWobbleServo(buttonB.toggleState);
         }
 
         if (fieldCentric)
