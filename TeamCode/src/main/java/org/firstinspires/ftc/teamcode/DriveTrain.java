@@ -549,7 +549,10 @@ public class DriveTrain {
 
     private static final double COUNTS_PER_MOTOR_REV    = 537.6 ;    // eg: ANDYMARK Motor Encoder
     private static final double MOTOR_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    private static final double WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+//    private static final double WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+
+    private static final double WHEEL_DIAMETER_INCHES   = 3.78 ;     // For figuring circumference
+
     private static final double COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * MOTOR_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
@@ -595,10 +598,15 @@ public class DriveTrain {
 
 
         if (Constants.isStrafer) {
-            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
-            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+//            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+//            rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+//            leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+//            rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+
+            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+            leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+            rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         }
 
         else {
@@ -772,18 +780,9 @@ public class DriveTrain {
 
             while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
                 if (speed > 0) {
-                    if(Constants.isStrafer) {
-                      distanceRemaining = Range.clip(newTargetPosition + leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
-//                        distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
-                    } else {
-                        distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
-                    }
+                    distanceRemaining = Range.clip(newTargetPosition - leftFrontMotor.getCurrentPosition(), 0, Integer.MAX_VALUE);
                 } else {
-                    if(Constants.isStrafer) {
-                        distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition() - newTargetPosition, 0, Integer.MAX_VALUE);
-                    } else {
-                        distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition() - newTargetPosition, 0, Integer.MAX_VALUE);
-                    }
+                    distanceRemaining = Range.clip(leftFrontMotor.getCurrentPosition() - newTargetPosition, 0, Integer.MAX_VALUE);
                 }
 
                 if (distanceRemaining < stopDistance) {
@@ -799,6 +798,17 @@ public class DriveTrain {
                         newSpeed = Range.clip(newSpeed, speed, 0);
                     }
                     acceleration++;
+                }
+
+                if (distanceRemaining < (distanceThreshold * COUNTS_PER_INCH)) {
+                    if (direction == DRIVE_FORWARD) {
+                        newSpeed = speed - (deacceleration * 0.05);
+                        newSpeed = Range.clip(newSpeed, 0.15, speed);
+                    } else {
+                        newSpeed = speed + (deacceleration * 0.05);
+                        newSpeed = Range.clip(newSpeed, speed, -0.15);
+                    }
+                    deacceleration++;
                 }
 
                 MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(newSpeed, angle);

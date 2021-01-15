@@ -38,7 +38,7 @@ public class BlueAuto extends LinearOpMode{
         waitForStart();
 
         sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, 0.2, 85, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 85, 0, 15, telemetry);
 //        driveTrain.encoderStafe(this, runtime, 0.2, 30, true, 15);
 
 
