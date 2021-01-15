@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="ParkAuto", group="Linear Opmode")
+@Autonomous(name="BlueAuto", group="Linear Opmode")
 //@Disabled
-public class ParkAuto extends LinearOpMode{
+public class BlueAuto extends LinearOpMode{
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -38,7 +38,9 @@ public class ParkAuto extends LinearOpMode{
         waitForStart();
 
         sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, 0.2, 120, 0, 10, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.2, 85, 0, 15, telemetry);
+//        driveTrain.encoderStafe(this, runtime, 0.2, 30, true, 15);
+
 
         telemetry.addData("Path", "Complete");
 
