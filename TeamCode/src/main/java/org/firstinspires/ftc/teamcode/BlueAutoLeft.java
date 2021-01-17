@@ -12,9 +12,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name="BlueAuto", group="Linear Opmode")
+@Autonomous(name="BlueAutoLeft", group="Linear Opmode")
 //@Disabled
-public class BlueAuto extends LinearOpMode{
+public class BlueAutoLeft extends LinearOpMode{
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -44,33 +44,7 @@ public class BlueAuto extends LinearOpMode{
          * The init() method of the hardware class does all the work here
          */
 
-        int cameraMonitorViewId = this
-                .hardwareMap
-                .appContext
-                .getResources().getIdentifier(
-                        "cameraMonitorViewId",
-                        "id",
-                        hardwareMap.appContext.getPackageName()
-                );
-        if (USING_WEBCAM) {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createWebcam(hardwareMap.get(WebcamName.class, WEBCAM_NAME), cameraMonitorViewId);
-        } else {
-            camera = OpenCvCameraFactory
-                    .getInstance()
-                    .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        }
-
-        camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
-
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
-
-        UGContourRingPipeline.Config.setHORIZON(HORIZON);
-
-        double min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
-
-        camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT));
+        initVision();
 
         driveTrain.init(hardwareMap);
 
@@ -100,9 +74,28 @@ public class BlueAuto extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        if(pipeline.getHeight().toString() == "FOUR") {
+            camera.closeCameraDevice();
 
-        camera.closeCameraDevice();
+            telemetry.addData("Prediction:", "FOUR");
+            telemetry.update();
 
+            fourStackMovement();
+        } else if(pipeline.getHeight().toString() == "ONE") {
+            camera.closeCameraDevice();
+
+            telemetry.addData("Prediction:", "ONE");
+            telemetry.update();
+
+            oneStackMovement();
+        } else {
+            camera.closeCameraDevice();
+
+            telemetry.addData("Prediction:", "ZERO");
+            telemetry.update();
+
+            zeroStackMovement();
+        }
 
         //  oneStackMovement();
 
