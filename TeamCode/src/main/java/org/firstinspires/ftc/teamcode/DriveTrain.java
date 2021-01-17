@@ -748,14 +748,17 @@ public class DriveTrain {
             newSpeed = -Math.abs(speed);  // Set the speed negative if driving in reverse
         }
 
-        if (Math.abs(newSpeed) > 0.95) distanceThreshold = 32;
-        else if (Math.abs(newSpeed) > 0.85) distanceThreshold = 29;
-        else if (Math.abs(newSpeed) > 0.75) distanceThreshold = 27;
-        else if (Math.abs(newSpeed) > 0.65) distanceThreshold = 22;
-        else if (Math.abs(newSpeed) > 0.55) distanceThreshold = 20;
-        else if (Math.abs(newSpeed) > 0.45) distanceThreshold = 14;
-        else distanceThreshold = 10;
-
+        if(inches > 0) {
+            if (Math.abs(newSpeed) > 0.95) distanceThreshold = 32;
+            else if (Math.abs(newSpeed) > 0.85) distanceThreshold = 29;
+            else if (Math.abs(newSpeed) > 0.75) distanceThreshold = 27;
+            else if (Math.abs(newSpeed) > 0.65) distanceThreshold = 22;
+            else if (Math.abs(newSpeed) > 0.55) distanceThreshold = 20;
+            else if (Math.abs(newSpeed) > 0.45) distanceThreshold = 14;
+            else distanceThreshold = 10;
+        } else {
+            distanceThreshold = 10;
+        }
 
         // Ensure that the opmode is still active
         if (linearOpMode.opModeIsActive()) {

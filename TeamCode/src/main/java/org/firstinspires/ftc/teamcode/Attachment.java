@@ -18,6 +18,14 @@ public class Attachment {
         downPosition = downValue;
     }
 
+    public void setServoForward() {
+        servo.setDirection(Servo.Direction.FORWARD);
+    }
+
+    public void setServoReverse() {
+        servo.setDirection(Servo.Direction.REVERSE);
+    }
+
     public void up() { servo.setPosition(upPosition); }
 
     public void down() { servo.setPosition(downPosition); }
@@ -35,4 +43,6 @@ public class Attachment {
     public void setPosition(double position) {
         servo.setPosition(position);
     }
+
+
 }
