@@ -85,7 +85,7 @@ public class BlueAuto extends LinearOpMode{
 
 
         // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !driveTrain.imu.isGyroCalibrated())
+        while (!opModeIsActive() && !driveTrain.imu.isGyroCalibrated())
         {
             sleep(50);
             idle();
@@ -102,11 +102,9 @@ public class BlueAuto extends LinearOpMode{
 
 
         camera.closeCameraDevice();
-        camera.stopStreaming();
-//        camera.pauseViewport();
 
 
-        //        oneStackMovement();
+        //  oneStackMovement();
 
         telemetry.addData("Path", "Complete");
 
