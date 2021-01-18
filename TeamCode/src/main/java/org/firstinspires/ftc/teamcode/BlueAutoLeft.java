@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.util.EOCVtests.bounceBaccPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -26,14 +27,14 @@ public class BlueAutoLeft extends LinearOpMode{
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
 
-    private static final int HORIZON = 100; // horizon value to tune
+    private static final int HORIZON = 135; // horizon value to tune
 
     private static final boolean DEBUG = false; // if debug is wanted, change to true
 
     private static final boolean USING_WEBCAM = false; // change to true if using webcam
     private static final String WEBCAM_NAME = ""; // insert webcam name from configuration if using webcam
 
-    private UGContourRingPipeline pipeline;
+    private bounceBaccPipeline pipeline;
     private OpenCvCamera camera;
 
     @Override
@@ -74,14 +75,15 @@ public class BlueAutoLeft extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        if(pipeline.getHeight().toString() == "FOUR") {
+
+        if(pipeline.getRectHeight() > 30) {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "FOUR");
             telemetry.update();
 
             fourStackMovement();
-        } else if(pipeline.getHeight().toString() == "ONE") {
+        } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "ONE");
@@ -134,15 +136,16 @@ public class BlueAutoLeft extends LinearOpMode{
                     .createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         }
 
-        camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
+        camera.setPipeline(pipeline = new bounceBaccPipeline(telemetry, DEBUG));
 
-        UGContourRingPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
+        bounceBaccPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
 
-        UGContourRingPipeline.Config.setHORIZON(HORIZON);
+        bounceBaccPipeline.Config.setHORIZON(HORIZON);
 
-        double min_width = UGContourRingPipeline.Config.getMIN_WIDTH();
+        double min_width = bounceBaccPipeline.Config.getMIN_WIDTH();
 
         camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT));
+
     }
 
 
