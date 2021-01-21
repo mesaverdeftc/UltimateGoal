@@ -61,8 +61,8 @@ public class Teleop extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
     private Launcher launcher = new Launcher();
-    private WobbleGoal wobbleArm = new WobbleGoal();
-    private WobbleGoal wobbleServo = new WobbleGoal();
+//    private WobbleGoal wobbleArm = new WobbleGoal();
+//    private WobbleGoal wobbleServo = new WobbleGoal();
     private ButtonToggle buttonY = new ButtonToggle();
     private ButtonToggle buttonA = new ButtonToggle();
     private ButtonToggle buttonB = new ButtonToggle();
@@ -87,9 +87,11 @@ public class Teleop extends OpMode
         driveTrain.init(hardwareMap);
         if(!Constants.isStrafer) { // This means it is asking if it is the tileRunner. Look at the '!' in the statement
             launcher.init(hardwareMap);
+            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+            intakeMotor.setDirection(DcMotor.Direction.FORWARD);
         }
-        wobbleArm.init(hardwareMap);
-        wobbleServo.init(hardwareMap);
+//        wobbleArm.init(hardwareMap);
+//        wobbleServo.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
 
@@ -165,13 +167,13 @@ public class Teleop extends OpMode
             launcher.launch(buttonB2.toggleState);
         }
 
-        if(buttonA.toggled(gamepad1.a)) {
-            wobbleArm.setWobbleArm(buttonA.toggleState);
-        }
-
-        if(buttonB.toggled(gamepad1.b)) {
-            wobbleServo.setWobbleServo(buttonB.toggleState);
-        }
+//        if(buttonA.toggled(gamepad1.a)) {
+//            wobbleArm.setWobbleArm(buttonA.toggleState);
+//        }
+//
+//        if(buttonB.toggled(gamepad1.b)) {
+//            wobbleServo.setWobbleServo(buttonB.toggleState);
+//        }
 
         if (fieldCentric)
             telemetry.addData("Field Centric", "true");
