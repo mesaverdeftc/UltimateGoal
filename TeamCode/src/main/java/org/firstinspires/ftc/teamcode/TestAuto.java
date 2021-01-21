@@ -4,13 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="ParkAuto", group="Linear Opmode")
+@Autonomous(name="TestAuto", group="Linear Opmode")
 //@Disabled
-public class ParkAuto extends LinearOpMode{
+public class TestAuto extends LinearOpMode{
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
+
+    private Attachment wobbleArm = new Attachment();
+    private Attachment wobbleServo = new Attachment();
 
     @Override
     public void runOpMode() {
@@ -20,6 +23,11 @@ public class ParkAuto extends LinearOpMode{
          * The init() method of the hardware class does all the work here
          */
         driveTrain.init(hardwareMap);
+
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+        wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
+
+        wobbleServo.setServoForward();
 
         // make sure the imu gyro is calibrated before continuing.
         while (!isStopRequested() && !driveTrain.imu.isGyroCalibrated())
@@ -37,8 +45,8 @@ public class ParkAuto extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, 0.2, 120, 0, 10, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.4, -12, 0, 15, telemetry);
+
 
         telemetry.addData("Path", "Complete");
 
