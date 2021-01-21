@@ -61,13 +61,8 @@ public class Teleop extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DriveTrain driveTrain = new DriveTrain();
     private Launcher launcher = new Launcher();
-<<<<<<< HEAD
-//    private WobbleGoal wobbleArm = new WobbleGoal();
-//    private WobbleGoal wobbleServo = new WobbleGoal();
-=======
     private Attachment wobbleArm = new Attachment();
     private Attachment wobbleServo = new Attachment();
->>>>>>> 4d7f909a37ea5c566be762284b312efb1a33acaa
     private ButtonToggle buttonY = new ButtonToggle();
     private ButtonToggle buttonA = new ButtonToggle();
     private ButtonToggle buttonB = new ButtonToggle();
@@ -175,15 +170,6 @@ public class Teleop extends OpMode
             launcher.launch(buttonB2.toggleState);
         }
 
-<<<<<<< HEAD
-//        if(buttonA.toggled(gamepad1.a)) {
-//            wobbleArm.setWobbleArm(buttonA.toggleState);
-//        }
-//
-//        if(buttonB.toggled(gamepad1.b)) {
-//            wobbleServo.setWobbleServo(buttonB.toggleState);
-//        }
-=======
         if(buttonA.toggled(gamepad1.a)) {
             wobbleArm.toggle(buttonA.toggleState);
         }
@@ -191,7 +177,6 @@ public class Teleop extends OpMode
         if(buttonB.toggled(gamepad1.b)) {
             wobbleServo.toggle(buttonB.toggleState);
         }
->>>>>>> 4d7f909a37ea5c566be762284b312efb1a33acaa
 
         if (fieldCentric)
             telemetry.addData("Field Centric", "true");
@@ -218,5 +203,3 @@ public class Teleop extends OpMode
     @Override
     public void stop() {}
 }
-
-
