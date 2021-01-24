@@ -269,34 +269,4 @@ public class BlueAutoLeft extends LinearOpMode{
 
         driveTrain.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
     }
-
-    private void advancedFourStackMovement() {
-        sleep(500);
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -65, 0, 15, telemetry);
-
-        driveTrain.encoderStafe(this, runtime, 0.6, 13, true, 15);
-
-
-//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -62, 0, 15, telemetry);
-//        sleep(1000);
-//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -32, 0, 15, telemetry);
-//        driveTrain.encoderStafe(this, runtime, 0.4, 4, false, 15);
-//        wobbleArm.setPosition(0.65);
-//        sleep(1000);
-//        driveTrain.encoderStafe(this, runtime, 0.4, 5, true, 15);
-//        sleep(500);
-//        wobbleServo.setPosition(0.07);
-//        sleep(1000);
-//
-//        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry);
-//        driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
-//
-//        sleep(500);
-//        wobbleServo.setPosition(1);
-//        sleep(500);
-//        wobbleArm.setPosition(0);
-//        sleep(500);
-//
-//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
-    }
 }
