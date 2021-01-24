@@ -90,6 +90,8 @@ public class Teleop extends OpMode
         driveTrain.init(hardwareMap);
         if(!Constants.isStrafer) { // This means it is asking if it is the tileRunner. Look at the '!' in the statement
             launcher.init(hardwareMap);
+            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+            intakeMotor.setDirection(DcMotor.Direction.FORWARD);
         }
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
@@ -201,5 +203,3 @@ public class Teleop extends OpMode
     @Override
     public void stop() {}
 }
-
-

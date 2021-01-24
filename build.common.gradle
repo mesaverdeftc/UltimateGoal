@@ -36,6 +36,7 @@ android {
         noCompress "tflite"
     }
 
+    //noinspection GroovyDocCheck
     defaultConfig {
         signingConfig signingConfigs.debug
         applicationId 'com.qualcomm.ftcrobotcontroller'

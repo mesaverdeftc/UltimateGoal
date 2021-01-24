@@ -24,6 +24,8 @@ public class BlueAutoLeft extends LinearOpMode{
     private Attachment wobbleArm = new Attachment();
     private Attachment wobbleServo = new Attachment();
 
+    private Launcher launcher = new Launcher();
+
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
 
@@ -58,6 +60,7 @@ public class BlueAutoLeft extends LinearOpMode{
         sleep(4000);
         wobbleServo.setPosition(0.07);
 
+        launcher.init(hardwareMap);
 
         // make sure the imu gyro is calibrated before continuing.
         while (!opModeIsActive() && !driveTrain.imu.isGyroCalibrated())
@@ -113,8 +116,24 @@ public class BlueAutoLeft extends LinearOpMode{
 
         telemetry.update();
 
-        sleep(30000);
+        sleep(500);
+        launcher.run(1.0);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        launcher.stop();
 
+        telemetry.addData("Launching", "Complete");
+        telemetry.update();
 
     }
 
