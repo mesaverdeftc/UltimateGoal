@@ -51,14 +51,14 @@ public class BlueAutoLeft extends LinearOpMode{
 
         driveTrain.init(hardwareMap);
 
-//        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
-//        wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+        wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
 
-//        wobbleServo.setServoForward();
-//
-//        wobbleArm.setPosition(0.65);
-//        sleep(4000);
-//        wobbleServo.setPosition(0.07);
+        wobbleServo.setServoForward();
+
+        wobbleArm.setPosition(0.65);
+        sleep(4000);
+        wobbleServo.setPosition(0.07);
 
         launcher.init(hardwareMap);
 
@@ -80,30 +80,29 @@ public class BlueAutoLeft extends LinearOpMode{
 
 
         camera.closeCameraDevice();
-        advancedFourStackMovement();
 
-//        if(pipeline.getRectHeight() > 30) {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "FOUR");
-//            telemetry.update();
-//
-//            fourStackMovement();
-//        } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "ONE");
-//            telemetry.update();
-//
-//            oneStackMovement();
-//        } else {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "ZERO");
-//            telemetry.update();
-//
-//            zeroStackMovement();
-//        }
+        if(pipeline.getRectHeight() > 30) {
+            camera.closeCameraDevice();
+
+            telemetry.addData("Prediction:", "FOUR");
+            telemetry.update();
+
+            fourStackMovement();
+        } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
+            camera.closeCameraDevice();
+
+            telemetry.addData("Prediction:", "ONE");
+            telemetry.update();
+
+            oneStackMovement();
+        } else {
+            camera.closeCameraDevice();
+
+            telemetry.addData("Prediction:", "ZERO");
+            telemetry.update();
+
+            zeroStackMovement();
+        }
 
 
         telemetry.addData("Path", "Complete");
@@ -115,22 +114,6 @@ public class BlueAutoLeft extends LinearOpMode{
                 driveTrain.rightRearMotor.getCurrentPosition());
 
         telemetry.update();
-
-        sleep(500);
-        launcher.run(1.0);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        launcher.stop();
 
         telemetry.addData("Launching", "Complete");
         telemetry.update();
@@ -167,6 +150,24 @@ public class BlueAutoLeft extends LinearOpMode{
 
         camera.openCameraDeviceAsync(() -> camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.SIDEWAYS_LEFT));
 
+    }
+
+    private void launchRings() {
+        sleep(500);
+        launcher.run(1.0);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        sleep(500);
+        launcher.launch(false);
+        sleep(500);
+        launcher.launch(true);
+        launcher.stop();
     }
 
 
