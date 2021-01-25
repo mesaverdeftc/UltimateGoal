@@ -80,9 +80,6 @@ public class BlueAutoLeft extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-
-        camera.closeCameraDevice();
-
         if(pipeline.getRectHeight() > 30) {
             camera.closeCameraDevice();
 
