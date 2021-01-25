@@ -23,7 +23,7 @@ public class Launcher {
         // Coast when power is set to zero
         launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        launcherServo.init(hardwareMap, "launcher_servo_1", 0.0, 1.0);
+        launcherServo.init(hardwareMap, "launcher_servo_2", 0.0, 1.0);
         launcherServo.up();
     }
 
