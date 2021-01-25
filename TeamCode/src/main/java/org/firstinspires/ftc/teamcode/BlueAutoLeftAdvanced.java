@@ -60,7 +60,9 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
         sleep(4000);
         wobbleServo.setPosition(0.07);
 
-        launcher.init(hardwareMap);
+        if(!Constants.isStrafer) {
+            launcher.init(hardwareMap);
+        }
 
         // make sure the imu gyro is calibrated before continuing.
         while (!opModeIsActive() && !driveTrain.imu.isGyroCalibrated())
@@ -101,6 +103,8 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 //
 //            zeroStackMovement();
 //        }
+
+        camera.closeCameraDevice();
 
         advancedFourStackMovement();
 
