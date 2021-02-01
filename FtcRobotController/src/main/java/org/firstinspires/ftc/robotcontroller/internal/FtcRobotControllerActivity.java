@@ -280,8 +280,6 @@ public class FtcRobotControllerActivity extends Activity
     if (LynxConstants.isRevControlHub()) {
       // Double-sure check that we can talk to the DB over the serial TTY
       AndroidBoard.getInstance().getAndroidBoardIsPresentPin().setState(true);
-
-      FtcDashboard.start();
     }
 
     context = this;
@@ -383,8 +381,8 @@ public class FtcRobotControllerActivity extends Activity
     }
 
     FtcAboutActivity.setBuildTimeFromBuildConfig(BuildConfig.BUILD_TIME);
+    FtcDashboard.start();
 
-//    FtcDashboard.start();
   }
 
   protected UpdateUI createUpdateUI() {
@@ -702,7 +700,7 @@ public class FtcRobotControllerActivity extends Activity
               : null);
     }
 
-    FtcDashboard.attachEventLoop(eventLoop);
+
   }
 
   private void requestRobotSetup(@Nullable Runnable runOnComplete) {
@@ -727,6 +725,8 @@ public class FtcRobotControllerActivity extends Activity
 
     passReceivedUsbAttachmentsToEventLoop();
     AndroidBoard.showErrorIfUnknownControlHub();
+
+    FtcDashboard.attachEventLoop(eventLoop);
   }
 
   protected OpModeRegister createOpModeRegister() {

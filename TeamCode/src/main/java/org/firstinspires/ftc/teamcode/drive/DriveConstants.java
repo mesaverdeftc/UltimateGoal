@@ -32,9 +32,9 @@ public class DriveConstants {
      * If using the built-in motor velocity PID, update MOTOR_VELO_PID with the tuned coefficients
      * from DriveVelocityPIDTuner.
      */
-    public static final boolean RUN_USING_ENCODER = false;
+    public static final boolean RUN_USING_ENCODER = true;
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0, 13.006502348004533);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,  getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
     /*
      * These are physical constants that can be determined from your robot (including the track
      * width; it will be tune empirically later although a rough estimate is important). Users are
@@ -43,10 +43,10 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 1.88; // in
-    public static double GEAR_RATIO = 0.05208333333; // output (wheel) speed / input (motor) speed
+    public static double WHEEL_RADIUS = 1.889765; // in
+    public static double GEAR_RATIO = 1.0 / 19.2; // output (wheel) speed / input (motor) speed
 //    public static double GEAR_RATIO = 0.75; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 0.27; // in
+    public static double TRACK_WIDTH = 16.5; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -54,9 +54,9 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.29785;
-    public static double kA = 0.00001;
-    public static double kStatic = 0.30724;
+    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0;
+    public static double kStatic = 0;
 
 //    public static double kV = 0.0128;
 //    public static double kA = 0;
@@ -72,6 +72,8 @@ public class DriveConstants {
      */
 //    public static double MAX_VEL = 60;
 //    public static double MAX_ACCEL = 25;
+//    public static double MAX_VEL = 3.16633164854;
+//    public static double MAX_ACCEL = 3.16633164854;
     public static double MAX_VEL = 1.6435143315729754;
     public static double MAX_ACCEL = 30;
     public static double MAX_ANG_VEL = Math.toRadians(180);
