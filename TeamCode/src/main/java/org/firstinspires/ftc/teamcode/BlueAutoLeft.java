@@ -174,9 +174,9 @@ public class BlueAutoLeft extends LinearOpMode{
         sleep(500);
         driveTrain.gyroDrive_constant(this, runtime, 0.9, 73, 0, 15, telemetry);
         sleep(500);
-       wobbleServo.setPosition(1);
-       sleep(500);
-       wobbleArm.setPosition(0);
+        wobbleServo.setPosition(1);
+        sleep(500);
+        wobbleArm.setPosition(0);
         sleep(500);
 
         driveTrain.encoderStafe(this, runtime, 0.6, 40, false, 15);
