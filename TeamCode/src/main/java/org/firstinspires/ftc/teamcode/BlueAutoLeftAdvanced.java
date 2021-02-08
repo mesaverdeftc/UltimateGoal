@@ -93,19 +93,15 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
             telemetry.addData("Prediction:", "ONE");
             telemetry.update();
 
-//            oneStackMovement();
+            oneStackMovement();
         } else {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "ZERO");
             telemetry.update();
 
-//            zeroStackMovement();
+            zeroStackMovement();
         }
-
-//        camera.closeCameraDevice();
-
-//        advancedFourStackMovement();
 
         telemetry.addData("Path", "Complete");
 
