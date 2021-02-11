@@ -75,6 +75,9 @@ public class Teleop extends OpMode
 
     private ButtonToggle buttonX2 = new ButtonToggle();
     private ButtonToggle buttonB2 = new ButtonToggle();
+    //Buttons Y and A for setting launcher speed
+    private ButtonToggle buttonY2 = new ButtonToggle();
+    private ButtonToggle buttonA2 = new ButtonToggle();
 
     private boolean slowmode = false;
     private boolean fieldCentric = false;
@@ -145,6 +148,13 @@ public class Teleop extends OpMode
             else if(buttonB.toggled(gamepad1.b)) {
                 intakeMotor.setPower(0.0);
             }
+        }
+        if (buttonY2.toggled(gamepad2.y)) {
+            launcherSpeed = 0.75;
+        }
+
+        if (buttonA2.toggled(gamepad2.a)) {
+            launcherSpeed = 0.55;
         }
 
         if(right_bumper.toggled(gamepad2.right_bumper)) {

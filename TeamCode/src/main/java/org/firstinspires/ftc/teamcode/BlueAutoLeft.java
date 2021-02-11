@@ -151,24 +151,39 @@ public class BlueAutoLeft extends LinearOpMode{
 
     }
 
-    private void launchRings() {
+    private void launchRingInitialize() {
         sleep(500);
         launcher.run(1.0);
+    }
+
+    private void launchOnce() {
         sleep(500);
         launcher.launch(false);
         sleep(500);
         launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
+    }
+
+    private void launchThreeRings() {
+        launchRingInitialize();
+        for (int i = 0; i < 3; i++) {
+            launchOnce();
+        }
         launcher.stop();
     }
 
+    private void launchTwoRings() {
+        launchRingInitialize();
+        for (int i = 0; i < 2; i++) {
+            launchOnce();
+        }
+        launcher.stop();
+    }
+
+    private void launchOneRing() {
+        launchRingInitialize();
+        launchOnce();
+        launcher.stop();
+    }
 
     private void zeroStackMovement() {
         sleep(500);
