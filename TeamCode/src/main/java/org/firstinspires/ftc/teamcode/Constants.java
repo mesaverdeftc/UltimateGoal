@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 public class Constants {
-    public static boolean isStrafer = true;
+    public static boolean isStrafer = false;
 
     public enum Stack
     {

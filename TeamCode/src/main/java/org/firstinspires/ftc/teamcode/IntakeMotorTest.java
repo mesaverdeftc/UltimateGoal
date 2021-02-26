@@ -65,11 +65,11 @@ public class IntakeMotorTest extends OpMode{
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
 
-        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        driveTrain.init(hardwareMap);
+        //driveTrain.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
     }
 
@@ -88,7 +88,7 @@ public class IntakeMotorTest extends OpMode{
      */
     @Override
     public void loop() {
-        intakeMotor.setPower(10);
+        intakeMotor.setPower(0.55);
 
         //telemetry.addData("Manufacturer", driveTrain.getManufacturer());
 //        telemetry.addData("Status", "Run Time: " + runtime.toString());

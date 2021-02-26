@@ -15,7 +15,7 @@ public class Launcher {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor_2");
+        launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor_1");
         launcherMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  // TODO FIX WHEN ENCODER GETS INSTALLED
         launcherMotor.setDirection(DcMotor.Direction.REVERSE);

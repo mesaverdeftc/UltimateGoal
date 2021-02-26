@@ -81,6 +81,9 @@ public class Teleop extends OpMode
 
     private DcMotor intakeMotor = null;
 
+    double intakeSpeed = 0.50;
+    boolean isIntaking = false;
+
     double launcherSpeed = 0.55;
     boolean isLaunching = false;
 
@@ -90,7 +93,7 @@ public class Teleop extends OpMode
         driveTrain.init(hardwareMap);
         if(!Constants.isStrafer) { // This means it is asking if it is the tileRunner. Look at the '!' in the statement
             launcher.init(hardwareMap);
-            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
         }
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
@@ -101,7 +104,7 @@ public class Teleop extends OpMode
     @Override
     public void init_loop() {
         if (!Constants.isStrafer) {
-            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_1");
+            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
@@ -140,11 +143,19 @@ public class Teleop extends OpMode
 //         Show the elapsed game time and wheel power.
         if(!Constants.isStrafer) {
             if(buttonA.toggled(gamepad1.a)) {
-                intakeMotor.setPower(1.0);
+                isIntaking = true;
+                intakeMotor.setPower(intakeSpeed);
             }
             else if(buttonB.toggled(gamepad1.b)) {
                 intakeMotor.setPower(0.0);
             }
+        }
+
+        if(right_bumper.toggled(gamepad1.right_bumper)) {
+            intakeSpeed+=0.01;
+        }
+        else if (left_bumper.toggled(gamepad1.left_bumper)) {
+            intakeSpeed-=0.01;
         }
 
         if(right_bumper.toggled(gamepad2.right_bumper)) {
@@ -165,6 +176,9 @@ public class Teleop extends OpMode
 
         if(isLaunching)
             launcher.run(launcherSpeed);
+
+        if(isIntaking)
+            intakeMotor.setPower(intakeSpeed);
 
         if (buttonB2.toggled(gamepad2.b)) {
             launcher.launch(buttonB2.toggleState);
@@ -195,8 +209,8 @@ public class Teleop extends OpMode
         telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)",
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
+        telemetry.addData("Intake Speed", "%.2f", intakeSpeed);
         telemetry.addData("Launcher Speed", "%.2f", launcherSpeed);
-
 
     }
 
