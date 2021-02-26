@@ -149,16 +149,16 @@ public class Teleop extends OpMode
                 isIntaking = true;
                 intakeMotor.setPower(intakeSpeed);
             }
-            else if(buttonB.toggled(gamepad1.b)) {
+            else{
                 intakeMotor.setPower(0.0);
             }
         }
         if (buttonY2.toggled(gamepad2.y)) {
-            launcherSpeed = 0.75;
+            launcherSpeed = 0.66;
         }
 
         if (buttonA2.toggled(gamepad2.a)) {
-            launcherSpeed = 0.55;
+            launcherSpeed = 0.64;
         }
 
         if(right_bumper.toggled(gamepad1.right_bumper)) {
