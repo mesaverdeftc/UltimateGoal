@@ -297,7 +297,7 @@ public class DriveTrain {
                 leftRearMotor.setPower(motorSpeed.getLeftSpeed());
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
 
-                if(useTapeWinch != null && useTapeWinch[0] == true) {
+                if(useTapeWinch != null && useTapeWinch.length >= 1) {
                     tapeWinch.setPower(1);
                 }
 
