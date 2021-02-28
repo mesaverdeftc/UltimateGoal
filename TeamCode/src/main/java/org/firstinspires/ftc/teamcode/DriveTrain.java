@@ -92,7 +92,7 @@ public class DriveTrain {
             leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
             rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
 
-            tapeWinch = hardwareMap.get(DcMotor.class, "tape_winch_0");
+            tapeWinch = hardwareMap.get(DcMotor.class, "tape_winch_2");
             tapeWinch.setDirection(DcMotor.Direction.FORWARD);
         }
 

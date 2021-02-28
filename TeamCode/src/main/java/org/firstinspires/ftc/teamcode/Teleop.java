@@ -85,7 +85,6 @@ public class Teleop extends OpMode
     private DcMotor intakeMotor = null;
 
     double intakeSpeed = 0.50;
-    boolean isIntaking = false;
 
     double launcherSpeed = 0.55;
     boolean isLaunching = false;
@@ -121,30 +120,13 @@ public class Teleop extends OpMode
         double left_y;
         double right_x;
 
+        left_x = gamepad1.left_stick_x;
+        left_y = -gamepad1.left_stick_y;
+        right_x = gamepad1.right_stick_x;
 
-        if(Constants.isStrafer) {
-            left_x = -gamepad1.left_stick_x;
-            left_y = gamepad1.left_stick_y;
-            right_x = -gamepad1.right_stick_x;
-        } else {
-            left_x = -gamepad1.left_stick_x;
-            left_y = gamepad1.left_stick_y;
-            right_x = -gamepad1.right_stick_x;
-        }
-
-
-        driveTrain.drive(left_x,left_y, right_x, fieldCentric, slowmode, telemetry);
+        driveTrain.drive(left_x, left_y, right_x, fieldCentric, slowmode, telemetry);
 
 //         Show the elapsed game time and wheel power.
-        if(!Constants.isStrafer) {
-            if(buttonA.toggled(gamepad1.a)) {
-                isIntaking = true;
-                intakeMotor.setPower(intakeSpeed);
-            }
-            else{
-                intakeMotor.setPower(0.0);
-            }
-        }
         if (buttonY2.toggled(gamepad2.y)) {
             launcherSpeed = 0.66;
         }
@@ -179,7 +161,18 @@ public class Teleop extends OpMode
         if(isLaunching)
             launcher.run(launcherSpeed);
 
-        if(isIntaking)
+        if(!Constants.isStrafer) {
+            if(buttonA.toggled(gamepad1.a)) {
+                if(buttonA.toggleState){
+                    intakeMotor.setPower(intakeSpeed);
+                }
+                else {
+                    intakeMotor.setPower(0.0);
+                }
+            }
+        }
+
+        if(buttonA.toggleState)
             intakeMotor.setPower(intakeSpeed);
 
         if (buttonB2.toggled(gamepad2.b)) {
