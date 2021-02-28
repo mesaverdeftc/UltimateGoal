@@ -123,13 +123,13 @@ public class Teleop extends OpMode
 
 
         if(Constants.isStrafer) {
-            left_x = gamepad1.left_stick_x;
-            left_y = -gamepad1.left_stick_y;
-            right_x = gamepad1.right_stick_x;
+            left_x = -gamepad1.left_stick_x;
+            left_y = gamepad1.left_stick_y;
+            right_x = -gamepad1.right_stick_x;
         } else {
-            left_x = gamepad1.left_stick_x;
-            left_y = -gamepad1.left_stick_y;
-            right_x = gamepad1.right_stick_x;
+            left_x = -gamepad1.left_stick_x;
+            left_y = gamepad1.left_stick_y;
+            right_x = -gamepad1.right_stick_x;
         }
 
 
