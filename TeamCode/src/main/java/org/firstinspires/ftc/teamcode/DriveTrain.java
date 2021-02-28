@@ -180,6 +180,7 @@ public class DriveTrain {
         rightFrontMotor.setPower(0);
         leftRearMotor.setPower(0);
         rightRearMotor.setPower(0);
+        tapeWinch.setPower(0);
     }
 
     public void resetAngle() {
