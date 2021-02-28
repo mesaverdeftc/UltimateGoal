@@ -405,6 +405,62 @@ public class DriveTrain {
         }
     }
 
+    public void gyroStrafe(LinearOpMode linearOpMode,
+                                  ElapsedTime runtime,
+                                  double speed,
+                                  double inches,
+                                  Constants.Direction direction,
+                                  double angle,
+                                  double timeoutS) {
+
+        GyroSteerCorrection steerCorrection = new GyroSteerCorrection(imu, linearOpMode);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        int newTargetPosition;
+        int scale;
+
+        if (direction == Constants.Direction.STRAFE_LEFT)
+            scale = -1;
+        else
+            scale = 1;
+
+        if (linearOpMode.opModeIsActive()) {
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+
+            newTargetPosition = leftFrontMotor.getCurrentPosition() + (int) (scale * inches * COUNTS_PER_INCH);
+
+            while (linearOpMode.opModeIsActive() && (runtime.seconds() < timeoutS)) {
+
+                MotorSpeed motorSpeed = steerCorrection.correctMotorSpeed(speed, angle);
+                double leftSpeed = motorSpeed.getLeftSpeed();
+                double rightSpeed = motorSpeed.getRightSpeed();
+
+                leftFrontMotor.setPower(-speed);
+                rightFrontMotor.setPower(rightSpeed);
+                leftRearMotor.setPower(speed);
+                rightRearMotor.setPower(-leftSpeed);
+
+                if (direction == Constants.Direction.STRAFE_RIGHT) {
+                    if ((leftFrontMotor.getCurrentPosition()) > newTargetPosition) {
+                        break;
+                    }
+                } else {
+                    if ((leftFrontMotor.getCurrentPosition()) < newTargetPosition) {
+                        break;
+                    }
+                }
+            }
+
+            // Stop all motion;
+            stop();
+        }
+    }
+
 
 
     public void gyroDrive(LinearOpMode linearOpMode,

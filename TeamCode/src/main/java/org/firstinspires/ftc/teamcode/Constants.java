@@ -14,6 +14,10 @@ public class Constants {
         ZERO, ONE, FOUR
     }
 
+    public enum Direction {
+        STRAFE_LEFT,
+        STRAFE_RIGHT
+    }
 
     public static void main(String[] args) {}
 }
