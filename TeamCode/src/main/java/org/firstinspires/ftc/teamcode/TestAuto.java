@@ -45,8 +45,7 @@ public class TestAuto extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.4, -12, 0, 15, telemetry);
-
+        driveTrain.gyroStrafe(this, runtime, 0.6,  12, Constants.Direction.STRAFE_RIGHT, 0, 10);
 
         telemetry.addData("Path", "Complete");
 
