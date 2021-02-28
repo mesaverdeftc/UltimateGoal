@@ -405,6 +405,27 @@ public class DriveTrain {
         }
     }
 
+    public void turnAndMove(LinearOpMode linearOpMode,
+                            ElapsedTime runtime,
+                            DriveTrain driveTrain,
+                            double speed,
+                            double inches,
+                            Constants.Direction direction,
+                            double timeoutS,
+                            Telemetry telemetry) {
+
+        if (direction == Constants.Direction.STRAFE_RIGHT){
+            driveTrain.rotate(linearOpMode, 90, 0.5);
+            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, 90, timeoutS, telemetry);
+            driveTrain.rotate(linearOpMode, 0, 0.5);
+        } else if(direction == Constants.Direction.STRAFE_LEFT) {
+            driveTrain.rotate(linearOpMode, -90, -0.5);
+            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, -90, timeoutS, telemetry);
+            driveTrain.rotate(linearOpMode, 0, 0.5);
+        }
+
+    }
+
     public void gyroStrafe(LinearOpMode linearOpMode,
                                   ElapsedTime runtime,
                                   double speed,
