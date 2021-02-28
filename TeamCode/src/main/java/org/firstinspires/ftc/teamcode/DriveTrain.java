@@ -417,13 +417,13 @@ public class DriveTrain {
         double currentHeading = getHeading();
 
         if (direction == Constants.Direction.STRAFE_RIGHT){
-            driveTrain.rotate(linearOpMode, -90, -0.5);
-            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, -90, timeoutS, telemetry);
-            driveTrain.rotate(linearOpMode, 0, 0.5);
+            driveTrain.rotate(linearOpMode, -90, -0.25);
+            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, -inches, -90, timeoutS, telemetry);
+            driveTrain.rotate(linearOpMode, 0, 0.25);
         } else if(direction == Constants.Direction.STRAFE_LEFT) {
-            driveTrain.rotate(linearOpMode, 90, 0.5);
+            driveTrain.rotate(linearOpMode, 90, 0.25);
             driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, 90, timeoutS, telemetry);
-            driveTrain.rotate(linearOpMode, 0, 0.5);
+            driveTrain.rotate(linearOpMode, 0, 0.25);
         }
 
     }
