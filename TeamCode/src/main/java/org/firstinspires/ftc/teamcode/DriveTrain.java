@@ -423,7 +423,7 @@ public class DriveTrain {
         } else if(direction == Constants.Direction.STRAFE_LEFT) {
             driveTrain.rotate(linearOpMode, 90, 0.2);
             driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, 90, timeoutS, telemetry);
-            driveTrain.rotate(linearOpMode, -2, 0.2);
+            driveTrain.rotate(linearOpMode, 2, 0.2);
         }
 
     }
