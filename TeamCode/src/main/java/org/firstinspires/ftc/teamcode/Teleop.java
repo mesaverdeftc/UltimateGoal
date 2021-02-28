@@ -102,7 +102,7 @@ public class Teleop extends OpMode
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
-        wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
+        wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
         telemetry.addData("Status", "Initialized");
     }
 
