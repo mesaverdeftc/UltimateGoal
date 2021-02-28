@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -39,6 +40,13 @@ public class BlueAutoLeft extends LinearOpMode{
     private bounceBaccPipeline pipeline;
     private OpenCvCamera camera;
 
+    public enum autoState {
+            AUTO_RUNNING,
+            AUTO_DONE,
+            TAPE_EXTEND,
+            AUTO_FINISH
+    }
+
     @Override
     public void runOpMode() {
 
@@ -53,7 +61,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
-
+        
         wobbleServo.setServoForward();
 
         wobbleArm.setPosition(0.65);
@@ -206,7 +214,7 @@ public class BlueAutoLeft extends LinearOpMode{
         wobbleServo.setPosition(0.07);
         sleep(1000);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 51, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.5, 51, 0, 15, telemetry, true);
         driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
 
         sleep(500);
@@ -240,7 +248,7 @@ public class BlueAutoLeft extends LinearOpMode{
         wobbleServo.setPosition(0.07);
         sleep(1000);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 80, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.5, 80, 0, 15, telemetry,true);
         driveTrain.encoderStafe(this, runtime, 0.4, 10, true, 15);
 
         sleep(500);
@@ -273,7 +281,7 @@ public class BlueAutoLeft extends LinearOpMode{
         wobbleServo.setPosition(0.07);
         sleep(1000);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry, true);
         driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
 
         sleep(500);

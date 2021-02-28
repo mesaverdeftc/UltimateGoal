@@ -98,19 +98,11 @@ public class Teleop extends OpMode
             launcher.init(hardwareMap);
             intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+            intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
         telemetry.addData("Status", "Initialized");
-    }
-
-    @Override
-    public void init_loop() {
-        if (!Constants.isStrafer) {
-            intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
-            intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-            intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
     }
 
     /*

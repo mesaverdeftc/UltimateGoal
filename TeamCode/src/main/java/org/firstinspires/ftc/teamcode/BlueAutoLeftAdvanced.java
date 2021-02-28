@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.vision.UGContourRingPipeline;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -23,6 +24,8 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 
     private Attachment wobbleArm = new Attachment();
     private Attachment wobbleServo = new Attachment();
+
+    private DcMotor tapeWinch = null;
 
     private Launcher launcher = new Launcher();
 
@@ -53,6 +56,9 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
+
+        tapeWinch = hardwareMap.get(DcMotor.class, "tape_winch_0");
+        tapeWinch.setDirection(DcMotor.Direction.FORWARD);
 
         wobbleServo.setServoForward();
 
@@ -186,7 +192,10 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 
         driveTrain.rotate(this, 25, .6);
         // dont forget to change the line below
-        driveTrain.gyroDrive_constant(this, runtime, 0.9, 65, 25, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 65, 25, 15, telemetry, true);
+
+        tapeWinch.setPower(1);
+
         driveTrain.rotate(this, -1, -0.7);
 
         wobbleServo.setPosition(1);
@@ -241,7 +250,7 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
         wobbleServo.setPosition(0.07);
         sleep(1000);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 51, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.5, 51, 0, 15, telemetry,true);
         driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
 
         sleep(500);
@@ -253,7 +262,7 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 
     private void oneStackMovement() {
         sleep(500);
-        driveTrain.gyroDrive_constant(this, runtime, 0.9, 96, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 96, 0, 15, telemetry,true);
 
         driveTrain.encoderStafe(this, runtime, 0.6, 28, false, 15);
 
@@ -308,7 +317,7 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
         wobbleServo.setPosition(0.07);
         sleep(1000);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry, true);
         driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
 
         sleep(500);
