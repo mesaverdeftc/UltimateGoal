@@ -297,7 +297,7 @@ public class DriveTrain {
                 leftRearMotor.setPower(motorSpeed.getLeftSpeed());
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
 
-                if(useTapeWinch != null) {
+                if(useTapeWinch != null && useTapeWinch[0] == true) {
                     tapeWinch.setPower(1);
                 }
 
@@ -417,12 +417,12 @@ public class DriveTrain {
         double currentHeading = getHeading();
 
         if (direction == Constants.Direction.STRAFE_RIGHT){
-            driveTrain.rotate(linearOpMode, 90, 0.5);
-            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, 90, timeoutS, telemetry);
-            driveTrain.rotate(linearOpMode, 0, 0.5);
-        } else if(direction == Constants.Direction.STRAFE_LEFT) {
             driveTrain.rotate(linearOpMode, -90, -0.5);
             driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, -90, timeoutS, telemetry);
+            driveTrain.rotate(linearOpMode, 0, 0.5);
+        } else if(direction == Constants.Direction.STRAFE_LEFT) {
+            driveTrain.rotate(linearOpMode, 90, 0.5);
+            driveTrain.gyroDrive_constant(linearOpMode, runtime, speed, inches, 90, timeoutS, telemetry);
             driveTrain.rotate(linearOpMode, 0, 0.5);
         }
 
