@@ -68,6 +68,8 @@ public class Teleop extends OpMode
     private ButtonToggle buttonB = new ButtonToggle();
     private ButtonToggle button_rb = new ButtonToggle();
     private ButtonToggle button_lb = new ButtonToggle();
+
+    private ButtonToggle button_dpad_up = new ButtonToggle();
     private ButtonToggle button_dpad_down = new ButtonToggle();
 
     private ButtonToggle left_bumper = new ButtonToggle();
@@ -126,12 +128,11 @@ public class Teleop extends OpMode
 
         driveTrain.drive(left_x, left_y, right_x, fieldCentric, slowmode, telemetry);
 
-//         Show the elapsed game time and wheel power.
-        if (buttonY2.toggled(gamepad2.y)) {
+        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
             launcherSpeed = 0.66;
         }
 
-        if (buttonA2.toggled(gamepad2.a)) {
+        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
             launcherSpeed = 0.64;
         }
 
@@ -179,13 +180,13 @@ public class Teleop extends OpMode
             launcher.launch(buttonB2.toggleState);
         }
 
-//        if(buttonA.toggled(gamepad1.a)) {
-//            wobbleArm.toggle(buttonA.toggleState);
-//        }
-//
-//        if(buttonB.toggled(gamepad1.b)) {
-//            wobbleServo.toggle(buttonB.toggleState);
-//        }
+        if(buttonY2.toggled(gamepad2.y)) {
+            wobbleArm.toggle(buttonY2.toggleState);
+        }
+
+        if(buttonA2.toggled(gamepad2.a)) {
+            wobbleServo.toggle(buttonA2.toggleState);
+        }
 
         if (fieldCentric)
             telemetry.addData("Field Centric", "true");
