@@ -440,10 +440,10 @@ public class DriveTrain {
                 double leftSpeed = motorSpeed.getLeftSpeed();
                 double rightSpeed = motorSpeed.getRightSpeed();
 
-                leftFrontMotor.setPower(-speed);
-                rightFrontMotor.setPower(rightSpeed);
-                leftRearMotor.setPower(speed);
-                rightRearMotor.setPower(-leftSpeed);
+                leftFrontMotor.setPower(-speed*scale);
+                rightFrontMotor.setPower(rightSpeed*scale);
+                leftRearMotor.setPower(speed*scale);
+                rightRearMotor.setPower(-leftSpeed*scale);
 
                 if (direction == Constants.Direction.STRAFE_RIGHT) {
                     if ((leftFrontMotor.getCurrentPosition()) > newTargetPosition) {
