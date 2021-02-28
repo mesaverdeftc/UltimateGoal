@@ -297,7 +297,7 @@ public class DriveTrain {
                 leftRearMotor.setPower(motorSpeed.getLeftSpeed());
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
 
-                if(useTapeWinch[0] == true) {
+                if(useTapeWinch != null) {
                     tapeWinch.setPower(1);
                 }
 
@@ -413,6 +413,8 @@ public class DriveTrain {
                             Constants.Direction direction,
                             double timeoutS,
                             Telemetry telemetry) {
+
+        double currentHeading = getHeading();
 
         if (direction == Constants.Direction.STRAFE_RIGHT){
             driveTrain.rotate(linearOpMode, 90, 0.5);
