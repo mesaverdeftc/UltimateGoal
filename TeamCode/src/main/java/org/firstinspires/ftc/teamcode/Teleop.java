@@ -72,6 +72,8 @@ public class Teleop extends OpMode
     private ButtonToggle button_dpad_up = new ButtonToggle();
     private ButtonToggle button_dpad_down = new ButtonToggle();
 
+    private ButtonToggle button_dpad_up2 = new ButtonToggle();
+
     private ButtonToggle left_bumper = new ButtonToggle();
     private ButtonToggle right_bumper = new ButtonToggle();
 
@@ -86,7 +88,7 @@ public class Teleop extends OpMode
 
     private DcMotor intakeMotor = null;
 
-    double intakeSpeed = 0.50;
+    double intakeSpeed = 0.35;
 
     double launcherSpeed = 0.55;
     boolean isLaunching = false;
@@ -101,7 +103,8 @@ public class Teleop extends OpMode
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+//        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.5);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
         telemetry.addData("Status", "Initialized");
     }
@@ -182,6 +185,10 @@ public class Teleop extends OpMode
 
         if(buttonY2.toggled(gamepad2.y)) {
             wobbleArm.toggle(buttonY2.toggleState);
+        }
+
+        if(button_dpad_up2.toggled(gamepad.dpad_up)) {
+            wobbleArm.setPosition(1.0);
         }
 
         if(buttonA2.toggled(gamepad2.a)) {

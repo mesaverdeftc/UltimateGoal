@@ -40,13 +40,6 @@ public class BlueAutoLeft extends LinearOpMode{
     private bounceBaccPipeline pipeline;
     private OpenCvCamera camera;
 
-    public enum autoState {
-            AUTO_RUNNING,
-            AUTO_DONE,
-            TAPE_EXTEND,
-            AUTO_FINISH
-    }
-
     @Override
     public void runOpMode() {
 
