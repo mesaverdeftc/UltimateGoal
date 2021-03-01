@@ -104,7 +104,7 @@ public class Teleop extends OpMode
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 //        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
-        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.5);
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.4);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
         telemetry.addData("Status", "Initialized");
     }
@@ -187,7 +187,7 @@ public class Teleop extends OpMode
             wobbleArm.toggle(buttonY2.toggleState);
         }
 
-        if(button_dpad_up2.toggled(gamepad.dpad_up)) {
+        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
             wobbleArm.setPosition(1.0);
         }
 
