@@ -8,7 +8,9 @@ public class Launcher {
     double launcherPower = 0.0;
 
     private DcMotor launcherMotor = null;
-    private Attachment launcherServo = new Attachment();
+    public Attachment launcherServo = new Attachment();
+
+    private boolean isFinishedLaunching = false;
 
     public void init(HardwareMap hardwareMap) {
 
@@ -38,5 +40,14 @@ public class Launcher {
 
     public void launch(boolean toggleState) {
         launcherServo.toggle(toggleState);
+    }
+
+    public void launchBackAndForth() {
+        launcherServo.toggle(true);
+        isFinishedLaunching = true;
+        if(isFinishedLaunching = true) {
+            launcherServo.toggle(false);
+            isFinishedLaunching = false;
+        }
     }
 }

@@ -88,9 +88,9 @@ public class Teleop extends OpMode
 
     private DcMotor intakeMotor = null;
 
-    double intakeSpeed = 0.35;
+    double intakeSpeed = 0.45;
 
-    double launcherSpeed = 0.55;
+    double launcherSpeed = 0.65;
     boolean isLaunching = false;
 
     @Override
@@ -106,6 +106,11 @@ public class Teleop extends OpMode
 //        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.4);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
+
+        isLaunching = true;
+        intakeMotor.setPower(intakeSpeed);
+        launcher.run(launcherSpeed);
+
         telemetry.addData("Status", "Initialized");
     }
 
@@ -131,13 +136,13 @@ public class Teleop extends OpMode
 
         driveTrain.drive(left_x, left_y, right_x, fieldCentric, slowmode, telemetry);
 
-        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
-            launcherSpeed = 0.66;
-        }
-
-        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
-            launcherSpeed = 0.64;
-        }
+//        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
+//            launcherSpeed = 0.66;
+//        }
+//
+//        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
+//            launcherSpeed = 0.64;
+//        }
 
         if(right_bumper.toggled(gamepad1.right_bumper)) {
             intakeSpeed+=0.01;
@@ -146,11 +151,18 @@ public class Teleop extends OpMode
             intakeSpeed-=0.01;
         }
 
-        if(right_bumper.toggled(gamepad2.right_bumper)) {
-            launcherSpeed+=0.01;
+//        if(right_bumper.toggled(gamepad2.right_bumper)) {
+//            launcherSpeed+=0.01;
+//        }
+//        else if (left_bumper.toggled(gamepad2.left_bumper)) {
+//            launcherSpeed-=0.01;
+//        }
+        buttonB2.toggled(gamepad2.b);
+        if (buttonB2.toggleState) {
+            launcher.launcherServo.up();
         }
-        else if (left_bumper.toggled(gamepad2.left_bumper)) {
-            launcherSpeed-=0.01;
+        else {
+            launcher.launcherServo.down();
         }
 
         if (buttonX2.toggled(gamepad2.x)) {
@@ -179,9 +191,9 @@ public class Teleop extends OpMode
         if(buttonA.toggleState)
             intakeMotor.setPower(intakeSpeed);
 
-        if (buttonB2.toggled(gamepad2.b)) {
-            launcher.launch(buttonB2.toggleState);
-        }
+//        if (buttonB2.toggled(gamepad2.b)) {
+//            launcher.launchBackAndForth();
+//        }
 
         if(buttonY2.toggled(gamepad2.y)) {
             wobbleArm.toggle(buttonY2.toggleState);
