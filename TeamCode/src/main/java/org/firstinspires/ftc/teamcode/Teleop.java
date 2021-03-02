@@ -108,7 +108,7 @@ public class Teleop extends OpMode
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
 
         isLaunching = true;
-        intakeMotor.setPower(intakeSpeed);
+//        intakeMotor.setPower(intakeSpeed);
         launcher.run(launcherSpeed);
 
         telemetry.addData("Status", "Initialized");
