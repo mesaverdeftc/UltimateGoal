@@ -40,13 +40,6 @@ public class BlueAutoLeft extends LinearOpMode{
     private bounceBaccPipeline pipeline;
     private OpenCvCamera camera;
 
-    public enum autoState {
-            AUTO_RUNNING,
-            AUTO_DONE,
-            TAPE_EXTEND,
-            AUTO_FINISH
-    }
-
     @Override
     public void runOpMode() {
 
@@ -64,9 +57,17 @@ public class BlueAutoLeft extends LinearOpMode{
         
         wobbleServo.setServoForward();
 
-        wobbleArm.setPosition(0.65);
-        sleep(4000);
-        wobbleServo.setPosition(0.07);
+        if(!Constants.isStrafer) {
+            wobbleArm.setPosition(0.45);
+            sleep(4000);
+            wobbleServo.setPosition(1);
+        } else {
+            wobbleArm.setPosition(0.65);
+            sleep(4000);
+            wobbleServo.setPosition(0);
+        }
+
+
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
@@ -262,17 +263,22 @@ public class BlueAutoLeft extends LinearOpMode{
 
     private void fourStackMovement() {
         sleep(500);
-        driveTrain.gyroDrive_constant(this, runtime, 0.9, 120, 0, 15, telemetry);
+        driveTrain.rotate(this, -175, -0.6);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 120, -170, 15, telemetry);
+
         sleep(500);
+        if(!Constants.isStrafer) {
+            wobbleServo.setPosition(0);
+        }
         wobbleServo.setPosition(1);
         sleep(500);
         wobbleArm.setPosition(0);
         sleep(500);
 
         driveTrain.encoderStafe(this, runtime, 0.6, 40, false, 15);
-        driveTrain.gyroDrive_constant(this, runtime, -0.5, -62, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.5, -62, -179, 15, telemetry);
         sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, -0.5, -32, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.5, -32, -179, 15, telemetry);
         driveTrain.encoderStafe(this, runtime, 0.4, 4, false, 15);
         wobbleArm.setPosition(0.65);
         sleep(1000);

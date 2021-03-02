@@ -72,6 +72,8 @@ public class Teleop extends OpMode
     private ButtonToggle button_dpad_up = new ButtonToggle();
     private ButtonToggle button_dpad_down = new ButtonToggle();
 
+    private ButtonToggle button_dpad_up2 = new ButtonToggle();
+
     private ButtonToggle left_bumper = new ButtonToggle();
     private ButtonToggle right_bumper = new ButtonToggle();
 
@@ -86,9 +88,9 @@ public class Teleop extends OpMode
 
     private DcMotor intakeMotor = null;
 
-    double intakeSpeed = 0.50;
+    double intakeSpeed = 0.45;
 
-    double launcherSpeed = 0.55;
+    double launcherSpeed = 0.65;
     boolean isLaunching = false;
 
     @Override
@@ -101,8 +103,14 @@ public class Teleop extends OpMode
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+//        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.4);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
+
+        isLaunching = true;
+//        intakeMotor.setPower(intakeSpeed);
+        launcher.run(launcherSpeed);
+
         telemetry.addData("Status", "Initialized");
     }
 
@@ -128,13 +136,13 @@ public class Teleop extends OpMode
 
         driveTrain.drive(left_x, left_y, right_x, fieldCentric, slowmode, telemetry);
 
-        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
-            launcherSpeed = 0.66;
-        }
-
-        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
-            launcherSpeed = 0.64;
-        }
+//        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
+//            launcherSpeed = 0.66;
+//        }
+//
+//        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
+//            launcherSpeed = 0.64;
+//        }
 
         if(right_bumper.toggled(gamepad1.right_bumper)) {
             intakeSpeed+=0.01;
@@ -143,11 +151,18 @@ public class Teleop extends OpMode
             intakeSpeed-=0.01;
         }
 
-        if(right_bumper.toggled(gamepad2.right_bumper)) {
-            launcherSpeed+=0.01;
+//        if(right_bumper.toggled(gamepad2.right_bumper)) {
+//            launcherSpeed+=0.01;
+//        }
+//        else if (left_bumper.toggled(gamepad2.left_bumper)) {
+//            launcherSpeed-=0.01;
+//        }
+        buttonB2.toggled(gamepad2.b);
+        if (buttonB2.toggleState) {
+            launcher.launcherServo.up();
         }
-        else if (left_bumper.toggled(gamepad2.left_bumper)) {
-            launcherSpeed-=0.01;
+        else {
+            launcher.launcherServo.down();
         }
 
         if (buttonX2.toggled(gamepad2.x)) {
@@ -176,12 +191,16 @@ public class Teleop extends OpMode
         if(buttonA.toggleState)
             intakeMotor.setPower(intakeSpeed);
 
-        if (buttonB2.toggled(gamepad2.b)) {
-            launcher.launch(buttonB2.toggleState);
-        }
+//        if (buttonB2.toggled(gamepad2.b)) {
+//            launcher.launchBackAndForth();
+//        }
 
         if(buttonY2.toggled(gamepad2.y)) {
             wobbleArm.toggle(buttonY2.toggleState);
+        }
+
+        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
+            wobbleArm.setPosition(1.0);
         }
 
         if(buttonA2.toggled(gamepad2.a)) {
