@@ -30,7 +30,7 @@ public class BlueAutoLeft extends LinearOpMode{
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
 
-    private static final int HORIZON = 135; // horizon value to tune
+    private static final int HORIZON = 85; // horizon value to tune
 
     private static final boolean DEBUG = false; // if debug is wanted, change to true
 
@@ -67,10 +67,9 @@ public class BlueAutoLeft extends LinearOpMode{
             wobbleServo.setPosition(0);
         }
 
-
-
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
+            launchRingInitialize(0.617);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -102,14 +101,14 @@ public class BlueAutoLeft extends LinearOpMode{
             telemetry.addData("Prediction:", "ONE");
             telemetry.update();
 
-            oneStackMovement();
+//            oneStackMovement();
         } else {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "ZERO");
             telemetry.update();
 
-            zeroStackMovement();
+//            zeroStackMovement();
         }
 
 
@@ -160,9 +159,9 @@ public class BlueAutoLeft extends LinearOpMode{
 
     }
 
-    private void launchRingInitialize() {
+    private void launchRingInitialize(double speed) {
         sleep(500);
-        launcher.run(1.0);
+        launcher.run(speed);
     }
 
     private void launchOnce() {
@@ -173,7 +172,6 @@ public class BlueAutoLeft extends LinearOpMode{
     }
 
     private void launchThreeRings() {
-        launchRingInitialize();
         for (int i = 0; i < 3; i++) {
             launchOnce();
         }
@@ -181,7 +179,6 @@ public class BlueAutoLeft extends LinearOpMode{
     }
 
     private void launchTwoRings() {
-        launchRingInitialize();
         for (int i = 0; i < 2; i++) {
             launchOnce();
         }
@@ -189,9 +186,7 @@ public class BlueAutoLeft extends LinearOpMode{
     }
 
     private void launchOneRing() {
-        launchRingInitialize();
         launchOnce();
-        launcher.stop();
     }
 
     private void zeroStackMovement() {
@@ -263,10 +258,29 @@ public class BlueAutoLeft extends LinearOpMode{
 
     private void fourStackMovement() {
         sleep(500);
-        driveTrain.rotate(this, -175, -0.6);
-        driveTrain.gyroDrive_constant(this, runtime, 0.9, 120, -170, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -50, 0, 15, telemetry);
+        driveTrain.rotate(this, -162, -0.75);
 
+//        sleep(500);
+
+        driveTrain.encoderStafe(this, runtime, 0.7, 20, false, 15);
+
+        telemetry.addData("Current Angle:", driveTrain.getHeading());
+        telemetry.update();
+
+        launchOneRing();
+
+        driveTrain.rotate(this, 170, -0.2);
+        sleep(200);
+        launchOneRing();
+
+        driveTrain.rotate(this, 165, -0.2);
         sleep(500);
+        launchOneRing();
+
+        driveTrain.rotate(this, -180, -0.2);
+        driveTrain.gyroDrive_constant(this, runtime, 0.7, 40, -180, 15, telemetry);
+
         if(!Constants.isStrafer) {
             wobbleServo.setPosition(0);
         }
@@ -275,27 +289,26 @@ public class BlueAutoLeft extends LinearOpMode{
         wobbleArm.setPosition(0);
         sleep(500);
 
-        driveTrain.encoderStafe(this, runtime, 0.6, 40, false, 15);
-        driveTrain.gyroDrive_constant(this, runtime, -0.5, -62, -179, 15, telemetry);
-        sleep(1000);
-        driveTrain.gyroDrive_constant(this, runtime, -0.5, -32, -179, 15, telemetry);
-        driveTrain.encoderStafe(this, runtime, 0.4, 4, false, 15);
-        wobbleArm.setPosition(0.65);
-        sleep(1000);
-        driveTrain.encoderStafe(this, runtime, 0.4, 5, true, 15);
-        sleep(500);
-        wobbleServo.setPosition(0.07);
-        sleep(1000);
-
-        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry, true);
-        driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
-
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        driveTrain.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
+//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -62, -179, 15, telemetry);
+//        sleep(1000);
+//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -32, -179, 15, telemetry);
+//        driveTrain.encoderStafe(this, runtime, 0.4, 4, false, 15);
+//        wobbleArm.setPosition(0.65);
+//        sleep(1000);
+//        driveTrain.encoderStafe(this, runtime, 0.4, 5, true, 15);
+//        sleep(500);
+//        wobbleServo.setPosition(0.07);
+//        sleep(1000);
+//
+//        driveTrain.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry, true);
+//        driveTrain.encoderStafe(this, runtime, 0.4, 28, true, 15);
+//
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        driveTrain.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
     }
 }

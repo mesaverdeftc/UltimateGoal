@@ -60,6 +60,7 @@ public class BlueAutoThreeRing extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
+            launchRingInitialize(0.63);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -68,8 +69,6 @@ public class BlueAutoThreeRing extends LinearOpMode{
             sleep(50);
             idle();
         }
-
-        launchRingInitialize(0.63);
 
         telemetry.addData("imu calib status", driveTrain.imu.getCalibrationStatus().toString());
         telemetry.update();

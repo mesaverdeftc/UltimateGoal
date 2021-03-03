@@ -355,6 +355,43 @@ public class DriveTrain {
         stop();
     }
 
+    public void testRotate(LinearOpMode linearOpMode, double desiredAngle, double speed) {
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //slowed down speed to be more accurate in angle turns
+        if(speed > 0 ) {
+            leftFrontMotor.setPower(-speed);
+            rightFrontMotor.setPower(speed);
+            leftRearMotor.setPower(-speed);
+            rightRearMotor.setPower(speed);
+
+        } else if(speed < 0);{
+            leftFrontMotor.setPower(-speed);
+            rightFrontMotor.setPower(speed);
+            leftRearMotor.setPower(-speed);
+            rightRearMotor.setPower(speed);
+        }
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        if(speed > 0) {
+            while(!linearOpMode.isStopRequested() && desiredAngle >= angles.firstAngle) {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                linearOpMode.telemetry.addData("Gyro","DesiredAngle: %.1f, Current Angle: %.1f", desiredAngle, AngleUnit.DEGREES.normalize(angles.firstAngle));
+                linearOpMode.telemetry.update();
+            }
+        } else {
+            while(!linearOpMode.isStopRequested() && desiredAngle <= angles.firstAngle) {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                linearOpMode.telemetry.addData("Gyro", "DesiredAngle: %.1f, Current Angle: %.1f", desiredAngle, AngleUnit.DEGREES.normalize(angles.firstAngle));
+                linearOpMode.telemetry.update();
+            }
+        }
+        stop();
+    }
+
     public void encoderStafe(LinearOpMode linearOpMode,
                              ElapsedTime runtime,
                              double speed,
