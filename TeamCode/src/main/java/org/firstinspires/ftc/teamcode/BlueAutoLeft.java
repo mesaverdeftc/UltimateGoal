@@ -69,7 +69,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launchRingInitialize(0.617);
+            launchRingInitialize(0.64);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -88,13 +88,22 @@ public class BlueAutoLeft extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        if(pipeline.getRectHeight() > 30) {
+//        if(pipeline.getRectHeight() > 30) {
+//            camera.closeCameraDevice();
+//
+//            telemetry.addData("Prediction:", "FOUR");
+//            telemetry.update();
+//
+//            fourStackMovement();
+
+        if(31 > 30) {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "FOUR");
             telemetry.update();
 
             fourStackMovement();
+
         } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
             camera.closeCameraDevice();
 
@@ -258,8 +267,8 @@ public class BlueAutoLeft extends LinearOpMode{
 
     private void fourStackMovement() {
         sleep(500);
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -50, 0, 15, telemetry);
-        driveTrain.rotate(this, -162, -0.75);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 60, 0, 15, telemetry);
+//        driveTrain.rotate(this, -162, -0.75);
 
 //        sleep(500);
 
@@ -279,7 +288,10 @@ public class BlueAutoLeft extends LinearOpMode{
         launchOneRing();
 
         driveTrain.rotate(this, -180, -0.2);
-        driveTrain.gyroDrive_constant(this, runtime, 0.7, 40, -180, 15, telemetry);
+
+        driveTrain.encoderStafe(this, runtime, 0.7, 20, false, 15);
+        driveTrain.gyroDrive_constant(this, runtime, -0.7, -30, 0, 15, telemetry);
+        //driveTrain.gyroDrive_constant(this, runtime, 0.7, 40, -180, 15, telemetry);
 
         if(!Constants.isStrafer) {
             wobbleServo.setPosition(0);

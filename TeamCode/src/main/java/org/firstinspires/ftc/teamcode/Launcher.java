@@ -49,5 +49,32 @@ public class Launcher {
             launcherServo.toggle(false);
             isFinishedLaunching = false;
         }
+
+//        int state = 3;
+//        long timer = 0;
+//        public void update() {
+//            if(state == 0){
+//                servo.setPosition(1);
+//                timer = System.currentTimeMillis() + time;
+//                state = 1;
+//            }
+//            if(state == 1){
+//                if(System.currentTimeMillis() >= timer){
+//                    state = 2;
+//                }
+//            }
+//            if(state == 2){
+//                servo.setPosition(0);
+//                timer = System.currentTimeMillis() + time;
+//                state = 3;
+//            }
+//            if(state == 3){
+//                if(System.currentTimeMillis() >= timer){
+//                    if(gamepad.b) {
+//                        state = 0;
+//                    }
+//                }
+//            }
+//        }
     }
 }
