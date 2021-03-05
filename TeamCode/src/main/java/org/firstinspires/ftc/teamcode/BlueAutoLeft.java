@@ -59,7 +59,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             wobbleArm.setPosition(0.64);
-            sleep(4000);
+            sleep(3000);
             wobbleServo.setPosition(0);
         } else {
             wobbleArm.setPosition(0.65);
@@ -69,7 +69,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launchRingInitialize(0.626);
+            launchRingInitialize(0.6);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -289,15 +289,15 @@ public class BlueAutoLeft extends LinearOpMode{
 
         launchOneRing();
 
-        launcher.run(0.635);
+        launcher.run(0.62);
         driveTrain.rotate(this, -9.8, -0.2);
         launchOneRing();
 
-        launcher.run(0.4);
+        launcher.run(0.63);
         driveTrain.rotate(this, -11, -0.2);
         launchOneRing();
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -34, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -39, -16.4, 15, telemetry);
         driveTrain.rotate(this, -87, -0.4);
 
         if(!Constants.isStrafer) {
@@ -313,7 +313,7 @@ public class BlueAutoLeft extends LinearOpMode{
         sleep(500);
 
         driveTrain.rotate(this, 6.5, 0.4);
-        driveTrain.gyroDrive_constant(this, runtime, 0.8, 64, 6.5, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.8, 60, 6.5, 15, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);
