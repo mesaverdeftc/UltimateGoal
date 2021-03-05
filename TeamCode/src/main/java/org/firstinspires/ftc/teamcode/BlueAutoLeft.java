@@ -69,7 +69,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launchRingInitialize(0.6);
+            launchRingInitialize(0.629);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -285,16 +285,18 @@ public class BlueAutoLeft extends LinearOpMode{
         telemetry.addData("Current Angle:", driveTrain.getHeading());
         telemetry.update();
 
-        driveTrain.rotate(this, -7.3, -0.2);
+        driveTrain.rotate(this, -6.4, -0.2);
+        sleep(500);
 
-        launchOneRing();
-
-        launcher.run(0.62);
-        driveTrain.rotate(this, -9.8, -0.2);
         launchOneRing();
 
         launcher.run(0.63);
-        driveTrain.rotate(this, -11, -0.2);
+        driveTrain.rotate(this, -12.7, -0.08);
+        sleep(800);
+        launchOneRing();
+
+        launcher.run(0.618);
+        driveTrain.rotate(this, -14.8, -0.2);
         launchOneRing();
 
         driveTrain.gyroDrive_constant(this, runtime, -0.9, -39, -16.4, 15, telemetry);
@@ -304,7 +306,7 @@ public class BlueAutoLeft extends LinearOpMode{
             wobbleArm.setPosition(0.64);
         }
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 7, -90, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 7, -93, 15, telemetry);
 
         sleep(500);
 //        if(!Constants.isStrafer) {
@@ -313,7 +315,7 @@ public class BlueAutoLeft extends LinearOpMode{
         sleep(500);
 
         driveTrain.rotate(this, 6.5, 0.4);
-        driveTrain.gyroDrive_constant(this, runtime, 0.8, 60, 6.5, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.8, 58, 6.5, 15, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);
