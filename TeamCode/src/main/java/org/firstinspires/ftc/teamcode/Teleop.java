@@ -96,7 +96,8 @@ public class Teleop extends OpMode
     private boolean buttonBPressed = false;
     private double buttonBDelay = 0.8;
 
-    private boolean once = false;
+    private boolean oppositeY = true;
+    private int yTaps = 0;
 
     @Override
     public void init() {
@@ -219,13 +220,33 @@ public class Teleop extends OpMode
 //            launcher.launchBackAndForth();
 //        }
 
-        if(buttonY2.toggled(gamepad2.y)) {
-            wobbleArm.toggle(buttonY2.toggleState);
+//        if(buttonY2.toggled(gamepad2.y)) {
+//            wobbleArm.toggle(buttonY2.toggleState);
+//        }
+
+
+        if(gamepad2.y == oppositeY) {
+            yTaps++;
         }
 
-        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
-            wobbleArm.setPosition(1.0);
+        oppositeY = !gamepad2.y;
+
+        if(yTaps == 1) {
+            wobbleArm.setPosition(0.65);
+        } else if (yTaps == 2) {
+            wobbleArm.setPosition(1);
+        } else if (yTaps == 3) {
+            wobbleArm.setPosition(0);
         }
+
+        if(yTaps > 3) {
+            yTaps = 1;
+        }
+
+
+//        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
+//            wobbleArm.setPosition(1.0);
+//        }
 
         if(buttonA2.toggled(gamepad2.a)) {
             wobbleServo.toggle(buttonA2.toggleState);
