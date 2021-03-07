@@ -69,7 +69,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launchRingInitialize(0.629);
+            launchRingInitialize(0.625);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -295,7 +295,7 @@ public class BlueAutoLeft extends LinearOpMode{
         sleep(800);
         launchOneRing();
 
-        launcher.run(0.618);
+        launcher.run(0.645);
         driveTrain.rotate(this, -15, -0.2);
         launchOneRing();
 
