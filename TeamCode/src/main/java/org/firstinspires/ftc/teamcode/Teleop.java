@@ -151,12 +151,13 @@ public class Teleop extends OpMode
             intakeSpeed-=0.01;
         }
 
-//        if(right_bumper.toggled(gamepad2.right_bumper)) {
-//            launcherSpeed+=0.01;
-//        }
-//        else if (left_bumper.toggled(gamepad2.left_bumper)) {
-//            launcherSpeed-=0.01;
-//        }
+        if(right_bumper.toggled(gamepad2.right_bumper)) {
+            launcherSpeed+=0.01;
+        }
+        else if (left_bumper.toggled(gamepad2.left_bumper)) {
+            launcherSpeed-=0.01;
+        }
+
         buttonB2.toggled(gamepad2.b);
         if (buttonB2.toggleState) {
             launcher.launcherServo.up();
