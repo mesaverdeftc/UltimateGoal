@@ -30,7 +30,6 @@ public class Launcher {
     }
 
     public void run(double power) {
-
         launcherPower = Range.clip(power, -1.0, 1.0);
         launcherMotor.setPower(launcherPower);
     }
