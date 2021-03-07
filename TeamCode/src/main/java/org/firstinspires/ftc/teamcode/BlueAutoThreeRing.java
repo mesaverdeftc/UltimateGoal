@@ -60,7 +60,7 @@ public class BlueAutoThreeRing extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launchRingInitialize(0.63);
+            launcher.run(0.63);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -93,43 +93,12 @@ public class BlueAutoThreeRing extends LinearOpMode{
     }
 
 
-    private void launchRingInitialize(double speed) {
-        sleep(500);
-        launcher.run(speed);
-    }
-
-    private void launchOnce() {
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-    }
-
-    private void launchThreeRings() {
-        for (int i = 0; i < 3; i++) {
-            launchOnce();
-        }
-        launcher.stop();
-    }
-
-    private void launchTwoRings() {
-        for (int i = 0; i < 2; i++) {
-            launchOnce();
-        }
-        launcher.stop();
-    }
-
-    private void launchOneRing() {
-        launchOnce();
-        launcher.stop();
-    }
-
     private void movement() {
         sleep(500);
         driveTrain.gyroDrive_constant(this, runtime, 0.9, 60, 0, 15, telemetry);
         driveTrain.encoderStafe(this, runtime, 1, 24, false, 5);
         driveTrain.rotate(this, 0, 0.15);
-        launchThreeRings();
+        launcher.launch(this, 3);
         driveTrain.gyroDrive_constant(this, runtime, 0.2, 13, 0, 15, telemetry);
     }
 }
