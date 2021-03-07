@@ -280,7 +280,7 @@ public class BlueAutoLeft extends LinearOpMode{
             wobbleArm.setPosition(1);
         }
 
-        driveTrain.encoderStafe(this, runtime, 0.7, 20, false, 15);
+        driveTrain.encoderStafe(this, runtime, 0.7, 20.5, false, 15);
 
         telemetry.addData("Current Angle:", driveTrain.getHeading());
         telemetry.update();
@@ -291,15 +291,15 @@ public class BlueAutoLeft extends LinearOpMode{
         launchOneRing();
 
         launcher.run(0.63);
-        driveTrain.rotate(this, -12.7, -0.08);
+        driveTrain.rotate(this, -13.2, -0.08);
         sleep(800);
         launchOneRing();
 
         launcher.run(0.618);
-        driveTrain.rotate(this, -14.8, -0.2);
+        driveTrain.rotate(this, -15, -0.2);
         launchOneRing();
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -39, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -40.5, -16.4, 15, telemetry);
         driveTrain.rotate(this, -87, -0.4);
 
         if(!Constants.isStrafer) {
