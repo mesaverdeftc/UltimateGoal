@@ -263,7 +263,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         sleep(500);
 
-        launchOneRing();
+        launcher.launch(this, 1);
 
         sleep(800);
         launchOneRing();
