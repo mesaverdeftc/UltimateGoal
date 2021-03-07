@@ -189,15 +189,15 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         sleep(500);
 
-        launchOneRing();
+        launcher.launch(this, 1);
 
         sleep(800);
-        launchOneRing();
+        launcher.launch(this, 1);
 
         driveTrain.rotate(this, -4.8, -0.2);
 
         sleep(800);
-        launchOneRing();
+        launcher.launch(this, 1);
 
         driveTrain.gyroDrive_constant(this, runtime, -0.9, -34, -16.4, 15, telemetry);
         driveTrain.rotate(this, -87, -0.4);
