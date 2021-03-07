@@ -213,8 +213,9 @@ public class Teleop extends OpMode
             }
         }
 
-        if(buttonA.toggleState)
+        if(buttonA.toggleState) {
             intakeMotor.setPower(intakeSpeed);
+        }
 
 //        if (buttonB2.toggled(gamepad2.b)) {
 //            launcher.launchBackAndForth();
@@ -231,6 +232,10 @@ public class Teleop extends OpMode
 
         oppositeY = !gamepad2.y;
 
+        if(yTaps > 3) {
+            yTaps = 1;
+        }
+
         if(yTaps == 1) {
             wobbleArm.setPosition(1);
         } else if (yTaps == 2) {
@@ -238,11 +243,6 @@ public class Teleop extends OpMode
         } else if (yTaps == 3) {
             wobbleArm.setPosition(0);
         }
-
-        if(yTaps > 3) {
-            yTaps = 1;
-        }
-
 
 //        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
 //            wobbleArm.setPosition(1.0);
