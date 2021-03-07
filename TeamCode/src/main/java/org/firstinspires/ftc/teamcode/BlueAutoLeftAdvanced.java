@@ -162,13 +162,13 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
         sleep(500);
 
         driveTrain.encoderStafe(this, runtime, 0.6, 11, false, 15);
-//        launchRings();
+        launcher.launch(this,1);
         sleep(5000);
         driveTrain.gyroDrive_constant(this, runtime, -0.7, -10, 0, 15, telemetry);
         sleep(2000);
         driveTrain.gyroDrive_constant(this, runtime, 0.7, 10, 0, 15, telemetry);
         driveTrain.encoderStafe(this, runtime, 0.8, 24, false, 15);
-        //        launchRings();
+        launcher.launch(this,1);
         sleep(5000);
 
 
@@ -207,9 +207,8 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 //        wobbleServo.setPosition(1);
 //        sleep(500);
 //        wobbleArm.setPosition(0);
-//        sleep(500);\
+//        sleep(500);
     }
-
 
     private void zeroStackMovement() {
         sleep(500);
