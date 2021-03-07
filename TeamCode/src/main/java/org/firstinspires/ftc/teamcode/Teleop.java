@@ -93,6 +93,11 @@ public class Teleop extends OpMode
     double launcherSpeed = 0.65;
     boolean isLaunching = false;
 
+    private double buttonBTime;
+    private boolean buttonBPressed = false;
+    private double buttonBDelay = 800;
+
+
     @Override
     public void init() {
         telemetry.addData("Status", "Initializing");
@@ -158,11 +163,18 @@ public class Teleop extends OpMode
 //            launcherSpeed-=0.01;
 //        }
         buttonB2.toggled(gamepad2.b);
-        if (buttonB2.toggleState) {
+        if (buttonB2.toggleState && !buttonBPressed) {
+            buttonBPressed = true;
+            buttonBTime = getRuntime();
             launcher.launcherServo.up();
         }
-        else {
-            launcher.launcherServo.down();
+
+        if (!buttonB2.toggleState && buttonBPressed) {
+            double currentTime = getRuntime();
+            if (currentTime - buttonBTime >= buttonBDelay) {
+                launcher.launcherServo.down();
+                buttonBPressed = false;
+            }
         }
 
         if (buttonX2.toggled(gamepad2.x)) {
