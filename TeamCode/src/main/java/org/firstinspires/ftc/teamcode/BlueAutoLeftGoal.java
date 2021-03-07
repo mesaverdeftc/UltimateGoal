@@ -171,6 +171,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             wobbleServo.setPosition(1);
+            sleep(750);
             wobbleArm.setPosition(1);
         }
 
@@ -203,7 +204,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
             wobbleArm.setPosition(0.64);
         }
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 15, -95, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 9, -95, 15, telemetry);
 
         sleep(500);
 //        if(!Constants.isStrafer) {
