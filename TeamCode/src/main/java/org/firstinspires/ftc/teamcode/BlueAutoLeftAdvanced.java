@@ -156,24 +156,6 @@ public class BlueAutoLeftAdvanced extends LinearOpMode{
 
     }
 
-    private void launchRings() {
-        sleep(500);
-        launcher.run(1.0);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        launcher.stop();
-    }
-
     private void advancedFourStackMovement() {
         sleep(500);
         driveTrain.gyroDrive_constant(this, runtime, 0.9, 60, 0, 15, telemetry);

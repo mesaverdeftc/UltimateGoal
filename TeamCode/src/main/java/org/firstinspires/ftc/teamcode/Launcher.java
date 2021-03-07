@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -38,43 +39,12 @@ public class Launcher {
         launcherMotor.setPower(0);
     }
 
-    public void launch(boolean toggleState) {
-        launcherServo.toggle(toggleState);
-    }
-
-    public void launchBackAndForth() {
-        launcherServo.toggle(true);
-        isFinishedLaunching = true;
-        if(isFinishedLaunching = true) {
+    public void launch(LinearOpMode linearOpMode, int repetitions) {
+        for(int i = 0; i != repetitions; i++) {
             launcherServo.toggle(false);
-            isFinishedLaunching = false;
+            linearOpMode.sleep(500);
+            launcherServo.toggle(true);
         }
-
-//        int state = 3;
-//        long timer = 0;
-//        public void update() {
-//            if(state == 0){
-//                servo.setPosition(1);
-//                timer = System.currentTimeMillis() + time;
-//                state = 1;
-//            }
-//            if(state == 1){
-//                if(System.currentTimeMillis() >= timer){
-//                    state = 2;
-//                }
-//            }
-//            if(state == 2){
-//                servo.setPosition(0);
-//                timer = System.currentTimeMillis() + time;
-//                state = 3;
-//            }
-//            if(state == 3){
-//                if(System.currentTimeMillis() >= timer){
-//                    if(gamepad.b) {
-//                        state = 0;
-//                    }
-//                }
-//            }
-//        }
     }
+
 }
