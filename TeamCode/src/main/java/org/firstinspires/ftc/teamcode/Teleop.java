@@ -91,12 +91,12 @@ public class Teleop extends OpMode
     double intakeSpeed = 0.45;
 
     double launcherSpeed = 0.65;
-    boolean isLaunching = false;
 
     private double buttonBTime;
     private boolean buttonBPressed = false;
-    private double buttonBDelay = 800;
+    private double buttonBDelay = 0.8;
 
+    private boolean once = false;
 
     @Override
     public void init() {
@@ -112,9 +112,8 @@ public class Teleop extends OpMode
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 0.4);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
 
-        isLaunching = true;
 //        intakeMotor.setPower(intakeSpeed);
-        launcher.run(launcherSpeed);
+        //launcher.run(launcherSpeed);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -163,31 +162,42 @@ public class Teleop extends OpMode
             launcherSpeed-=0.01;
         }
 
-        if (buttonB2.toggled(gamepad2.b) && buttonBPressed == false) {
-            buttonBPressed = true;
-            buttonBTime = getRuntime();
+        if(buttonB2.toggleState && buttonBPressed == false) {
             launcher.launcherServo.up();
-        }
-
-        if (!buttonB2.toggled(gamepad2.b) && buttonBPressed == true) {
-            double currentTime = getRuntime();
-            if (currentTime - buttonBTime >= buttonBDelay) {
-                launcher.launcherServo.down();
-                buttonBPressed = false;
+            if(once == false) {
+                buttonBTime = getRuntime();
+                once = true;
+            }
+            if (getRuntime() - buttonBTime >= buttonBDelay) {
+                buttonBPressed = true;
             }
         }
+        if(buttonBPressed == true) {
+            launcher.launcherServo.down();
+            buttonBPressed = false;
+        }
+
+//        if (buttonB2.toggled(gamepad2.b) && buttonBPressed == false) {
+//            buttonBPressed = true;
+//            buttonBTime = getRuntime();
+//            launcher.launcherServo.up();
+//        }
+//
+//        if (!buttonB2.toggled(gamepad2.b) && buttonBPressed == true) {
+//            double currentTime = getRuntime();
+//            if (currentTime - buttonBTime >= buttonBDelay) {
+//                launcher.launcherServo.down();
+//                buttonBPressed = false;
+//            }
+//        }
 
         if (buttonX2.toggled(gamepad2.x)) {
             if (buttonX2.toggleState) {
-                isLaunching = true;
                 launcher.run(launcherSpeed);
-            }
-            else
+            } else {
                 launcher.stop();
+            }
         }
-
-        if(isLaunching)
-            launcher.run(launcherSpeed);
 
         if(!Constants.isStrafer) {
             if(buttonA.toggled(gamepad1.a)) {
@@ -224,6 +234,13 @@ public class Teleop extends OpMode
         else
             telemetry.addData("Field Centric", "false");
 
+        telemetry.addData("buttonBPressed: ", buttonBPressed);
+        telemetry.addData("buttonB2.toggled: ", buttonB2.toggled(gamepad2.b));
+        telemetry.addData("buttonB2.toggleState: ", buttonB2.toggleState);
+
+        telemetry.addData("ButtonBTime:", buttonBTime);
+        telemetry.addData("getRunTime:", getRuntime());
+        telemetry.addData("getRuntime - buttonBTime:", getRuntime() - buttonBTime);
 
         telemetry.addData("Button A Toggle State:", buttonA.toggleState);
         telemetry.addData("Encoders", "lf = %d, lr = %d, rf = %d, rr = %d ",

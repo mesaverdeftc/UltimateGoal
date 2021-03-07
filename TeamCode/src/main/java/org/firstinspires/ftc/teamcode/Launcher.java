@@ -26,7 +26,7 @@ public class Launcher {
         launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         launcherServo.init(hardwareMap, "launcher_servo_2", 0.0, 1.0);
-        launcherServo.up();
+//        launcherServo.up();
     }
 
     public void run(double power) {
