@@ -196,8 +196,8 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         sleep(800);
         launcher.launch(this, 1);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -41.5, -16.4, 15, telemetry);
-        driveTrain.rotate(this, -87, -0.4);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -41.2, -16.4, 15, telemetry);
+        driveTrain.rotate(this, -85, -0.4);
 
         if(!Constants.isStrafer) {
             wobbleArm.setPosition(0.64);

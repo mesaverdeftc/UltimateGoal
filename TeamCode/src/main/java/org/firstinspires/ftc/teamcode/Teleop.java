@@ -162,17 +162,20 @@ public class Teleop extends OpMode
             launcherSpeed-=0.01;
         }
 
-        if (buttonB2.toggleState && buttonBPressed == false) {
-            buttonBPressed = true;
-            buttonBTime = getRuntime();
-            launcher.launcherServo.up();
+        if(buttonB2.toggled(gamepad2.b)) {
+            if (buttonB2.toggleState && buttonBPressed == false) {
+                buttonBPressed = true;
+                buttonBTime = getRuntime();
+                launcher.launcherServo.down();
+            }
         }
 
-        if (!buttonB2.toggleState && buttonBPressed == true) {
+        if (!buttonB2.toggled(gamepad2.b) && buttonBPressed == true) {
             double currentTime = getRuntime();
             if (currentTime - buttonBTime >= buttonBDelay) {
-                launcher.launcherServo.down();
+                launcher.launcherServo.up();
                 buttonBPressed = false;
+                buttonB2.toggleState = false;
             }
         }
 
