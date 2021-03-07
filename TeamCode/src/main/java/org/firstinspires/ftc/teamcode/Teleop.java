@@ -164,9 +164,9 @@ public class Teleop extends OpMode
 
         if(buttonB2.toggled(gamepad2.b)) {
             if (buttonB2.toggleState && buttonBPressed == false) {
-                buttonBPressed = true;
                 buttonBTime = getRuntime();
                 launcher.launcherServo.down();
+                buttonBPressed = true;
             }
         }
 
