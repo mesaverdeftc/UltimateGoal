@@ -232,9 +232,9 @@ public class Teleop extends OpMode
         oppositeY = !gamepad2.y;
 
         if(yTaps == 1) {
-            wobbleArm.setPosition(0.65);
-        } else if (yTaps == 2) {
             wobbleArm.setPosition(1);
+        } else if (yTaps == 2) {
+            wobbleArm.setPosition(0.65);
         } else if (yTaps == 3) {
             wobbleArm.setPosition(0);
         }

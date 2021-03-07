@@ -187,13 +187,13 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         sleep(500);
         launcher.launch(this, 1);
 
-        launcher.run(0.627);
+        launcher.run(0.64);
         sleep(900);
         launcher.launch(this, 1);
 
         driveTrain.rotate(this, -8, -0.2);
 
-        launcher.run(0.625);
+        launcher.run(0.6275);
         sleep(800);
         launcher.launch(this, 1);
 
