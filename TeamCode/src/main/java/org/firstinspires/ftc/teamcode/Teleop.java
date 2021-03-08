@@ -211,10 +211,21 @@ public class Teleop extends OpMode
                     intakeMotor.setPower(0.0);
                 }
             }
+            if(buttonB.toggled(gamepad1.b)) {
+                if(buttonB.toggleState) {
+                    intakeMotor.setPower(-1);
+                }
+                else {
+                    intakeMotor.setPower(0.0);
+                }
+            }
         }
 
         if(buttonA.toggleState) {
             intakeMotor.setPower(intakeSpeed);
+        }
+        if(buttonB.toggleState) {
+            intakeMotor.setPower(-1);
         }
 
 //        if (buttonB2.toggled(gamepad2.b)) {
