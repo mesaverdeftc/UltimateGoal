@@ -90,31 +90,6 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         camera.closeCameraDevice();
         zeroStackMovement();
 
-//        if(31 > 30) {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "FOUR");
-//            telemetry.update();
-//
-//            fourStackMovement();
-//
-//        } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "ONE");
-//            telemetry.update();
-//
-////            oneStackMovement();
-//        } else {
-//            camera.closeCameraDevice();
-//
-//            telemetry.addData("Prediction:", "ZERO");
-//            telemetry.update();
-//
-////            zeroStackMovement();
-//        }
-
-
         telemetry.addData("Path", "Complete");
 
         telemetry.addData("Encoders", "lf = %d, lr = %d, rf = %d, rr = %d ",

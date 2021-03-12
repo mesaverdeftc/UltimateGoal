@@ -89,7 +89,6 @@ public class Teleop extends OpMode
     private DcMotor intakeMotor = null;
 
     double intakeSpeed = 0.45;
-
     double launcherSpeed = 0.65;
 
     private double buttonBTime;
@@ -109,12 +108,8 @@ public class Teleop extends OpMode
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-//        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.0, 1.0);
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.4, 0.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
-
-//        intakeMotor.setPower(intakeSpeed);
-        //launcher.run(launcherSpeed);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -140,28 +135,6 @@ public class Teleop extends OpMode
         right_x = gamepad1.right_stick_x;
 
         driveTrain.drive(left_x, left_y, right_x, fieldCentric, slowmode, telemetry);
-
-//        if(button_dpad_up.toggled(gamepad1.dpad_up)) {
-//            launcherSpeed = 0.66;
-//        }
-//
-//        if(button_dpad_down.toggled(gamepad1.dpad_down)) {
-//            launcherSpeed = 0.64;
-//        }
-
-        if(right_bumper.toggled(gamepad1.right_bumper)) {
-            intakeSpeed+=0.01;
-        }
-        else if (left_bumper.toggled(gamepad1.left_bumper)) {
-            intakeSpeed-=0.01;
-        }
-
-        if(right_bumper.toggled(gamepad2.right_bumper)) {
-            launcherSpeed+=0.01;
-        }
-        else if (left_bumper.toggled(gamepad2.left_bumper)) {
-            launcherSpeed-=0.01;
-        }
 
         if(buttonB2.toggled(gamepad2.b)) {
             if (buttonB2.toggleState && buttonBPressed == false) {
@@ -254,10 +227,6 @@ public class Teleop extends OpMode
         } else if (yTaps == 3) {
             wobbleArm.setPosition(0);
         }
-
-//        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
-//            wobbleArm.setPosition(1.0);
-//        }
 
         if(buttonA2.toggled(gamepad2.a)) {
             wobbleServo.toggle(buttonA2.toggleState);
