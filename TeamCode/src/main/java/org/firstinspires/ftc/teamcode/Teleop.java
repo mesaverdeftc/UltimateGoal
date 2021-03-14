@@ -97,7 +97,7 @@ public class Teleop extends OpMode
     private double buttonBDelay = 0.8;
 
     private boolean oppositeY = true;
-    private int yTaps = 0;
+    private int yTaps = 1;
 
     @Override
     public void init() {
@@ -243,18 +243,15 @@ public class Teleop extends OpMode
 
         oppositeY = !gamepad2.y;
 
-        if(yTaps > 3) {
+        if(yTaps > 2) {
             yTaps = 1;
         }
 
         if(yTaps == 1) {
-            wobbleArm.setPosition(1);
-        } else if (yTaps == 2) {
-            wobbleArm.setPosition(0.65);
-        } else if (yTaps == 3) {
             wobbleArm.setPosition(0);
+        } else if (yTaps == 2) {
+            wobbleArm.setPosition(1.0);
         }
-
 //        if(button_dpad_up2.toggled(gamepad2.dpad_up)) {
 //            wobbleArm.setPosition(1.0);
 //        }
