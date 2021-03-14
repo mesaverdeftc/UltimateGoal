@@ -49,7 +49,12 @@ public class TestAuto extends LinearOpMode{
 //        sleep(5000);
 //        driveTrain.gyroStrafe(this, runtime, 0.6, 40, Constants.Direction.STRAFE_LEFT, 0, 10);
 
-        driveTrain.turnAndMove(this, runtime, driveTrain, 0.5, 20, Constants.Direction.STRAFE_LEFT, 10, telemetry);
+        driveTrain.rotate(this, -153, -0.6);
+        driveTrain.rotate(this, -172, -0.2);
+        sleep(2000);
+        driveTrain.rotate(this, -175, -0.2);
+        sleep(2000);
+
 
         telemetry.addData("Path", "Complete");
 

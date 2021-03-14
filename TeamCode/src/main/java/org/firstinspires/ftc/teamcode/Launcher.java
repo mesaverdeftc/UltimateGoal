@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -25,11 +26,10 @@ public class Launcher {
         launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         launcherServo.init(hardwareMap, "launcher_servo_2", 0.0, 1.0);
-        launcherServo.up();
+//        launcherServo.up();
     }
 
     public void run(double power) {
-
         launcherPower = Range.clip(power, -1.0, 1.0);
         launcherMotor.setPower(launcherPower);
     }
@@ -38,16 +38,12 @@ public class Launcher {
         launcherMotor.setPower(0);
     }
 
-    public void launch(boolean toggleState) {
-        launcherServo.toggle(toggleState);
-    }
-
-    public void launchBackAndForth() {
-        launcherServo.toggle(true);
-        isFinishedLaunching = true;
-        if(isFinishedLaunching = true) {
+    public void launch(LinearOpMode linearOpMode, int repetitions) {
+        for(int i = 0; i != repetitions; i++) {
             launcherServo.toggle(false);
-            isFinishedLaunching = false;
+            linearOpMode.sleep(500);
+            launcherServo.toggle(true);
         }
     }
+
 }
