@@ -78,7 +78,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         waitForStart();
 
         camera.closeCameraDevice();
-        fourStackMovement();
+        zeroStackMovement();
 
 //        if(pipeline.getRectHeight() > 30) {
 //            camera.closeCameraDevice();
@@ -168,9 +168,9 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 //        sleep(500);
 
         if(!Constants.isStrafer) {
-            wobbleServo.setPosition(1);
+            wobbleArm.setPosition(0);
             sleep(750);
-            wobbleArm.setPosition(1);
+            wobbleServo.setPosition(1);
         }
 
         driveTrain.gyroDrive_constant(this, runtime, -0.5, -8, 0, 15, telemetry);
@@ -180,26 +180,26 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         telemetry.addData("Current Angle:", driveTrain.getHeading());
         telemetry.update();
 
-//        driveTrain.rotate(this, 1.5, 0.2);
+        wobbleArm.setPosition(1);
 
         sleep(500);
         launcher.launch(this, 1);
 
-        launcher.run(0.65);
+        launcher.run(0.672);
         sleep(900);
         launcher.launch(this, 1);
 
         driveTrain.rotate(this, -8, -0.2);
 
-        launcher.run(0.6275);
+        launcher.run(0.667);
         sleep(800);
         launcher.launch(this, 1);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -41.2, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -37, -16.4, 15, telemetry);
         driveTrain.rotate(this, -85, -0.4);
 
         if(!Constants.isStrafer) {
-            wobbleArm.setPosition(0.64);
+            wobbleArm.setPosition(0);
         }
 
         driveTrain.gyroDrive_constant(this, runtime, 0.3, 11, -95, 15, telemetry);
@@ -299,7 +299,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         sleep(500);
         launcher.launch(this, 1);
 
-        launcher.run(0.662);
+        launcher.run(0.658);
         sleep(900);
         launcher.launch(this, 1);
 
