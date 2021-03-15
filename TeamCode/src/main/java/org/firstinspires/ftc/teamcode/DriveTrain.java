@@ -30,7 +30,7 @@ public class DriveTrain {
     public DcMotor rightFrontMotor = null;
     public DcMotor rightRearMotor = null;
 
-    private DcMotor tapeWinch = null;
+//    private DcMotor tapeWinch = null;
 
     private boolean useTapeWinch = false;
 
@@ -92,8 +92,8 @@ public class DriveTrain {
             leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
             rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
 
-            tapeWinch = hardwareMap.get(DcMotor.class, "tape_winch_2");
-            tapeWinch.setDirection(DcMotor.Direction.FORWARD);
+//            tapeWinch = hardwareMap.get(DcMotor.class, "tape_winch_2");
+//            tapeWinch.setDirection(DcMotor.Direction.FORWARD);
         }
 
         // Brake when power is set to zero (no coasting)
@@ -180,7 +180,7 @@ public class DriveTrain {
         rightFrontMotor.setPower(0);
         leftRearMotor.setPower(0);
         rightRearMotor.setPower(0);
-        tapeWinch.setPower(0);
+//        tapeWinch.setPower(0);
     }
 
     public void resetAngle() {
@@ -298,7 +298,7 @@ public class DriveTrain {
                 rightRearMotor.setPower(motorSpeed.getRightSpeed());
 
                 if(useTapeWinch != null && useTapeWinch.length >= 1) {
-                    tapeWinch.setPower(1);
+//                    tapeWinch.setPower(1);
                 }
 
                 telemetry.addData("left speed: ", motorSpeed.getLeftSpeed());
