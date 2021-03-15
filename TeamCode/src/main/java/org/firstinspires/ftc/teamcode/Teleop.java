@@ -108,7 +108,7 @@ public class Teleop extends OpMode
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.4, 0.0);
+        wobbleArm.init(hardwareMap, "wobble_arm_0", 0.6, 0.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
 
         telemetry.addData("Status", "Initialized");
@@ -151,6 +151,10 @@ public class Teleop extends OpMode
                 buttonBPressed = false;
                 buttonB2.toggleState = false;
             }
+        }
+
+        if(button_rb.toggled(gamepad1.right_bumper)) {
+            slowmode = !slowmode;
         }
 
 //        if (buttonB2.toggled(gamepad2.b) && buttonBPressed == false) {
@@ -210,22 +214,24 @@ public class Teleop extends OpMode
 //        }
 
 
-        if(gamepad2.y == oppositeY) {
-            yTaps++;
-        }
+//        if(gamepad2.y == oppositeY) {
+//            yTaps++;
+//        }
+//
+//        oppositeY = !gamepad2.y;
+//
+//        if(yTaps > 2) {
+//            yTaps = 1;
+//        }
+//
+//        if(yTaps == 1) {
+//            wobbleArm.setPosition(1);
+//        } else if (yTaps == 2) {
+//            wobbleArm.setPosition(0);
+//        }
 
-        oppositeY = !gamepad2.y;
-
-        if(yTaps > 3) {
-            yTaps = 1;
-        }
-
-        if(yTaps == 1) {
-            wobbleArm.setPosition(1);
-        } else if (yTaps == 2) {
-            wobbleArm.setPosition(0.65);
-        } else if (yTaps == 3) {
-            wobbleArm.setPosition(0);
+        if(buttonY2.toggled(gamepad2.y)) {
+            wobbleArm.toggle(buttonY2.toggleState);
         }
 
         if(buttonA2.toggled(gamepad2.a)) {
