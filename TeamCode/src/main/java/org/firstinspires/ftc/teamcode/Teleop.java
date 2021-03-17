@@ -96,7 +96,7 @@ public class Teleop extends OpMode
     private double buttonBDelay = 0.8;
 
     private boolean oppositeY = true;
-    private int yTaps = 0;
+    private int yTaps = 1;
 
     @Override
     public void init() {
