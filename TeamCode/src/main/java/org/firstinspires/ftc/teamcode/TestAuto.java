@@ -15,6 +15,8 @@ public class TestAuto extends LinearOpMode{
     private Attachment wobbleArm = new Attachment();
     private Attachment wobbleServo = new Attachment();
 
+    private Launcher launcher = new Launcher();
+
     @Override
     public void runOpMode() {
 
@@ -28,6 +30,11 @@ public class TestAuto extends LinearOpMode{
         wobbleServo.init(hardwareMap, "wobble_servo_1", 0.0, 1.0);
 
         wobbleServo.setServoForward();
+
+        if(!Constants.isStrafer) {
+            launcher.init(hardwareMap);
+            launcher.run(0.68);
+        }
 
         // make sure the imu gyro is calibrated before continuing.
         while (!isStopRequested() && !driveTrain.imu.isGyroCalibrated())
@@ -45,16 +52,13 @@ public class TestAuto extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-//        driveTrain.gyroStrafe(this, runtime, 0.6, 40, Constants.Direction.STRAFE_RIGHT, 0, 10);
-//        sleep(5000);
-//        driveTrain.gyroStrafe(this, runtime, 0.6, 40, Constants.Direction.STRAFE_LEFT, 0, 10);
+        launcher.launch(this, 1);
 
-        driveTrain.rotate(this, -153, -0.6);
-        driveTrain.rotate(this, -172, -0.2);
-        sleep(2000);
-        driveTrain.rotate(this, -175, -0.2);
-        sleep(2000);
+        sleep(900);
+        launcher.launch(this, 1);
 
+        sleep(900);
+        launcher.launch(this, 1);
 
         telemetry.addData("Path", "Complete");
 
@@ -67,7 +71,5 @@ public class TestAuto extends LinearOpMode{
         telemetry.update();
 
         sleep(30000);
-
-
     }
 }
