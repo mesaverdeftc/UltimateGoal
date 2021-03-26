@@ -27,7 +27,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 240; // height of wanted camera resolution
 
-    private static final int HORIZON = 85; // horizon value to tune
+    private static final int HORIZON = 135; // horizon value to tune
 
     private static final boolean DEBUG = false; // if debug is wanted, change to true
 
@@ -78,38 +78,31 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         waitForStart();
 
         camera.closeCameraDevice();
-        zeroStackMovement();
+
+        launcher.launchAuto(driveTrain, this);
 
 //        if(pipeline.getRectHeight() > 30) {
-//            camera.closeCameraDevice();
-//
 //            telemetry.addData("Prediction:", "FOUR");
 //            telemetry.update();
 //
-//            fourStackMovement();
-//
-//        if(31 > 30) {
 //            camera.closeCameraDevice();
 //
-//            telemetry.addData("Prediction:", "FOUR");
-//            telemetry.update();
-//
-//            fourStackMovement();
+////            fourStackMovement();
 //
 //        } else if(pipeline.getRectHeight() <= 30 && pipeline.getRectHeight() != 0) {
-//            camera.closeCameraDevice();
-//
 //            telemetry.addData("Prediction:", "ONE");
 //            telemetry.update();
 //
-////            oneStackMovement();
-//        } else {
 //            camera.closeCameraDevice();
 //
+////            oneStackMovement();
+//        } else {
 //            telemetry.addData("Prediction:", "ZERO");
 //            telemetry.update();
 //
-////            zeroStackMovement();
+//            camera.closeCameraDevice();
+//
+//            zeroStackMovement();
 //        }
 
 
@@ -299,22 +292,22 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         driveTrain.encoderStafe(this, runtime, 0.7, 16, false, 15);
         driveTrain.gyroDrive_constant(this, runtime, -0.8, -37, 0, 4, telemetry);
-        driveTrain.rotate(this, 0, 0.2);
+        driveTrain.rotate(this, 0.6, 0.1);
 
 
         telemetry.addData("Current Angle:", driveTrain.getHeading());
         telemetry.update();
 
-        sleep(500);
+        sleep(900);
         launcher.launch(this, 1);
 
-        launcher.run(0.658);
+        launcher.run(0.65);
         sleep(900);
         launcher.launch(this, 1);
 
         driveTrain.rotate(this, -8, -0.2);
 
-        launcher.run(0.658);
+        launcher.run(0.65);
         sleep(900);
         launcher.launch(this, 1);
 

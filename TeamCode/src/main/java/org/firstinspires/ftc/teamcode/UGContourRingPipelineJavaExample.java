@@ -50,7 +50,6 @@ public class UGContourRingPipelineJavaExample extends LinearOpMode {
 //        camera.setPipeline(pipeline = new UGContourRingPipeline(telemetry, DEBUG));
         camera.setPipeline(pipeline = new bounceBaccPipeline(telemetry, DEBUG));
 
-
         bounceBaccPipeline.Config.setCAMERA_WIDTH(CAMERA_WIDTH);
 
         bounceBaccPipeline.Config.setHORIZON(HORIZON);
@@ -66,10 +65,7 @@ public class UGContourRingPipelineJavaExample extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            String height = "[HEIGHT]" + " " + pipeline.getHeight();
             telemetry.addData("Bounding box size (height):", pipeline.getRectSize().height);
-
-
             telemetry.update();
         }
     }

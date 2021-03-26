@@ -56,4 +56,20 @@ public class Launcher {
         }
     }
 
+    public void launchAuto(DriveTrain driveTrain, LinearOpMode linearOpMode) {
+        launcherMotor.setPower(0.624);
+        linearOpMode.sleep(900);
+        launch(linearOpMode, 1);
+
+        launcherMotor.setPower(0.58);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+
+        driveTrain.rotate(linearOpMode, -7.2, -0.2);
+
+        launcherMotor.setPower(0.577);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+    }
+
 }
