@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
@@ -9,6 +10,8 @@ public class Launcher {
     double launcherPower = 0.0;
 
     private DcMotor launcherMotor = null;
+
+//    private DcMotorEx launcherMotor = null;
     public Attachment launcherServo = new Attachment();
 
     private boolean isFinishedLaunching = false;
@@ -18,6 +21,7 @@ public class Launcher {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+
         launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor_1");
         launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launcherMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -31,8 +35,14 @@ public class Launcher {
 
     public void run(double power) {
         launcherPower = Range.clip(power, -1.0, 1.0);
-        launcherMotor.setPower(launcherPower);
+        launcherMotor.setPower(power);
+
+//        ((DcMotorEx) launcherMotor2).setVelocity(power);
     }
+
+//    public double getVelocity() {
+//        return launcherMotor.getVelocity();
+//    }
 
     public void stop() {
         launcherMotor.setPower(0);
