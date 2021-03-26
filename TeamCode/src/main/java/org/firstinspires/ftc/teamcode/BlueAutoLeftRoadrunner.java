@@ -40,6 +40,7 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
     private static final String WEBCAM_NAME = ""; // insert webcam name from configuration if using webcam
 
     private static final double VECTOR_MODIFIER = 1;
+    private static final double REFLECTION_MODIFIER = -1;
 
     private bounceBaccPipeline pipeline;
     private OpenCvCamera camera;
@@ -53,12 +54,13 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
 
         Vector2d dropOff1 = Vector2dModified(9,48);
         Vector2d dropOff2 = Vector2dModified(36,24);
-        Vector2d dropOff3 = Vector2dModified(10,10);
+        Vector2d dropOff4 = Vector2dModified(63,48);
         Vector2d shootingSite = Vector2dModified(-5,8);
-        Vector2d pickUp = Vector2dModified(-37,4);
-        Vector2d pickUp2 = Vector2dModified(-37,9);
+        Vector2d pickUpSite = Vector2dModified(-37,4);
+        Vector2d pickUpSite2 = Vector2dModified(-37,9);
+        Vector2d parkSite = Vector2dModified(0,-12);
 
-        /** Trajectory for the zeroStackMovement */
+        /* Trajectories */
         Trajectory zeroDropOff = drive.trajectoryBuilder(startPose)
                 .lineTo(dropOff1) // runs forward 73 inches
                 .build();
@@ -66,53 +68,33 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
                 .lineTo(dropOff1)
                 .splineTo(dropOff2, Math.toRadians(0))
                 .build();
+        Trajectory fourDropOff = drive.trajectoryBuilder(startPose)
+                .lineTo(dropOff1)
+                .splineTo(dropOff2, Math.toRadians(0))
+                .build();
         Trajectory zeroShooting = drive.trajectoryBuilder(zeroDropOff.end())
                 .lineTo(shootingSite) // moves right 40 inches and backwards 15 inches
+                .addTemporalMarker(0, () -> wobbleServo.setPosition(1))
                 .build();
         Trajectory oneShooting = drive.trajectoryBuilder(oneDropOff.end())
                 .lineTo(shootingSite)
+                .addTemporalMarker(0, () -> wobbleServo.setPosition(1))
                 .build();
-        Trajectory zero3 = drive.trajectoryBuilder(zeroShooting.end())
-                .lineTo(pickUp) // moves right 4 inches and backwards 32 inches
+        Trajectory fourShooting = drive.trajectoryBuilder(fourDropOff.end())
+                .lineTo(shootingSite)
+                .addTemporalMarker(0, () -> wobbleServo.setPosition(1))
                 .build();
-        Trajectory zero4 = drive.trajectoryBuilder(zero3.end())
-                .lineTo(pickUp2) // move left 5 inches
+        Trajectory pickUp = drive.trajectoryBuilder(zeroShooting.end())
+                .lineTo(pickUpSite) // moves right 4 inches and backwards 32 inches
+                .splineTo(pickUpSite2, Math.toRadians(0))
                 .build();
-        Trajectory zero5 = drive.trajectoryBuilder(zero4.end())
-                .lineTo(Vector2dModified(14, 37)) // move left 28 inches and forward 51 inches
+        Trajectory finalDropOff = drive.trajectoryBuilder(pickUp.end())
+                .lineTo(dropOff1)
                 .build();
-
-        /* TODO: Trajectory for the oneStackMovement*/
-        Trajectory one1 = drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(33, 10)) // run forward 96 inches
-                .lineTo(new Vector2d(10, 10)) // strafe right 28 inches
-                .build();
-        Trajectory one2 = drive.trajectoryBuilder(one1.end())
-                .lineTo(new Vector2d(10, 10)) // strafe right 10 inches
-                .splineTo(new Vector2d(10, 10), Math.toRadians(0)) // run backwards 38 inches
-                .build();
-        Trajectory one3 = drive.trajectoryBuilder(one2.end())
-                .lineTo(new Vector2d(10, 10))  // run backwards 33.3 inches
-                .splineTo(new Vector2d(10, 10), Math.toRadians(0)) // strafe right 4 inches
-                .build();
-        Trajectory one4 = drive.trajectoryBuilder(one3.end())
-                .lineTo(new Vector2d(10, 10))  // strafe left 5 inches
-                .build();
-        Trajectory one5 = drive.trajectoryBuilder(one4.end())
-                .lineTo(new Vector2d(10, 10)) // run forward 80 inches
-                .splineTo(new Vector2d(10, 10), Math.toRadians(0)) // strafe left 10 inches
-                .build();
-        Trajectory one6 = drive.trajectoryBuilder(one5.end())
-                .lineTo(new Vector2d(10, 10)) // run backwards 29 inches
+        Trajectory parking = drive.trajectoryBuilder(finalDropOff.end())
+                .lineTo(parkSite)
                 .build();
 
-        /* TODO: Trajectory for the fourStackMovement*/
-        Trajectory four1 = drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(10, 10)) // run forwards 120 inches
-                .build();
-        Trajectory four2 = drive.trajectoryBuilder(four1.end())
-                .lineTo(new Vector2d(10, 10)) // strafe forwards 120 inches
-                .build();
 
         /*
          * Initialize the drive system variables.
@@ -153,7 +135,7 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
             telemetry.update();
 
             sleep(500);
-            drive.followTrajectory(zero1);
+            drive.followTrajectory(zeroDropOff);
             sleep(500);
             wobbleServo.setPosition(1);
             sleep(500);
@@ -162,15 +144,15 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
 
             drive.followTrajectory(zeroShooting);
             sleep(1000);
-            drive.followTrajectory(zero3);
+            drive.followTrajectory(pickUp);
             wobbleArm.setPosition(0.65);
             sleep(1000);
-            drive.followTrajectory(zero4);
+            drive.followTrajectory(finalDropOff);
             sleep(500);
             wobbleServo.setPosition(0.07);
             sleep(1000);
 
-            drive.followTrajectory(zero5);
+            drive.followTrajectory(parking);
 
             sleep(500);
             wobbleServo.setPosition(1);
@@ -183,12 +165,63 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
             telemetry.addData("Prediction:", "ONE");
             telemetry.update();
 
+            sleep(500);
+            drive.followTrajectory(oneDropOff);
+            sleep(500);
+            wobbleServo.setPosition(1);
+            sleep(500);
+            wobbleArm.setPosition(0);
+            sleep(500);
+
+            drive.followTrajectory(oneShooting);
+            sleep(1000);
+            drive.followTrajectory(pickUp);
+            wobbleArm.setPosition(0.65);
+            sleep(1000);
+            drive.followTrajectory(finalDropOff);
+            sleep(500);
+            wobbleServo.setPosition(0.07);
+            sleep(1000);
+
+            drive.followTrajectory(parking);
+
+            sleep(500);
+            wobbleServo.setPosition(1);
+            sleep(500);
+            wobbleArm.setPosition(0);
+            sleep(500);
 //            oneStackMovement();
         } else {
             camera.closeCameraDevice();
 
             telemetry.addData("Prediction:", "ZERO");
             telemetry.update();
+
+            sleep(500);
+            drive.followTrajectory(fourDropOff);
+            sleep(500);
+            wobbleServo.setPosition(1);
+            sleep(500);
+            wobbleArm.setPosition(0);
+            sleep(500);
+
+            drive.followTrajectory(fourShooting);
+            sleep(1000);
+            drive.followTrajectory(pickUp);
+            wobbleArm.setPosition(0.65);
+            sleep(1000);
+            drive.followTrajectory(finalDropOff);
+            sleep(500);
+            wobbleServo.setPosition(0.07);
+            sleep(1000);
+
+            drive.followTrajectory(parking);
+
+            sleep(500);
+            wobbleServo.setPosition(1);
+            sleep(500);
+            wobbleArm.setPosition(0);
+            sleep(500);
 
 //            zeroStackMovement();
         }
@@ -237,119 +270,124 @@ public class BlueAutoLeftRoadrunner extends LinearOpMode {
         sleep(500);
         launcher.run(1.0);
         sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
-        sleep(500);
-        launcher.launch(false);
-        sleep(500);
-        launcher.launch(true);
+//        launcher.launch(false);
+//        sleep(500);
+//        launcher.launch(true);
+//        sleep(500);
+//        launcher.launch(false);
+//        sleep(500);
+//        launcher.launch(true);
+//        sleep(500);
+//        launcher.launch(false);
+//        sleep(500);
+//        launcher.launch(true);
         launcher.stop();
     }
 
     private Vector2d Vector2dModified(double x, double y) {
-        return new Vector2d(x * VECTOR_MODIFIER, y * VECTOR_MODIFIER);
+        return new Vector2d(x * VECTOR_MODIFIER, y * VECTOR_MODIFIER * REFLECTION_MODIFIER);
+    }
+
+    private double getDistanceFrom(double x, double y){
+        Pose2d poseEstimate = drive.getPoseEstimate();
+        return Math.sqrt(Math.pow(poseEstimate.getX() - x, 2) + Math.pow(poseEstimate.getY() - y, 2));
     }
 
 
-    private void zeroStackMovement() {
-        sleep(500);
-        drive.followTrajectory(zero1);
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        drive.followTrajectory(zero2);
-        sleep(1000);
-        drive.followTrajectory(zero3);
-        wobbleArm.setPosition(0.65);
-        sleep(1000);
-        drive.followTrajectory(zero4);
-        sleep(500);
-        wobbleServo.setPosition(0.07);
-        sleep(1000);
-
-        drive.followTrajectory(zero5);
-
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-    }
-
-    private void oneStackMovement() {
-        sleep(500);
-        drive.gyroDrive_constant(this, runtime, 0.9, 96, 0, 15, telemetry);
-
-        drive.encoderStafe(this, runtime, 0.6, 28, false, 15);
-
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        drive.encoderStafe(this, runtime, 0.6, 10, false, 15);
-        drive.gyroDrive_constant(this, runtime, -0.5, -38, 0, 15, telemetry);
-        sleep(1000);
-        drive.gyroDrive_constant(this, runtime, -0.5, -33.3, 0, 15, telemetry);
-        drive.encoderStafe(this, runtime, 0.4, 4, false, 15);
-        wobbleArm.setPosition(0.65);
-        sleep(1000);
-        drive.encoderStafe(this, runtime, 0.4, 5, true, 15);
-        sleep(500);
-        wobbleServo.setPosition(0.07);
-        sleep(1000);
-
-        drive.gyroDrive_constant(this, runtime, 0.5, 80, 0, 15, telemetry);
-        drive.encoderStafe(this, runtime, 0.4, 10, true, 15);
-
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        drive.gyroDrive_constant(this, runtime, -0.5, -29, 0, 15, telemetry);
-    }
-
-    private void fourStackMovement() {
-        sleep(500);
-        drive.gyroDrive_constant(this, runtime, 0.9, 120, 0, 15, telemetry);
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        drive.encoderStafe(this, runtime, 0.6, 40, false, 15);
-        drive.gyroDrive_constant(this, runtime, -0.5, -62, 0, 15, telemetry);
-        sleep(1000);
-        drive.gyroDrive_constant(this, runtime, -0.5, -32, 0, 15, telemetry);
-        drive.encoderStafe(this, runtime, 0.4, 4, false, 15);
-        wobbleArm.setPosition(0.65);
-        sleep(1000);
-        drive.encoderStafe(this, runtime, 0.4, 5, true, 15);
-        sleep(500);
-        wobbleServo.setPosition(0.07);
-        sleep(1000);
-
-        drive.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry);
-        drive.encoderStafe(this, runtime, 0.4, 28, true, 15);
-
-        sleep(500);
-        wobbleServo.setPosition(1);
-        sleep(500);
-        wobbleArm.setPosition(0);
-        sleep(500);
-
-        drive.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
-    }
+//    private void zeroStackMovement() {
+//        sleep(500);
+//        drive.followTrajectory(zero1);
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        drive.followTrajectory(zero2);
+//        sleep(1000);
+//        drive.followTrajectory(zero3);
+//        wobbleArm.setPosition(0.65);
+//        sleep(1000);
+//        drive.followTrajectory(zero4);
+//        sleep(500);
+//        wobbleServo.setPosition(0.07);
+//        sleep(1000);
+//
+//        drive.followTrajectory(zero5);
+//
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//    }
+//
+//    private void oneStackMovement() {
+//        sleep(500);
+//        drive.gyroDrive_constant(this, runtime, 0.9, 96, 0, 15, telemetry);
+//
+//        drive.encoderStafe(this, runtime, 0.6, 28, false, 15);
+//
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        drive.encoderStafe(this, runtime, 0.6, 10, false, 15);
+//        drive.gyroDrive_constant(this, runtime, -0.5, -38, 0, 15, telemetry);
+//        sleep(1000);
+//        drive.gyroDrive_constant(this, runtime, -0.5, -33.3, 0, 15, telemetry);
+//        drive.encoderStafe(this, runtime, 0.4, 4, false, 15);
+//        wobbleArm.setPosition(0.65);
+//        sleep(1000);
+//        drive.encoderStafe(this, runtime, 0.4, 5, true, 15);
+//        sleep(500);
+//        wobbleServo.setPosition(0.07);
+//        sleep(1000);
+//
+//        drive.gyroDrive_constant(this, runtime, 0.5, 80, 0, 15, telemetry);
+//        drive.encoderStafe(this, runtime, 0.4, 10, true, 15);
+//
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        drive.gyroDrive_constant(this, runtime, -0.5, -29, 0, 15, telemetry);
+//    }
+//
+//    private void fourStackMovement() {
+//        sleep(500);
+//        drive.gyroDrive_constant(this, runtime, 0.9, 120, 0, 15, telemetry);
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        drive.encoderStafe(this, runtime, 0.6, 40, false, 15);
+//        drive.gyroDrive_constant(this, runtime, -0.5, -62, 0, 15, telemetry);
+//        sleep(1000);
+//        drive.gyroDrive_constant(this, runtime, -0.5, -32, 0, 15, telemetry);
+//        drive.encoderStafe(this, runtime, 0.4, 4, false, 15);
+//        wobbleArm.setPosition(0.65);
+//        sleep(1000);
+//        drive.encoderStafe(this, runtime, 0.4, 5, true, 15);
+//        sleep(500);
+//        wobbleServo.setPosition(0.07);
+//        sleep(1000);
+//
+//        drive.gyroDrive_constant(this, runtime, 0.5, 94, 0, 15, telemetry);
+//        drive.encoderStafe(this, runtime, 0.4, 28, true, 15);
+//
+//        sleep(500);
+//        wobbleServo.setPosition(1);
+//        sleep(500);
+//        wobbleArm.setPosition(0);
+//        sleep(500);
+//
+//        drive.gyroDrive_constant(this, runtime, -0.5, -47, 0, 15, telemetry);
+//    }
 }

@@ -171,7 +171,7 @@ public class BlueAutoLeft extends LinearOpMode{
 
     }
 
-    private void zeroStackMovement() {
+    private void zeroStackMovement(){
         sleep(500);
         driveTrain.gyroDrive_constant(this, runtime, 0.9, 60, 0, 15, telemetry);
         if(!Constants.isStrafer) {
