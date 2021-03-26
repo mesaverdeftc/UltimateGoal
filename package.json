@@ -1,0 +1,8 @@
+{
+  "name": "UltimateGoal",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mesaverdeftc/UltimateGoal.git",
+  "author": "Daniel Yang <daniel@urbanenomad.com>",
+  "license": "MIT"
+}
