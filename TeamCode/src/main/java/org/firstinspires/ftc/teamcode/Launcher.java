@@ -4,7 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Launcher {
     double launcherPower = 0.0;
@@ -56,20 +59,52 @@ public class Launcher {
         }
     }
 
-    public void launchAuto(DriveTrain driveTrain, LinearOpMode linearOpMode) {
-        launcherMotor.setPower(0.624);
+    public void launchAutoZero(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
+
+        launcherMotor.setPower(0.634);
         linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
-        launcherMotor.setPower(0.58);
+//        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        launcherMotor.setPower(0.582);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -7.2, -0.2);
+        driveTrain.rotate(linearOpMode, -8.5, -0.2);
 
-        launcherMotor.setPower(0.577);
+        launcherMotor.setPower(0.595);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
 
+    public void launchAutoOne(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
+
+        launcherMotor.setPower(0.636);
+        linearOpMode.sleep(900);
+        launch(linearOpMode, 1);
+
+//        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        launcherMotor.setPower(0.59);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+
+        driveTrain.rotate(linearOpMode, -8.14, -0.2);
+
+        launcherMotor.setPower(0.586);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+    }
+
+    public void getCurrentPosition(Telemetry telemetry, int repetitions) {
+        for(int i = 0; i < repetitions; i++) {
+            telemetry.addData("Launcher Motor Current Position: ", launcherMotor.getCurrentPosition());
+            telemetry.update();
+        }
+    }
+
+    public double convertToTicks (double start) {
+        return start / 28;
+    }
 }
