@@ -1,26 +1,27 @@
 package org.firstinspires.ftc.teamcode;
+
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Launcher {
+@Config
+public class LauncherPID {
     double launcherPower = 0.0;
 
-    private DcMotor launcherMotor = null;
+    private DcMotorEx launcherMotor = null;
 
 //    private DcMotorEx launcherMotor = null;
     public Attachment launcherServo = new Attachment();
 
-    /*
-     * Here are the constructors for the other controllers
-     */
+    private boolean isFinishedLaunching = false;
 
-    //    PIDController pid = new PIDController(kP, kI, kD);
-    //    PDController pd = new PDController(kP, kD);
-    //    PController p = new PController(kP);
+    PIDFCoefficients pidfCoefficients = new PIDFCoefficients(80, 0, 15, 12.3);
 
     public void init(HardwareMap hardwareMap) {
 
@@ -28,7 +29,7 @@ public class Launcher {
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
 
-        launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor_1");
+        launcherMotor = hardwareMap.get(DcMotorEx.class, "launcher_motor_1");
         launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launcherMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -37,6 +38,8 @@ public class Launcher {
 
         launcherServo.init(hardwareMap, "launcher_servo_2", 0.0, 1.0);
 //        launcherServo.up();
+
+        launcherMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
     }
 
     public void run(double power) {
@@ -46,9 +49,14 @@ public class Launcher {
 //        ((DcMotorEx) launcherMotor2).setVelocity(power);
     }
 
-//    public double getVelocity() {
-//        return launcherMotor.getVelocity();
-//    }
+    public void runPID(double power) {
+        launcherPower = Range.clip(power, -1.0, 1.0);
+        launcherMotor.setPower(power);
+
+        launcherMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+    }
+
+
 
     public void stop() {
         launcherMotor.setPower(0);
