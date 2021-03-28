@@ -21,7 +21,7 @@ public class LauncherPID {
 
     private boolean isFinishedLaunching = false;
 
-    PIDFCoefficients pidfCoefficients = new PIDFCoefficients(0, 0, 0, 0);
+    PIDFCoefficients pidfCoefficients = new PIDFCoefficients(80, 0, 10, 14);
 
     public void init(HardwareMap hardwareMap) {
 
@@ -42,21 +42,13 @@ public class LauncherPID {
         launcherMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
     }
 
-    public void run(double power) {
-        launcherPower = Range.clip(power, -1.0, 1.0);
-        launcherMotor.setPower(power);
-
-//        ((DcMotorEx) launcherMotor2).setVelocity(power);
-    }
-
     public void runPID(double power) {
         launcherPower = Range.clip(power, -1.0, 1.0);
-        launcherMotor.setPower(power);
 
-        launcherMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        double convertToTicks = 2800 * launcherPower;
+
+        launcherMotor.setVelocity(convertToTicks);
     }
-
-
 
     public void stop() {
         launcherMotor.setPower(0);
@@ -72,58 +64,54 @@ public class LauncherPID {
 
     public void launchAutoZero(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.634);
-        linearOpMode.sleep(900);
+        launcherMotor.setPower(0.61);
         launch(linearOpMode, 1);
 
-//        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        launcherMotor.setPower(0.582);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -8.5, -0.2);
-
-        launcherMotor.setPower(0.595);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
+
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+
+//        driveTrain.rotate(linearOpMode, -8.5, -0.2);
+//
+//        launcherMotor.setPower(0.595);
+//        linearOpMode.sleep(500);
+//        launch(linearOpMode, 1);
     }
 
     public void launchAutoOne(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
         launcherMotor.setPower(0.633);
-        linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         launcherMotor.setPower(0.582);
-        linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
         driveTrain.rotate(linearOpMode, -8.8, -0.2);
 
         launcherMotor.setPower(0.594);
-        linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
 
     public void launchAutoFour(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
         launcherMotor.setPower(0.635);
-        linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         launcherMotor.setPower(0.59);
-        linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
         driveTrain.rotate(linearOpMode, -9.15, -0.2);
 
         launcherMotor.setPower(0.592);
-        linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
 
@@ -134,7 +122,4 @@ public class LauncherPID {
         }
     }
 
-    public double convertToTicks (double start) {
-        return start / 28;
-    }
 }
