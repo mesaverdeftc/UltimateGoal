@@ -21,7 +21,7 @@ public class LauncherPID {
 
     private boolean isFinishedLaunching = false;
 
-    PIDFCoefficients pidfCoefficients = new PIDFCoefficients(80, 0, 15, 12.3);
+    PIDFCoefficients pidfCoefficients = new PIDFCoefficients(0, 0, 0, 0);
 
     public void init(HardwareMap hardwareMap) {
 
