@@ -80,7 +80,26 @@ public class Launcher {
 
     public void launchAutoOne(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.636);
+        launcherMotor.setPower(0.633);
+        linearOpMode.sleep(900);
+        launch(linearOpMode, 1);
+
+//        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        launcherMotor.setPower(0.582);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+
+        driveTrain.rotate(linearOpMode, -8.8, -0.2);
+
+        launcherMotor.setPower(0.594);
+        linearOpMode.sleep(800);
+        launch(linearOpMode, 1);
+    }
+
+    public void launchAutoFour(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
+
+        launcherMotor.setPower(0.635);
         linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
@@ -90,9 +109,9 @@ public class Launcher {
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -8.14, -0.2);
+        driveTrain.rotate(linearOpMode, -9.15, -0.2);
 
-        launcherMotor.setPower(0.586);
+        launcherMotor.setPower(0.592);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
