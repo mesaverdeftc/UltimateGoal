@@ -1,4 +1,10 @@
-## Purple F.E.A.R. #3712
+# Purple F.E.A.R. #3712
 
 Welcome!
-This is the official Github repository of the Purple F.E.A.R. FTC robotics team.
+This is the official Github repository of the Purple F.E.A.R. FTC robotics team for the 2020-2021 Ultimate Goal Season.
+
+### About Us
+We are team proudly representing Mesa Verde Middle School from the Poway Unified School District. We are a team of eighth graders who strive for success while implementing gracious professionalism, coopertition, and core values into our actions and tasks. Our main goal this FTC season is to not only to place well, but to improve, learn, and have fun, because we understand that what we learn is more important than what we win. We also hope to extend the STEAM and FIRST community to our community. However, that doesn’t mean we won’t be trying our best when we compete. Despite being a relatively inexperienced team, we learn and gain experience with robotics and core values throughout the journey of the FTC Ultimate Goal season together in creative, fun ways. Since the beginning of the season, we have learned about the aspects of robotics in depth efficiently with the help of our coaches and mentors. Outside of meetings, we reach out to our community by introducing the FIRST program to young, aspiring minds through FLL Outreach.
+
+### Our Mission Statement
+The Purple F.E.A.R.’s mission is to learn science, technology, and engineering through first-hand experience in the STEAM program of FIRST, which enhances our knowledge of STEAM and encourages the development of lifelong significant skills. We would like to thank FIRST for its support of this motivation to learn and the opportunities it has given its participants to doors that might not have been opened otherwise. In order to pay FIRST forward, the Purple F.E.A.R. extends its experiences of FIRST and robotics to our community and farther. This means we inspire other teams with similar interests or other minds that may benefit from the FIRST experience. We set an example to our community by designing and implementing our robot, working diligently to succeed. Every year of robotics, our team improves for each coming competition to perform our best, implementing each design, building, and programming process in depth for maximum success. With the help of FIRST, our coaches and mentors, and our sponsors, the Purple F.E.A.R. improves and succeeds its performance during each competition and extends the FIRST and STEAM worlds by sharing our experiences to our community.
