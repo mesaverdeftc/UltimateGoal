@@ -64,7 +64,7 @@ public class Launcher {
 
     public void launchAutoZero(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.634);
+        launcherMotor.setPower(0.636);
         linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
@@ -74,35 +74,35 @@ public class Launcher {
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -8.5, -0.2);
+        driveTrain.rotate(linearOpMode, -9, -0.2);
 
-        launcherMotor.setPower(0.595);
+        launcherMotor.setPower(0.588);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
 
     public void launchAutoOne(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.633);
+        launcherMotor.setPower(0.6309);
         linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        launcherMotor.setPower(0.582);
+        launcherMotor.setPower(0.588);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -8.8, -0.2);
+        driveTrain.rotate(linearOpMode, -6.8, -0.2);
 
-        launcherMotor.setPower(0.594);
+        launcherMotor.setPower(0.587);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }
 
     public void launchAutoFour(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.635);
+        launcherMotor.setPower(0.624);
         linearOpMode.sleep(900);
         launch(linearOpMode, 1);
 
@@ -112,9 +112,9 @@ public class Launcher {
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -9.15, -0.2);
+        driveTrain.rotate(linearOpMode, -9.11, -0.2);
 
-        launcherMotor.setPower(0.592);
+        launcherMotor.setPower(0.584);
         linearOpMode.sleep(800);
         launch(linearOpMode, 1);
     }

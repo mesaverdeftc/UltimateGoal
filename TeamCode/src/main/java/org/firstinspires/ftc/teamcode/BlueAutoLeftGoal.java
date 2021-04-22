@@ -91,14 +91,14 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
             camera.closeCameraDevice();
 
-//            oneStackMovement();
+            oneStackMovement();
         } else {
             telemetry.addData("Prediction:", "ZERO");
             telemetry.update();
 
             camera.closeCameraDevice();
 
-//            zeroStackMovement();
+            zeroStackMovement();
         }
 
 
@@ -173,14 +173,14 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         launcher.launchAutoZero(driveTrain, this, telemetry);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -35, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -38.6, -16.4, 15, telemetry);
         driveTrain.rotate(this, -85, -0.4);
 
         if(!Constants.isStrafer) {
             wobbleArm.setPosition(0);
         }
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 11, -97, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 10.2, -97, 15, telemetry);
 
         sleep(500);
 
@@ -188,8 +188,9 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         sleep(500);
 
-        driveTrain.rotate(this, 6.5, 0.4);
-        driveTrain.gyroDrive_constant(this, runtime, 0.8, 55.3, 6.5, 15, telemetry);
+        driveTrain.rotate(this, 9.9, 0.4);
+        driveTrain.gyroDrive_constant(this, runtime, 0.8, 50.3, 9.9, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.35, 5, 9.9, 15, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);
@@ -206,13 +207,16 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
     private void oneStackMovement() {
         sleep(500);
-        driveTrain.gyroDrive_constant(this, runtime, 0.9, 55, 0, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.9, 60.4, 0, 15, telemetry);
 
         driveTrain.encoderStafe(this, runtime, 0.7, 23, false, 15);
-        driveTrain.gyroDrive_constant(this, runtime, -0.3, -10, 0, 4, telemetry);
+
+        driveTrain.rotate(this, 0.001, 0.1);
 
         telemetry.addData("Current Angle:", driveTrain.getHeading());
         telemetry.update();
+        
+        wobbleArm.setPosition(1);
 
         launcher.launchAutoOne(driveTrain, this, telemetry);
 
@@ -222,10 +226,10 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         sleep(500);
         wobbleServo.setPosition(1);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -61.8, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -66.3, -16.4, 15, telemetry);
         driveTrain.rotate(this, -85, -0.4);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 15, -95, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 11.2, -95, 15, telemetry);
 
         sleep(200);
         wobbleServo.setPosition(0);
@@ -234,8 +238,8 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         driveTrain.rotate(this, 6.5, 0.4);
         driveTrain.gyroDrive_constant(this, runtime, 0.8, 58, 6.5, 15, telemetry);
 
-        driveTrain.encoderStafe(this, runtime, 0.5, 27.3, false, 15);
-        driveTrain.gyroDrive_constant(this, runtime, 0.7, 16, 0, 10, telemetry);
+        driveTrain.encoderStafe(this, runtime, 0.5, 20.3, false, 15);
+        driveTrain.gyroDrive_constant(this, runtime, 0.7, 17.2, 0, 10, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);
@@ -273,17 +277,17 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         wobbleArm.setPosition(0);
         sleep(500);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -41, -16.4, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, -0.9, -43.3, -16.4, 15, telemetry);
         driveTrain.rotate(this, -85, -0.4);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 9.7, -95, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 8.3, -95, 15, telemetry);
 
         sleep(200);
         wobbleServo.setPosition(0);
         sleep(600);
 
         driveTrain.rotate(this, 6.3, 0.4);
-        driveTrain.gyroDrive_constant(this, runtime, 0.8, 96, 6.3, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.8, 100, 6.3, 15, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);
