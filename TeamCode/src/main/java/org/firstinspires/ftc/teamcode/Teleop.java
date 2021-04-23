@@ -91,7 +91,7 @@ public class Teleop extends OpMode
     private DcMotor intakeMotor = null;
 
     double intakeSpeed = 1.0;
-    double launcherSpeed = 0.605;
+    double launcherSpeed = 0.705;
 
     private double buttonBTime;
     private boolean buttonBPressed = false;
@@ -108,7 +108,7 @@ public class Teleop extends OpMode
             launcher.init(hardwareMap);
             intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor_0");
             intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-            intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         wobbleArm.init(hardwareMap, "wobble_arm_0", 0.6, 0.0);
         wobbleServo.init(hardwareMap, "wobble_servo_1", 1.0, 0.0);
@@ -172,6 +172,20 @@ public class Teleop extends OpMode
 //                buttonBPressed = false;
 //            }
 //        }
+
+        if(right_bumper.toggled(gamepad2.right_bumper)) {
+            launcherSpeed+=0.01;
+        }
+        else if (left_bumper.toggled(gamepad2.left_bumper)) {
+            launcherSpeed-=0.01;
+        }
+
+        if(right_bumper.toggled(gamepad1.right_bumper)) {
+            intakeSpeed+=0.01;
+        }
+        else if (left_bumper.toggled(gamepad1.left_bumper)) {
+            intakeSpeed-=0.01;
+        }
 
         if (buttonX2.toggled(gamepad2.x)) {
             if (buttonX2.toggleState) {
@@ -265,6 +279,8 @@ public class Teleop extends OpMode
                 driveTrain.leftFrontPower, driveTrain.rightFrontPower, driveTrain.leftRearPower, driveTrain.rightRearPower);
         telemetry.addData("Heading", "%.1f", driveTrain.getHeading());
         telemetry.addData("Intake Speed", "%.2f", intakeSpeed);
+        telemetry.addData("Intake Encoder", "%d",
+                intakeMotor.getCurrentPosition());
         telemetry.addData("Launcher Speed", "%.2f", launcherSpeed);
 
     }
