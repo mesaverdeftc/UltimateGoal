@@ -91,7 +91,7 @@ public class Teleop extends OpMode
     private DcMotor intakeMotor = null;
 
     double intakeSpeed = 1.0;
-    double launcherSpeed = 0.705;
+    double launcherSpeed = 1.0;
 
     private double buttonBTime;
     private boolean buttonBPressed = false;
