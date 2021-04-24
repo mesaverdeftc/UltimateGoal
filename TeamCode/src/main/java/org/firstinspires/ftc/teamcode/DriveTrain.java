@@ -72,10 +72,15 @@ public class DriveTrain {
             leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         } else {
-            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
 
@@ -170,9 +175,9 @@ public class DriveTrain {
         rightRearMotor.setPower(rightRearPower);
 
         telemetry.addData("Connection Info: ", leftFrontMotor.getConnectionInfo());
-        telemetry.addData("Odometry Value (LEFT_FRONT): ", leftFrontMotor.getCurrentPosition());
-        telemetry.addData("Odometry Value (RIGHT_FRONT): ", rightFrontMotor.getCurrentPosition());
-        telemetry.addData("Odometry Value (LEFT_REAR): ", leftRearMotor.getCurrentPosition());
+        telemetry.addData("Odometry Value (LEFT_ODO): ", leftFrontMotor.getCurrentPosition());
+        telemetry.addData("Odometry Value (RIGHT_ODO): ", leftRearMotor.getCurrentPosition());
+        telemetry.addData("Odometry Value (FRONT_ODO): ", rightFrontMotor.getCurrentPosition());
     }
 
     public void stop() {

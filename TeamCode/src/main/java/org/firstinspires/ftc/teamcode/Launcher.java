@@ -64,58 +64,59 @@ public class Launcher {
 
     public void launchAutoZero(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.636);
-        linearOpMode.sleep(900);
+        launcherMotor.setPower(1);
+        linearOpMode.sleep(950);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        launcherMotor.setPower(0.582);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(1);
+        linearOpMode.sleep(750);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -9, -0.2);
+        driveTrain.rotate(linearOpMode, -10.6, -0.2);
 
-        launcherMotor.setPower(0.588);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(0.61);
+        linearOpMode.sleep(400);
         launch(linearOpMode, 1);
     }
 
     public void launchAutoOne(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.6309);
-        linearOpMode.sleep(900);
+        launcherMotor.setPower(1);
+        linearOpMode.sleep(850);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        launcherMotor.setPower(0.588);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(1);
+        linearOpMode.sleep(950);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -6.8, -0.2);
+        driveTrain.rotate(linearOpMode, -8.1, -0.2);
 
-        launcherMotor.setPower(0.587);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(0.65);
+        linearOpMode.sleep(400);
         launch(linearOpMode, 1);
     }
 
     public void launchAutoFour(DriveTrain driveTrain, LinearOpMode linearOpMode, Telemetry telemetry) {
 
-        launcherMotor.setPower(0.624);
-        linearOpMode.sleep(900);
+        launcherMotor.setPower(1);
+
+        linearOpMode.sleep(1200);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        launcherMotor.setPower(0.59);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(1);
+        linearOpMode.sleep(950);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -9.11, -0.2);
+        driveTrain.rotate(linearOpMode, -9.1, -0.2);
 
-        launcherMotor.setPower(0.584);
-        linearOpMode.sleep(800);
+        launcherMotor.setPower(0.63);
+        linearOpMode.sleep(400);
         launch(linearOpMode, 1);
     }
 
