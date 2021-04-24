@@ -58,7 +58,7 @@ public class BlueAutoLeftGoal extends LinearOpMode{
 
         if(!Constants.isStrafer) {
             launcher.init(hardwareMap);
-            launcher.run(0.8);
+            launcher.run(0.7);
         }
 
         // make sure the imu gyro is calibrated before continuing.
@@ -285,21 +285,21 @@ public class BlueAutoLeftGoal extends LinearOpMode{
         wobbleArm.setPosition(0);
         sleep(500);
 
-        driveTrain.encoderStafe(this, runtime, 0.7, 26, true, 15);
+        driveTrain.encoderStafe(this, runtime, 0.7, 53.4, true, 15);
 
-        driveTrain.gyroDrive_constant(this, runtime, -0.9, -61, 0, 15, telemetry);
+//        driveTrain.rotate(this, -50, 0.4);
+        driveTrain.gyroDrive_constant(this, runtime, -0.83, -73, 0, 15, telemetry);
         driveTrain.gyroDrive_constant(this, runtime, 0.9, 5.4, 0, 15, telemetry);
         driveTrain.rotate(this, -85, -0.4);
 
-        driveTrain.gyroDrive_constant(this, runtime, 0.3, 13.4, -90, 15, telemetry);
+        driveTrain.gyroDrive_constant(this, runtime, 0.3, 17.4, -90, 15, telemetry);
 
         sleep(200);
         wobbleServo.setPosition(0);
         sleep(600);
 
-        driveTrain.rotate(this, 7.2, 0.4);
-        driveTrain.gyroDrive_constant(this, runtime, 0.8, 100, 7.2, 15, telemetry);
-
+        driveTrain.rotate(this, 6.94, 0.4);
+        driveTrain.gyroDrive_constant(this, runtime, 0.8, 100, 6.94, 15, telemetry);
 
         sleep(500);
         wobbleServo.setPosition(1);

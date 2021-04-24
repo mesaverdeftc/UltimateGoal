@@ -104,18 +104,18 @@ public class Launcher {
 
         launcherMotor.setPower(1);
 
-        linearOpMode.sleep(1200);
+        linearOpMode.sleep(1000);
         launch(linearOpMode, 1);
 
 //        launcherMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         launcherMotor.setPower(1);
-        linearOpMode.sleep(950);
+        linearOpMode.sleep(1100);
         launch(linearOpMode, 1);
 
-        driveTrain.rotate(linearOpMode, -9.1, -0.2);
+        driveTrain.rotate(linearOpMode, -9.26, -0.2);
 
-        launcherMotor.setPower(0.63);
+        launcherMotor.setPower(0.637);
         linearOpMode.sleep(400);
         launch(linearOpMode, 1);
     }
